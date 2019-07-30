@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>MySQL学习笔记（七） | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="行锁功过：怎么减少行锁对性能的影响？行锁是在引擎层由各个引擎自己实现的。因此并不是所有引擎都支持行锁，比如MyISAM引擎就不支持行锁。所以意味着在并发情况下只能使用表锁，同一张表上任意时刻只有一个更新执行。而InnoDB是支持行锁的，这应该是MyISAM被InnoDB取代的重要原因之一。 从两阶段锁说起在InnoDB的事务中，行锁是在需要的时候才加上，但并不是不需要了就立刻释放，而是要等到事务结">
+  <meta name="description" content="行锁功过：怎么减少行锁对性能的影响？本文要点：两阶段锁，死锁">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL学习笔记（七）">
 <meta property="og:url" content="http://yoursite.com/2019/07/29/mysql-note-20190729-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="行锁功过：怎么减少行锁对性能的影响？行锁是在引擎层由各个引擎自己实现的。因此并不是所有引擎都支持行锁，比如MyISAM引擎就不支持行锁。所以意味着在并发情况下只能使用表锁，同一张表上任意时刻只有一个更新执行。而InnoDB是支持行锁的，这应该是MyISAM被InnoDB取代的重要原因之一。 从两阶段锁说起在InnoDB的事务中，行锁是在需要的时候才加上，但并不是不需要了就立刻释放，而是要等到事务结">
+<meta property="og:description" content="行锁功过：怎么减少行锁对性能的影响？本文要点：两阶段锁，死锁">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-29T15:26:52.496Z">
+<meta property="og:updated_time" content="2019-07-30T15:48:14.601Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL学习笔记（七）">
-<meta name="twitter:description" content="行锁功过：怎么减少行锁对性能的影响？行锁是在引擎层由各个引擎自己实现的。因此并不是所有引擎都支持行锁，比如MyISAM引擎就不支持行锁。所以意味着在并发情况下只能使用表锁，同一张表上任意时刻只有一个更新执行。而InnoDB是支持行锁的，这应该是MyISAM被InnoDB取代的重要原因之一。 从两阶段锁说起在InnoDB的事务中，行锁是在需要的时候才加上，但并不是不需要了就立刻释放，而是要等到事务结">
+<meta name="twitter:description" content="行锁功过：怎么减少行锁对性能的影响？本文要点：两阶段锁，死锁">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
   
@@ -192,8 +192,34 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="行锁功过：怎么减少行锁对性能的影响？"><a href="#行锁功过：怎么减少行锁对性能的影响？" class="headerlink" title="行锁功过：怎么减少行锁对性能的影响？"></a>行锁功过：怎么减少行锁对性能的影响？</h1><p>行锁是在引擎层由各个引擎自己实现的。因此并不是所有引擎都支持行锁，比如MyISAM引擎就不支持行锁。所以意味着在并发情况下只能使用表锁，同一张表上任意时刻只有一个更新执行。而InnoDB是支持行锁的，这应该是MyISAM被InnoDB取代的重要原因之一。</p>
-<h2 id="从两阶段锁说起"><a href="#从两阶段锁说起" class="headerlink" title="从两阶段锁说起"></a>从两阶段锁说起</h2><p>在InnoDB的事务中，行锁是在需要的时候才加上，但并不是不需要了就立刻释放，而是要等到事务结束时才释放。这就是两阶段锁协议。</p>
+        <h1 id="行锁功过：怎么减少行锁对性能的影响？"><a href="#行锁功过：怎么减少行锁对性能的影响？" class="headerlink" title="行锁功过：怎么减少行锁对性能的影响？"></a>行锁功过：怎么减少行锁对性能的影响？</h1><p><strong><em>本文要点：两阶段锁，死锁</em></strong><br><a id="more"></a></p>
+<p>行锁是在引擎层由各个引擎自己实现的。因此并不是所有引擎都支持行锁，比如MyISAM引擎就不支持行锁。所以意味着在并发情况下只能使用表锁，同一张表上任意时刻只有一个更新执行。而InnoDB是支持行锁的，这应该是MyISAM被InnoDB取代的重要原因之一。</p>
+<h2 id="从两阶段锁说起"><a href="#从两阶段锁说起" class="headerlink" title="从两阶段锁说起"></a>从两阶段锁说起</h2><ul>
+<li>在InnoDB的事务中，行锁是在需要的时候才加上，但并不是不需要了就立刻释放，而是要等到事务结束时才释放。这就是两阶段锁协议。</li>
+<li>使用事务时，如果事务要锁住多个行，要把最可能造成锁冲突、最可能影响并发度的锁尽量往后放</li>
+</ul>
+<h2 id="死锁和死锁检测"><a href="#死锁和死锁检测" class="headerlink" title="死锁和死锁检测"></a>死锁和死锁检测</h2><p>当并发系统中不同的线程出现循环资源依赖，都在等待其他线程释放资源时，就会导致这几个线程都进入无限等待的状态，称为死锁。当出现死锁后有两种策略：</p>
+<ul>
+<li>一种策略是持续等待，直到超时</li>
+<li>另一种是发起死锁检测，当发现死锁后主动回滚其中一个事务，让其他事务能够继续执行</li>
+</ul>
+<p>第一种策略的缺点：如果设置时长过大会导致程序出现长时间等待，对于很多要求响应时间的应用来说无法接受；如果时间设置过短的话，可能会造成只是普通的锁等待误认为是死锁，造成误伤。所以一般情况下是采用第二种方法。</p>
+<p>不过第二种方法也不是没有问题，我们来想象这样的过程，当事务被锁之后就会判断是否当前造成了死锁，那么如果所有请求都更新同一行会怎么样？<br>由于都是更新同一行，每个线程都会被堵住，都要判断自己当前加入会不会造成死锁，虽然我们很清楚这只是普通的锁等待，但是系统还是会判断，并且是时间复杂度O（n）的操作，虽然最后检测结果没有死锁，但是仍然会消耗大量cpu资源</p>
+<p><strong>那么应该怎么解决这种热点数据造成的更新性能问题呢？</strong></p>
+<ul>
+<li>最粗暴的办法，我们在确信不会死锁的情况下关闭死锁检测，但是这样的操作必然是带有风险的，因为如果业务设计良好的话，可能在死锁的情况下会进行回滚，任何再次重试，一般就没问题了，对于业务来说是无损的。但是如果关闭了死锁检测，真正发生死锁后会有超时现象出现，那么对业务是有损的</li>
+<li>另一个思路是控制并发量，无论是在客户端还是在服务端，例如引入中间件等方案，保证数据入库之前排队，这样引擎内部就不会有大量死锁检测操作</li>
+<li>还有一种办法，可以将冲突行拆分成多条记录，例如一个账户记录，拆分成十条账户记录，每次操作其中一条减少冲突概率(说实话学到这儿我有点儿懵逼，我好像从来都没见过这样优化的，不知道是不是自己孤陋寡闻)</li>
+</ul>
+<h2 id="每课一练"><a href="#每课一练" class="headerlink" title="每课一练"></a>每课一练</h2><p>问：如果要删除一个表里前10000行数据，以下三种方式可以做到：</p>
+<ul>
+<li>直接delete from T limit 10000;</li>
+<li>一个连接中循环20次delete from T limit 500;</li>
+<li>20个连接中同时执行delete from T limit 500;<br>你觉得哪种方式比较好？</li>
+</ul>
+<hr>
+<p>答：第二种比较好。第一种单个语句操作数据占用时间长，锁的时间也比较长，而且大事务还会造成主从延迟；第三种是人为造成了锁冲突，多了检测死锁的消耗。</p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/70215" target="_blank" rel="noopener">https://time.geekbang.org/column/article/70215</a></p>
 
       
 

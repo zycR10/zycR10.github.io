@@ -193,13 +193,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="行锁功过：怎么减少行锁对性能的影响？"><a href="#行锁功过：怎么减少行锁对性能的影响？" class="headerlink" title="行锁功过：怎么减少行锁对性能的影响？"></a>行锁功过：怎么减少行锁对性能的影响？</h1><p>行锁是在引擎层由各个引擎自己实现的。因此并不是所有引擎都支持行锁，比如MyISAM引擎就不支持行锁。所以意味着在并发情况下只能使用表锁，同一张表上任意时刻只有一个更新执行。而InnoDB是支持行锁的，这应该是MyISAM被InnoDB取代的重要原因之一。</p>
-<h2 id="从两阶段锁说起"><a href="#从两阶段锁说起" class="headerlink" title="从两阶段锁说起"></a>从两阶段锁说起</h2><p>在InnoDB的事务中，行锁是在需要的时候才加上，但并不是不需要了就立刻释放，而是要等到事务结束时才释放。这就是两阶段锁协议。</p>
-
+        <h1 id="行锁功过：怎么减少行锁对性能的影响？"><a href="#行锁功过：怎么减少行锁对性能的影响？" class="headerlink" title="行锁功过：怎么减少行锁对性能的影响？"></a>行锁功过：怎么减少行锁对性能的影响？</h1><p><strong><em>本文要点：两阶段锁，死锁</em></strong><br>
+        
+          <a class="article-more-a" href="/2019/07/29/mysql-note-20190729-0/#more">more >></a>
+        
       
 
       
-    </div>
+    </p></div>
     <div class="article-info article-info-index">
       
       
