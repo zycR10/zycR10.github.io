@@ -6,20 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>强转Integer的危险性以及工具类的理解 | Stay Hungry</title>
+  <title>MySQL学习笔记（八） | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天要记录的最近上线的一个bug，本身很简单，修复的也很快但是确实不应该发生。 首先代码里是通过redisson从redis里取出一个关于用户的缓存，用户缓存信息使用map结构存储，因为value值相对变化比较多，有int型的userid或者string型的username等等，代码中为了适应不同类型的value，将map定义为map&amp;lt;String, Object&amp;gt;，通过Object">
-<meta name="keywords" content="wrong">
+  <meta name="description" content="事务到底是隔离的还是不隔离的？本文摘要">
 <meta property="og:type" content="article">
-<meta property="og:title" content="强转Integer的危险性以及工具类的理解">
-<meta property="og:url" content="http://yoursite.com/2019/07/11/cast-int-20190711-0/index.html">
+<meta property="og:title" content="MySQL学习笔记（八）">
+<meta property="og:url" content="http://yoursite.com/2019/08/05/mysql-note-20190805-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="今天要记录的最近上线的一个bug，本身很简单，修复的也很快但是确实不应该发生。 首先代码里是通过redisson从redis里取出一个关于用户的缓存，用户缓存信息使用map结构存储，因为value值相对变化比较多，有int型的userid或者string型的username等等，代码中为了适应不同类型的value，将map定义为map&amp;lt;String, Object&amp;gt;，通过Object">
+<meta property="og:description" content="事务到底是隔离的还是不隔离的？本文摘要">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-11T15:46:48.450Z">
+<meta property="og:image" content="http://yoursite.com/image/trans_test.jpg">
+<meta property="og:image" content="http://yoursite.com/image/record_version.jpg">
+<meta property="og:updated_time" content="2019-08-05T15:24:52.208Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="强转Integer的危险性以及工具类的理解">
-<meta name="twitter:description" content="今天要记录的最近上线的一个bug，本身很简单，修复的也很快但是确实不应该发生。 首先代码里是通过redisson从redis里取出一个关于用户的缓存，用户缓存信息使用map结构存储，因为value值相对变化比较多，有int型的userid或者string型的username等等，代码中为了适应不同类型的value，将map定义为map&amp;lt;String, Object&amp;gt;，通过Object">
+<meta name="twitter:title" content="MySQL学习笔记（八）">
+<meta name="twitter:description" content="事务到底是隔离的还是不隔离的？本文摘要">
+<meta name="twitter:image" content="http://yoursite.com/image/trans_test.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
   
@@ -173,32 +175,41 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-cast-int-20190711-0" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-mysql-note-20190805-0" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      强转Integer的危险性以及工具类的理解
+      MySQL学习笔记（八）
     </h1>
   
 
         
-        <a href="/2019/07/11/cast-int-20190711-0/" class="archive-article-date">
-  	<time datetime="2019-07-11T15:23:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-11</time>
+        <a href="/2019/08/05/mysql-note-20190805-0/" class="archive-article-date">
+  	<time datetime="2019-08-05T14:59:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-05</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>今天要记录的最近上线的一个bug，本身很简单，修复的也很快但是确实不应该发生。</p>
-<p>首先代码里是通过redisson从redis里取出一个关于用户的缓存，用户缓存信息使用map结构存储，因为value值相对变化比较多，有int型的userid或者string型的username等等，代码中为了适应不同类型的value，将map定义为map&lt;String, Object&gt;，通过Object userId = map.get(“userId”)获取用户id，但是在后续使用userId的时候却偷懒了，想当然的认为userId这种字段属于比较“正规”的字段，所以后续代码中调用其它方法需要传参userId的时候顺手就写了 (Integer)userId进行强转，结果上线之后立刻有业务方反应接口返回异常，查log后可以很清晰的看到都是String到Integer的CastException，至于为什么userId会是字符串，这种数据本身是否合理那就是内部业务和设计的问题了，这个不过多讨论，但是写代码的时候确实不应该想当然的直接强转，毕竟这个操作本身就有风险，尤其是要强转成类似于Integer这种有格式和范围要求的类型时，直接选择信任数据来源不做判断进行强转本身就是一种不负责任的代码。</p>
-<p>当时的解决方案是我们系统中有自己的工具类，实现了从String到Integer的转换，但是差点儿因为粗心再次出bug，好在组内有经验的同学提前告知了问题，先看一下我们工具类的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public static int getInt(Object get) &#123;</span><br><span class="line">    if (get == null) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        String s = get.toString();</span><br><span class="line">        return NumberHelper.isInt(s) ? Integer.parseInt(s) : 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到如果传入的字符串为空，那我们的工具类其实会返回0，但是在我的代码中null和0完全是两个不同的概念，所以当返回0之后还需要再次额外处理才可以，暂且不说工具类这样设计是否合理，看来以后在使用别人封装的代码之前也需要好好阅读代码，因为人和人的想法是不同的，尽量减少这种错误的bug数量。</p>
-<p>这两件事给我的经验总结就是：<strong><em>作为一名程序员，任何时候都不应该盲目相信别人提供给你的东西，不管是自称可靠的数据还是一个你刚好需要的封装方法，一定要记得自己多看看，多判断一下，这样才能掌控自己的代码</em></strong></p>
+        <h1 id="事务到底是隔离的还是不隔离的？"><a href="#事务到底是隔离的还是不隔离的？" class="headerlink" title="事务到底是隔离的还是不隔离的？"></a>事务到底是隔离的还是不隔离的？</h1><p><strong><em>本文摘要</em></strong></p>
+<a id="more"></a>
+<p>直接看一个例子：<br>有如下一张表，并执行如图所示三个事务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `t` (</span><br><span class="line">  `id` int(11) NOT NULL,</span><br><span class="line">  `k` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB;</span><br><span class="line">insert into t(id, k) values(1,1),(2,2);</span><br></pre></td></tr></table></figure></p>
+<p><img src="/image/trans_test.jpg" alt></p>
+<p><strong>注意：begin/start transaction命令并不是一个事务的起点，执行之后的第一个操作InnoDB的语句时，事务才真正开始</strong>，所以如果想让事务立刻启动，可以使用start transaction with consisitent snapshot这个命令，生成快照时间同理，一个是在第一条读语句时，一个是在最开始。</p>
+<p>事务C没有显式使用begin/commit，表示这个 update 语句本身就是一个事务。事务B是在更新行之后commit。事务A是一个只读事务，并且是在事务B之后查询。大家可以先思考一下此时的结果。</p>
+<p>答案肯定跟你想的不太一样，B查到的k是3，A查到的k是1。先不急着说为什么是这个答案，先清楚一些概念：</p>
+<p>在MySQL中有两个“视图”的概念：</p>
+<ul>
+<li>一个是view, 它是一个用查询语句构成的虚拟表，可以用create view…生成，在调用这个view的时候会调用查询语句生成结果。</li>
+<li>另一个则是InnoDB在实现MVCC的时候用的一致性读视图，consistent read view，用于支持read commited读提交，repeateable read可重复读隔离级别的实现。</li>
+</ul>
+<h2 id="“快照”在MVCC里是怎么工作的"><a href="#“快照”在MVCC里是怎么工作的" class="headerlink" title="“快照”在MVCC里是怎么工作的"></a>“快照”在MVCC里是怎么工作的</h2><p>在可重复读隔离级别下，事务在启动时相当于拍了一张照片，这个快照基于整库数据。但是并不是说需要拷贝整个数据库的数据，那就太慢了。InnoDB中每个事务都由一个唯一的事务ID，叫做transaction id，在事务开始时申请并严格保持递增。</p>
+<p>每行数据实际上是由多个版本的，当事务更新数据时会生成一个新的数据版本，并且把事务ID记为row trx_id，也就是说一条记录其实有可能有多个版本存储，每个版本都有自己的row trx_id。如下图所示就是多次更新后的数据状态。<br><img src="/image/record_version.jpg" alt></p>
+<p><strong>极客时间版权所有: <a href="https://time.geekbang.org/column/article/70562" target="_blank" rel="noopener">https://time.geekbang.org/column/article/70562</a></strong></p>
 
       
 
@@ -228,18 +239,22 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/MySQL/notes//" class="article-tag-list-link color1">notes</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
 
       
 
@@ -289,7 +304,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/07/11/cast-int-20190711-0/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/08/05/mysql-note-20190805-0/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -303,18 +318,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/07/17/mysql-note-20190717-0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          mysql学习笔记（六）
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/07/09/mysql-note-20190709-0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">mysql学习笔记（五）</div>
+    <a href="/2019/07/29/mysql-note-20190729-0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MySQL学习笔记（七）</div>
       <i class="icon-circle-right"></i>
     </a>
   
