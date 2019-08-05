@@ -17,7 +17,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/trans_test.jpg">
 <meta property="og:image" content="http://yoursite.com/image/record_version.jpg">
-<meta property="og:updated_time" content="2019-08-05T15:24:52.208Z">
+<meta property="og:updated_time" content="2019-08-05T15:41:49.381Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL学习笔记（八）">
 <meta name="twitter:description" content="事务到底是隔离的还是不隔离的？本文摘要">
@@ -209,6 +209,7 @@
 </ul>
 <h2 id="“快照”在MVCC里是怎么工作的"><a href="#“快照”在MVCC里是怎么工作的" class="headerlink" title="“快照”在MVCC里是怎么工作的"></a>“快照”在MVCC里是怎么工作的</h2><p>在可重复读隔离级别下，事务在启动时相当于拍了一张照片，这个快照基于整库数据。但是并不是说需要拷贝整个数据库的数据，那就太慢了。InnoDB中每个事务都由一个唯一的事务ID，叫做transaction id，在事务开始时申请并严格保持递增。</p>
 <p>每行数据实际上是由多个版本的，当事务更新数据时会生成一个新的数据版本，并且把事务ID记为row trx_id，也就是说一条记录其实有可能有多个版本存储，每个版本都有自己的row trx_id。如下图所示就是多次更新后的数据状态。<br><img src="/image/record_version.jpg" alt></p>
+<p>但是这里所谓的多版本不是物理意义上的多版本，图中的三个虚线箭头其实代表的就是undo log，V1,V2,V3都不是真实存在的，如果需要V2的值，那么则需要从V4一次执行U3，U2才能得到。</p>
 <p><strong>极客时间版权所有: <a href="https://time.geekbang.org/column/article/70562" target="_blank" rel="noopener">https://time.geekbang.org/column/article/70562</a></strong></p>
 
       
@@ -446,11 +447,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
+                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
+                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
               </li>
             
             <div class="clearfix"></div>
