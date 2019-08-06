@@ -8,19 +8,20 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>MySQL学习笔记（八） | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="事务到底是隔离的还是不隔离的？本文摘要">
+  <meta name="description" content="事务到底是隔离的还是不隔离的？本文摘要：可重复读，快照，事务隔离">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL学习笔记（八）">
 <meta property="og:url" content="http://yoursite.com/2019/08/05/mysql-note-20190805-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="事务到底是隔离的还是不隔离的？本文摘要">
+<meta property="og:description" content="事务到底是隔离的还是不隔离的？本文摘要：可重复读，快照，事务隔离">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/trans_test.jpg">
 <meta property="og:image" content="http://yoursite.com/image/record_version.jpg">
-<meta property="og:updated_time" content="2019-08-05T15:41:49.381Z">
+<meta property="og:image" content="http://yoursite.com/image/read_rule.jpg">
+<meta property="og:updated_time" content="2019-08-06T15:36:05.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL学习笔记（八）">
-<meta name="twitter:description" content="事务到底是隔离的还是不隔离的？本文摘要">
+<meta name="twitter:description" content="事务到底是隔离的还是不隔离的？本文摘要：可重复读，快照，事务隔离">
 <meta name="twitter:image" content="http://yoursite.com/image/trans_test.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -195,7 +196,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="事务到底是隔离的还是不隔离的？"><a href="#事务到底是隔离的还是不隔离的？" class="headerlink" title="事务到底是隔离的还是不隔离的？"></a>事务到底是隔离的还是不隔离的？</h1><p><strong><em>本文摘要</em></strong></p>
+        <h1 id="事务到底是隔离的还是不隔离的？"><a href="#事务到底是隔离的还是不隔离的？" class="headerlink" title="事务到底是隔离的还是不隔离的？"></a>事务到底是隔离的还是不隔离的？</h1><p><strong><em>本文摘要：可重复读，快照，事务隔离</em></strong></p>
 <a id="more"></a>
 <p>直接看一个例子：<br>有如下一张表，并执行如图所示三个事务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `t` (</span><br><span class="line">  `id` int(11) NOT NULL,</span><br><span class="line">  `k` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB;</span><br><span class="line">insert into t(id, k) values(1,1),(2,2);</span><br></pre></td></tr></table></figure></p>
 <p><img src="/image/trans_test.jpg" alt></p>
@@ -210,6 +211,14 @@
 <h2 id="“快照”在MVCC里是怎么工作的"><a href="#“快照”在MVCC里是怎么工作的" class="headerlink" title="“快照”在MVCC里是怎么工作的"></a>“快照”在MVCC里是怎么工作的</h2><p>在可重复读隔离级别下，事务在启动时相当于拍了一张照片，这个快照基于整库数据。但是并不是说需要拷贝整个数据库的数据，那就太慢了。InnoDB中每个事务都由一个唯一的事务ID，叫做transaction id，在事务开始时申请并严格保持递增。</p>
 <p>每行数据实际上是由多个版本的，当事务更新数据时会生成一个新的数据版本，并且把事务ID记为row trx_id，也就是说一条记录其实有可能有多个版本存储，每个版本都有自己的row trx_id。如下图所示就是多次更新后的数据状态。<br><img src="/image/record_version.jpg" alt></p>
 <p>但是这里所谓的多版本不是物理意义上的多版本，图中的三个虚线箭头其实代表的就是undo log，V1,V2,V3都不是真实存在的，如果需要V2的值，那么则需要从V4一次执行U3，U2才能得到。</p>
+<p>实现数据库的快照逻辑：在事务启动时声明，以事务启动时刻为准，在此时刻之前的数据版本可以认为是有效版本，可以读取；在此时刻之后的版本数据则不会读取。InnoDB为每个事务构造一个数组，记录当前启动时刻所有启动了但未提交的事务ID，数组里事务ID的最小值记为<strong>低水位</strong>，当前系统事务ID的最大值加1记为<strong>高水位</strong>，这个视图数组和高水位就组成了事务的一致性视图。</p>
+<p><img src="/image/read_rule.jpg" alt></p>
+<p>一个数据的row trx_id对于一致性视图来说有如下几种可能：</p>
+<ul>
+<li>1.在绿色部分，则说明事务已提交或者是当前事务自己生成的，可读；</li>
+<li>2.在红色部分，则说明事务尚未开始，不可读</li>
+<li>3.在黄色部分，则包含两种情况：<br>a.若row trx_id在数组中，则说明这个版本由为提交事务生成，不可读<br>b.若row trx_id在数组中，则说明这个版本由已提交事务生成，可读<br>因此InnoDB并不需要真的复制所有数据作为快照，而是通过row trx_id和一致性视图的比较判断数据是否可读，从而实现了秒级创建快照的能力。</li>
+</ul>
 <p><strong>极客时间版权所有: <a href="https://time.geekbang.org/column/article/70562" target="_blank" rel="noopener">https://time.geekbang.org/column/article/70562</a></strong></p>
 
       
