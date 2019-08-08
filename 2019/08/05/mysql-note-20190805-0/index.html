@@ -18,7 +18,7 @@
 <meta property="og:image" content="http://yoursite.com/image/trans_test.jpg">
 <meta property="og:image" content="http://yoursite.com/image/record_version.jpg">
 <meta property="og:image" content="http://yoursite.com/image/read_rule.jpg">
-<meta property="og:updated_time" content="2019-08-06T15:36:05.279Z">
+<meta property="og:updated_time" content="2019-08-08T15:24:22.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL学习笔记（八）">
 <meta name="twitter:description" content="事务到底是隔离的还是不隔离的？本文摘要：可重复读，快照，事务隔离">
@@ -219,6 +219,12 @@
 <li>2.在红色部分，则说明事务尚未开始，不可读</li>
 <li>3.在黄色部分，则包含两种情况：<br>a.若row trx_id在数组中，则说明这个版本由为提交事务生成，不可读<br>b.若row trx_id在数组中，则说明这个版本由已提交事务生成，可读<br>因此InnoDB并不需要真的复制所有数据作为快照，而是通过row trx_id和一致性视图的比较判断数据是否可读，从而实现了秒级创建快照的能力。</li>
 </ul>
+<h2 id="更新逻辑"><a href="#更新逻辑" class="headerlink" title="更新逻辑"></a>更新逻辑</h2><p>事务中的update语句先读后写的方式，但此时的读不是可重复读，而是当前读</p>
+<ul>
+<li>对于可重复读，查询只承认在事务启动前就已经提交完成的数据</li>
+<li>对于读提交，查询只承认在语句启动前就已经提交完成的数据</li>
+</ul>
+<p>数据库的表结构是不支持可重复读的，为什么呢？很简单，因为表结构并不存在类似于row trx_id这样的属性，所以无法做到多版本并存，所以只能进行当前读</p>
 <p><strong>极客时间版权所有: <a href="https://time.geekbang.org/column/article/70562" target="_blank" rel="noopener">https://time.geekbang.org/column/article/70562</a></strong></p>
 
       
