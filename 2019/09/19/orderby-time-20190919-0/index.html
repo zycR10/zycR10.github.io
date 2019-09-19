@@ -6,18 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: wrong | Stay Hungry</title>
+  <title>MySQL数据orderby时间排序bug | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="What hurts more, the pain of hard work or the pain of regret?">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Stay Hungry">
-<meta property="og:url" content="http://yoursite.com/tags/wrong/index.html">
+  <meta name="description" content="最近为公司做了一个简单的用户账户项目中台，其中涉及了用户积分，转账，提现等，由于第一次做缺乏经验，再加上一旦涉及钱的项目肯定是要求正确率极高，所以踩了不少坑，这里记录其中一个关于MySQL数据排序的坑。">
+<meta name="keywords" content="wrong">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据orderby时间排序bug">
+<meta property="og:url" content="http://yoursite.com/2019/09/19/orderby-time-20190919-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="What hurts more, the pain of hard work or the pain of regret?">
+<meta property="og:description" content="最近为公司做了一个简单的用户账户项目中台，其中涉及了用户积分，转账，提现等，由于第一次做缺乏经验，再加上一旦涉及钱的项目肯定是要求正确率极高，所以踩了不少坑，这里记录其中一个关于MySQL数据排序的坑。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-09-19T15:40:57.250Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Stay Hungry">
-<meta name="twitter:description" content="What hurts more, the pain of hard work or the pain of regret?">
+<meta name="twitter:title" content="MySQL数据orderby时间排序bug">
+<meta name="twitter:description" content="最近为公司做了一个简单的用户账户项目中台，其中涉及了用户积分，转账，提现等，由于第一次做缺乏经验，再加上一旦涉及钱的项目肯定是要求正确率极高，所以踩了不少坑，这里记录其中一个关于MySQL数据排序的坑。">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
   
@@ -171,36 +173,64 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-orderby-time-20190919-0" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      MySQL数据orderby时间排序bug
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/19/orderby-time-20190919-0/" class="archive-article-date">
+
+        
+        <a href="/2019/09/19/orderby-time-20190919-0/" class="archive-article-date">
   	<time datetime="2019-09-19T15:17:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/19/orderby-time-20190919-0/">MySQL数据orderby时间排序bug</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近为公司做了一个简单的用户账户项目中台，其中涉及了用户积分，转账，提现等，由于第一次做缺乏经验，再加上一旦涉及钱的项目肯定是要求正确率极高，所以踩了不少坑，这里记录其中一个关于MySQL数据排序的坑。</p>
+<a id="more"></a>
+<p>账户项目很重要的一点是要记清楚账户流水，这里我们的设计是将流水表和用户账户表合二为一，因为本身项目是基于一个类似于邀请好友得金币换现金的活动做的，一个用户存在待解冻，可用，体现中，已使用四种金币类型，这里我们就设计成了一个用户存在四种账户类型，设计一张流水表记录四种账户类型的每一笔流水，当新流水来的时候一般是通过<strong>userId和账户类型</strong>去查询数据，只查最新的一条，数据中的总额就是用户当前账户类型的最新数额，看似很简单的一个东西实际做起来却是特别多的坑。</p>
+<p>账户首要考虑的就是数据的准确和安全，这就考验了并发和锁的设计，这个也踩了不少坑，后续打算单开一篇文章讲；</p>
+<p>这次踩的另外一个坑是我上面提到的“最新一条记录”这个概念，当时在写代码的时候也没多想，随手写了order by create_time desc，直到线上出了诡异的bug才明白这么写的危害。上线不久之后发现有人利用我们的漏洞薅羊毛，刷了大量金币，我们技术团队也是第一时间修复了漏洞，但是我在整理数据的时候发现了一个现象，有些薅羊毛用户的金币数似乎少了很多<br>例如：原本用户有100金币，假如邀请一个好友给10金币，我发现在有的时候会有连续两条流水，明明是两次邀请，但是加完10金币后的总金额都是110，看到这里肯定第一反应就是锁和并发出问题了呗，出现了线程不安全的情况导致同时读取了旧数据，但是仔细检查了代码和测试之后发现应该不会出现线程安全的问题，然后就开始陷入了翻日志和测试的代码的死循环中，几乎浪费了一下午时间，其实原因很简单，就是在选择所谓的“最新一条记录”时使用了order by create_time，而create_time在表中是一个dateTime，也许你会奇怪，诶我也用过时间比较啊，没问题啊。</p>
+<p>注意，我设计的dateTime只是dateTime，而你们数据库的表中dateTime正确做法应该是dateTime(n) 0&lt;=n&lt;=6，这样规定了精确度之后才能真正通过时间比较，像我这种没有设置精确度其实默认是到秒，这个你可以通过如下sql自己看一下结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select now();</span><br><span class="line">select now(3);</span><br><span class="line">select now(6);</span><br><span class="line">select now(7); -- 报错</span><br></pre></td></tr></table></figure></p>
+<p>由于我们的单位是一秒，虽然很短，但是对于并发系统来说已经是很长很长的时间了，这也就是为什么薅羊毛的用户出了问题，因为他们大多是利用接口漏洞疯狂刷金币，导致经常出现一秒内多条的情况，所以order by自然容易丢失数据，幸好及时发现而且大部分影响了非正常用户，没有造成更大的损失。</p>
+<p>这里也确实提醒了我，在使用数据库字段的时候，不管是当作条件还是分组还是排序，都应该尽量使用稳妥或者有明确业务意义的字段，例如排序完全可以使用主键id排序，天然的自增字段，并且具有唯一性。</p>
+<p>果然啊，知识学的再多，没有经验把他们串起来，还是差得远啊。</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -212,182 +242,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/19/orderby-time-20190919-0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/24/exhaust-id-omg-20190724-0/" class="archive-article-date">
-  	<time datetime="2019-07-24T15:26:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-24</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/09/10/type-invalid-index-20190910-0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">类型转换导致索引失效</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/24/exhaust-id-omg-20190724-0/">数据库自增id竟然被我用完了！！！</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/11/cast-int-20190711-0/" class="archive-article-date">
-  	<time datetime="2019-07-11T15:23:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/11/cast-int-20190711-0/">强转Integer的危险性以及工具类的理解</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/06/11/git-revert-commit-20190611-0/" class="archive-article-date">
-  	<time datetime="2019-06-11T15:34:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/11/git-revert-commit-20190611-0/">git撤销本地commit文件</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/git//" class="article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/30/redisson双引号问题踩坑/" class="archive-article-date">
-  	<time datetime="2019-03-30T14:13:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-30</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/30/redisson双引号问题踩坑/">redisson双引号问题踩坑</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -410,9 +364,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
