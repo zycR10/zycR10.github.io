@@ -6,21 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记（六） | Stay Hungry</title>
+  <title>Archives: 2019/11 | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="全局锁和表锁 ：给表加个字段怎么有这么多阻碍？本文要点：全局锁，表级锁">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记（六）">
-<meta property="og:url" content="http://yoursite.com/2019/07/17/mysql-note-20190717-0/index.html">
+  <meta name="description" content="What hurts more, the pain of hard work or the pain of regret?">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Stay Hungry">
+<meta property="og:url" content="http://yoursite.com/archives/2019/11/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="全局锁和表锁 ：给表加个字段怎么有这么多阻碍？本文要点：全局锁，表级锁">
+<meta property="og:description" content="What hurts more, the pain of hard work or the pain of regret?">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/image/mdl_lock.jpg">
-<meta property="og:updated_time" content="2019-11-11T15:35:50.201Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记（六）">
-<meta name="twitter:description" content="全局锁和表锁 ：给表加个字段怎么有这么多阻碍？本文要点：全局锁，表级锁">
-<meta name="twitter:image" content="http://yoursite.com/image/mdl_lock.jpg">
+<meta name="twitter:title" content="Stay Hungry">
+<meta name="twitter:description" content="What hurts more, the pain of hard work or the pain of regret?">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
   
@@ -168,72 +165,37 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-mysql-note-20190717-0" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      MySQL学习笔记（六）
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2019" class="archive-year">2019</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2019/11/11/mysql-note-20191111-0/" class="archive-article-date">
+  	<time datetime="2019-11-11T15:33:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-11</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2019/11/11/mysql-note-20191111-0/">MySQL学习笔记（九）</a>
     </h1>
   
 
-        
-        <a href="/2019/07/17/mysql-note-20190717-0/" class="archive-article-date">
-  	<time datetime="2019-07-17T15:26:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="全局锁和表锁-：给表加个字段怎么有这么多阻碍？"><a href="#全局锁和表锁-：给表加个字段怎么有这么多阻碍？" class="headerlink" title="全局锁和表锁 ：给表加个字段怎么有这么多阻碍？"></a>全局锁和表锁 ：给表加个字段怎么有这么多阻碍？</h1><p><strong><em>本文要点：全局锁，表级锁</em></strong><br><a id="more"></a></p>
-<h2 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h2><p>对整个数据库实例加锁，数据库只读</p>
-<ul>
-<li>如果对主库加锁，会造成数据库无法更新，基本所有与更新有关的业务都会停摆</li>
-<li>如果对从库加锁，会造成主从同步binlog暂停，导致主从延迟</li>
-</ul>
-<h2 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h2><p>MySQL中表锁分为两种，一种是表锁，一种是元数据锁（meta data lock，MDL）<br><strong>表锁的语法是lock tables … read/write</strong>,可以使用unlock table释放锁，需要注意的是lock tables除了会限制其他线程的读写之外，也会限制本线程操作对象。</p>
-<p>举个例子，如果在线程A中执行了lock tables t1 read, t2 write;这个语句，则其他线程写t1和读写t2都会被阻塞，并且在执行unlock之前线程A也只能读t1，读写t2的操作，连写t1都不允许。</p>
-<p><strong>另一类表锁是MDL。</strong>MDL不需要显式使用，在访问一个表的时候会自动添加。MDL的主要作用的保证读写的正确性。当对一个表进行增删改查的时候加MDL读锁；当对表结构变更操作的时候加MDL写锁。</p>
-<ul>
-<li>读锁之间不互斥，因此你可以多个线程对一张表增删改查</li>
-<li>读锁与写锁、写锁之间都是互斥的，如果有两个线程同时给一个表加字段，其中一个要等另一个执行结束</li>
-</ul>
-<p>一个很多人都踩过的坑：<br>给一个表加字段或者加索引需要扫描全表，这个大部分人都很清楚，在对大表操作的时候你肯定会特别小心，以免给线上服务带来问题，但是实际上，即使是小表操作不慎也会出问题，我们来看下图，假设t是一个小表：<br><img src="/image/mdl_lock.jpg" alt></p>
-<p>sessionA启动后为表t加读锁，sessionB启动后也需要加读锁，所以此时还没有问题，但是当sessionC启动后由于sessionC需要修改表结构所以要加写锁，这就导致sessionC被block，只有sessionC被block没关系，但是后续所有申请读写锁的操作都会被block，也就是说这个表现在完全不可读写，如果此时客户端存在超时重试等机制例如新建session的话那么数据库线程将很快被打满。<br><strong>那么如何安全的给小表加字段呢？</strong><br>首先应该避免长事务的存在，事务不提交MDL锁就一直在，或者也可以选择主动kill掉这个长事务。但是假如这是一张热点表，请求频繁但是字段又不得不加怎么办呢？比较理想的机制是在alter table语句里设定等待时间，如果指定时间内拿到了MDL锁最好，拿不到也不要阻塞后续的业务语句，后续再通过开发或者DBA重试命令。</p>
-<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/69862" target="_blank" rel="noopener">https://time.geekbang.org/column/article/69862</a></p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
+        <div class="article-info info-on-right">
+          
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -250,113 +212,17 @@
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/07/17/mysql-note-20190717-0/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2019/07/24/exhaust-id-omg-20190724-0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          数据库自增id竟然被我用完了！！！
-        
-      </div>
-    </a>
   
   
-    <a href="/2019/07/11/cast-int-20190711-0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">强转Integer的危险性以及工具类的理解</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -379,8 +245,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
