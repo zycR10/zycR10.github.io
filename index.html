@@ -187,17 +187,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="普通索引和唯一索引应该如何选择？"><a href="#普通索引和唯一索引应该如何选择？" class="headerlink" title="普通索引和唯一索引应该如何选择？"></a>普通索引和唯一索引应该如何选择？</h1><p><strong><em>本文摘要</em></strong></p>
-<p>仍然使用之前<a href="https://zycR10.github.io/2019/06/30/mysql-note-20190630-0/" target="_blank" rel="noopener">MySQL学习笔记(三)</a>中用过的一张表</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table T(</span><br><span class="line">id int primary key, </span><br><span class="line">k int not null, </span><br><span class="line">name varchar(16),</span><br><span class="line">index (k))engine=InnoDB;</span><br></pre></td></tr></table></figure>
-<p><img src="/image/InnoDB_index_model.jpg" alt></p>
-<p>简单的分析一下查询语句和更新语句的性能。</p>
-<h2 id="查询语句"><a href="#查询语句" class="headerlink" title="查询语句"></a>查询语句</h2><p>假设查询语句为select id from T where k = 5。这个查询语句的执行过程是在索引B+树上从跟结点开始，顺着每一层搜索直到叶节点，然后在叶节点的数据页内通过二分法查找数据。</p>
-<ul>
-<li>对于普通索引来说，找到了第一个记录（5, 500）后还需要继续往后查找，直到找到第一个不是k = 5的记录停止</li>
-<li>对于唯一索引来说，由于具有唯一性，找到第一条满足k = 5的数据即可停下<br>但是其实两者的性能差异微乎其微，InnoDB是以一个数据页为单位来进行读写的，所以每次读写一条记录的时候并不是单单取那条结论，而是以页为单位一并读入内存中，在InnoDB中默认的页大小为16k。<br>所以对于普通查询来说，多的一次查找判断下一条记录只是变化了指针和多一次计算，当然特殊情况比如k = 5正好是页的最后一条数据的话，情况会更复杂一些，但是一个页中可以存放近千个key，所以这件事儿的发生概率很低，所以当计算性能的时候可以将这一步操作耗时武略不急。</li>
-</ul>
-
+        <h1 id="普通索引和唯一索引应该如何选择？"><a href="#普通索引和唯一索引应该如何选择？" class="headerlink" title="普通索引和唯一索引应该如何选择？"></a>普通索引和唯一索引应该如何选择？</h1><p><strong><em>本文摘要 普通索引，唯一索引，chagne buffer</em></strong></p>
+        
+          <a class="article-more-a" href="/2019/11/11/mysql-note-20191111-0/#more">more >></a>
+        
       
 
       
@@ -1016,11 +1009,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
+                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
+                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
               </li>
             
             <div class="clearfix"></div>
