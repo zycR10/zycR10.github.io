@@ -17,7 +17,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/InnoDB_index_model.jpg">
 <meta property="og:image" content="http://yoursite.com/image/redo_change-buffer.jpg">
-<meta property="og:updated_time" content="2019-11-16T13:53:41.869Z">
+<meta property="og:updated_time" content="2019-11-18T15:17:46.862Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL学习笔记（九）">
 <meta name="twitter:description" content="普通索引和唯一索引应该如何选择？本文摘要 普通索引，唯一索引，chagne buffer">
@@ -224,6 +224,7 @@
 <h2 id="每课一练"><a href="#每课一练" class="headerlink" title="每课一练"></a>每课一练</h2><p>change buffer一开始是写内存的，那么如果这个时候机器掉电重启，会不会导致 change buffer丢失呢？change buffer 丢失可不是小事儿，再从磁盘读入数据可就没有了 merge 过程，就等于是数据丢失了。会不会出现这种情况呢？</p>
 <hr>
 <p>这个问题的答案是不会丢失，留言区的很多同学都回答对了。虽然是只更新内存，但是在事务提交的时候，我们把 change buffer 的操作也记录到 redo log 里了，所以崩溃恢复的时候，change buffer 也能找回来。</p>
+<p><strong>极客时间版权所有: <a href="https://time.geekbang.org/column/article/70848" target="_blank" rel="noopener">https://time.geekbang.org/column/article/70848</a></strong></p>
 
       
 
@@ -331,6 +332,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2019/11/18/mysql-note-20191118-0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          MySQL学习笔记（十）
+        
+      </div>
+    </a>
   
   
     <a href="/2019/09/19/orderby-time-20190919-0/" id="article-nav-older" class="article-nav-link-wrap">
