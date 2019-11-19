@@ -8,21 +8,21 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>MySQL学习笔记（十） | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MySQL为什么有时候会选错索引？本文摘要">
+  <meta name="description" content="MySQL为什么有时候会选错索引？本文摘要 索引，index">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL学习笔记（十）">
 <meta property="og:url" content="http://yoursite.com/2019/11/18/mysql-note-20191118-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="MySQL为什么有时候会选错索引？本文摘要">
+<meta property="og:description" content="MySQL为什么有时候会选错索引？本文摘要 索引，index">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/invalid-index1.jpg">
 <meta property="og:image" content="http://yoursite.com/image/invalid-index2.jpg">
 <meta property="og:image" content="http://yoursite.com/image/invalid-index3.jpg">
 <meta property="og:image" content="http://yoursite.com/image/invalid-index4.jpg">
-<meta property="og:updated_time" content="2019-11-18T15:34:29.134Z">
+<meta property="og:updated_time" content="2019-11-19T15:23:43.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL学习笔记（十）">
-<meta name="twitter:description" content="MySQL为什么有时候会选错索引？本文摘要">
+<meta name="twitter:description" content="MySQL为什么有时候会选错索引？本文摘要 索引，index">
 <meta name="twitter:image" content="http://yoursite.com/image/invalid-index1.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -191,7 +191,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="MySQL为什么有时候会选错索引？"><a href="#MySQL为什么有时候会选错索引？" class="headerlink" title="MySQL为什么有时候会选错索引？"></a>MySQL为什么有时候会选错索引？</h1><p><strong><em>本文摘要</em></strong></p>
+        <h1 id="MySQL为什么有时候会选错索引？"><a href="#MySQL为什么有时候会选错索引？" class="headerlink" title="MySQL为什么有时候会选错索引？"></a>MySQL为什么有时候会选错索引？</h1><p><strong><em>本文摘要 索引，index</em></strong></p>
 <a id="more"></a>
 <p>数据库表是支持多索引的，在写sql的过程中很少有人会指定索引，但是执行过程还是会用到索引，索引的选择是MySQL来决定的，但有的时候明明一句应该很快的语句，会因为MySQL选错了索引导致执行很久。</p>
 <p>假设有一张表t，我们向表中插入十万条数据，(1,1,1),(2,2,2),(3,3,3)…(10000,10000,10000)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `t` (</span><br><span class="line">  `id` int(11) NOT NULL,</span><br><span class="line">  `a` int(11) DEFAULT NULL,</span><br><span class="line">  `b` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  KEY `a` (`a`),</span><br><span class="line">  KEY `b` (`b`)</span><br><span class="line">) ENGINE=InnoDB;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">delimiter ;;</span><br><span class="line">create procedure idata()</span><br><span class="line">begin</span><br><span class="line">  declare i int;</span><br><span class="line">  set i=1;</span><br><span class="line">  while(i&lt;=100000)do</span><br><span class="line">    insert into t values(i, i, i);</span><br><span class="line">    set i=i+1;</span><br><span class="line">  end while;</span><br><span class="line">end;;</span><br><span class="line">delimiter ;</span><br><span class="line">call idata();</span><br></pre></td></tr></table></figure></p>
@@ -205,6 +205,17 @@
 <p><img src="/image/invalid-index2.jpg" alt><br>可以看到第一句sql扫描了十万行数据，也就是全表扫描，而第二局sql扫描了10001行数据，正确使用索引，也就是说在第一句sql中MySQL错误的判断了索引导致全表扫描</p>
 <h2 id="优化器逻辑"><a href="#优化器逻辑" class="headerlink" title="优化器逻辑"></a>优化器逻辑</h2><p>选择索引是优化器的工作。而优化器选择索引的目的，是找到一个最优的执行方案，并用最小的代价去执行语句。在数据库里面，扫描行数是影响执行代价的因素之一。扫描的行数越少，意味着访问磁盘数据的次数越少，消耗的 CPU 资源越少。当然，扫描行数并不是唯一的判断标准，优化器还会结合是否使用临时表、是否排序等因素进行综合判断。我们这个简单的查询语句并没有涉及到临时表和排序，所以 MySQL 选错索引肯定是在判断扫描行数的时候出问题了。那么，问题就是：扫描行数是怎么判断的？MySQL 在真正开始执行语句之前，并不能精确地知道满足这个条件的记录有多少条，而只能根据统计信息来估算记录数。这个统计信息就是索引的“区分度”。显然，一个索引上不同的值越多，这个索引的区分度就越好。而一个索引上不同的值的个数，我们称之为“基数”。也就是说，这个基数越大，索引的区分度越好。我们可以使用 show index 方法，看到一个索引的基数。</p>
 <p>MySQL 是通过采样统计的方法得到基数。为什么要采样统计呢？因为把整张表取出来一行行统计，虽然可以得到精确的结果，但是代价太高了，所以只能选择“采样统计”。采样统计的时候，InnoDB 默认会选择 N 个数据页，统计这些页面上的不同值，得到一个平均值，然后乘以这个索引的页面数，就得到了这个索引的基数。而数据表是会持续更新的，索引统计信息也不会固定不变。所以，当变更的数据行数超过 1/M 的时候，会自动触发重新做一次索引统计，所以这个基数都是很容易不准的。可以通过show index获取索引信息，如下图所示：<br><img src="/image/invalid-index3.jpg" alt><br>这次的索引统计值虽然不够精确，但大体上还是差不多的，选错索引一定还有别的原因。其实索引统计只是一个输入，对于一个具体的语句来说，优化器还要判断，执行这个语句本身要扫描多少行。接下来，我们再一起看看优化器预估的，这两个语句的扫描行数是多少：<br><img src="/image/invalid-index4.jpg" alt><br>rows代表扫描行数，sql1还算准确十万左右，sql2预估37116的偏差就比较大了。但是放着3w多数据不扫，反而扫十万条数据其实也不合理，这样的选择的目的主要是是因为十万条数据其实是全表查询，查询到之后就可以直接返回结果，而使用索引a普通索引查询的话还存在一次回表查询，将这个代价计算进去之后，MySQL认为全表扫是最优解。但是归根结底，使用索引错误是因为数据表统计信息错误，修正可以使用analyze table xxx的命令。再次使用explain观察执行计划你会发现结果正确了，很多统计信息的错误都可以通过这种方式来修复。</p>
+<p>再看个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from t where (a between 1 and 1000) and (b between 50000 and 100000) order by b limit 1;</span><br></pre></td></tr></table></figure></p>
+<p>很显然表中不存在这样的数据应该返回空，如果选择索引a的话那么需要扫描1000行代码，然后回表查出对应b的值，然后对b做筛选。如果选择了索引b的话则需要查询50000行记录，然后回表查询对应a的值，最后进行筛选。这样比较下来肯定是选择索引a比较快速，但是事实上explain之后你会发现选择了索引b，原因是因为最后order by b，MySQL认为如果直接选择了索引b那么不需要再次排序，但是扫描行数却大大增加了。</p>
+<h2 id="索引选择异常和处理"><a href="#索引选择异常和处理" class="headerlink" title="索引选择异常和处理"></a>索引选择异常和处理</h2><p>类似于上面的问题，当数据库选错了索引的时候可以通过下面的方式更正：</p>
+<ul>
+<li>使用force index写出强制使用的索引，但是这种方式程序员应该都不大喜欢，因为首先这样写很不美观，其次索引名字不能发生变化，否则代码可能存在问题</li>
+<li>调整sql语句，例如上面的例子我们改成 order by b,a limit 1，再次explain之后你会发现使用了索引a，因为现在排序字段中既有b又有a，所以两个索引都会用到，那么a扫描行数少自然选择了索引a</li>
+<li>建立更贴合sql的索引或者干脆删除使用错误的索引。不过这种方法肯定是比较极端的操作了，一般线上的重要数据表索引都是精心设计的，轻易不会发生变化，而且在数据量很大的表中加索引本身又是很费力的事情，甚至会影响线上功能，得不偿失</li>
+</ul>
+<h2 id="每课一练"><a href="#每课一练" class="headerlink" title="每课一练"></a>每课一练</h2><p>注意最开始的例子中，我们启动了两个session，通过sessionA的配合，在sessionB中对数据表delete，insert和select操作造成了统计数据不准确，但是如果没有sessionA，单单启动sessionB的话其实并不存在这个问题，请问是为什么？</p>
+<hr>
+<p>答：delete语句删掉了所有的数据，然后再通过call idata()插入了10万行数据，看上去是覆盖了原来的10万行。但是，session A开启了事务并没有提交，所以之前插入的10万行数据是不能删除的。这样，之前的数据每一行数据都有两个版本，旧版本是delete之前的数据，新版本是标记为deleted的数据。这样，索引a上的数据其实就有两份。然后你会说，不对啊，主键上的数据也不能删，那没有使用force index的语句，使用explain命令看到的扫描行数为什么还是10万左右？（潜台词，如果这个也翻倍，也许优化器还会认为选字段 a 作为索引更合适）是的，不过这个是主键，主键是直接按照表的行数来估计的。而表的行数，优化器直接用的是show table status的值。</p>
 <p><strong>极客时间版权所有:<a href="https://time.geekbang.org/column/article/71173" target="_blank" rel="noopener">https://time.geekbang.org/column/article/71173</a></strong></p>
 
       
