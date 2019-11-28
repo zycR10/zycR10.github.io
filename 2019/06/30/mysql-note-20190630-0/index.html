@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记（三） | Stay Hungry</title>
+  <title>MySQL学习笔记（三）深入浅出索引（上） | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="深入浅出索引（上）本文要点：主键索引，非主键索引，n叉树，索引维护">
+  <meta name="description" content="本文要点：主键索引，非主键索引，n叉树，索引维护">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记（三）">
+<meta property="og:title" content="MySQL学习笔记（三）深入浅出索引（上）">
 <meta property="og:url" content="http://yoursite.com/2019/06/30/mysql-note-20190630-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="深入浅出索引（上）本文要点：主键索引，非主键索引，n叉树，索引维护">
+<meta property="og:description" content="本文要点：主键索引，非主键索引，n叉树，索引维护">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/InnoDB_index_model.jpg">
-<meta property="og:updated_time" content="2019-11-11T15:35:42.299Z">
+<meta property="og:updated_time" content="2019-11-28T15:26:52.002Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记（三）">
-<meta name="twitter:description" content="深入浅出索引（上）本文要点：主键索引，非主键索引，n叉树，索引维护">
+<meta name="twitter:title" content="MySQL学习笔记（三）深入浅出索引（上）">
+<meta name="twitter:description" content="本文要点：主键索引，非主键索引，n叉树，索引维护">
 <meta name="twitter:image" content="http://yoursite.com/image/InnoDB_index_model.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -175,7 +175,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL学习笔记（三）
+      MySQL学习笔记（三）深入浅出索引（上）
     </h1>
   
 
@@ -188,7 +188,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="深入浅出索引（上）"><a href="#深入浅出索引（上）" class="headerlink" title="深入浅出索引（上）"></a>深入浅出索引（上）</h1><p><strong><em>本文要点：主键索引，非主键索引，n叉树，索引维护</em></strong><br><a id="more"></a></p>
+        <p><strong><em>本文要点：主键索引，非主键索引，n叉树，索引维护</em></strong><br><a id="more"></a></p>
 <h2 id="索引的常见类型"><a href="#索引的常见类型" class="headerlink" title="索引的常见类型"></a>索引的常见类型</h2><p>索引也是被抽象出来的一种概念，本质就是提高读写效率的数据结构，基本较为常见的数据结构有如下三种：</p>
 <h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p><strong>哈希表</strong>是一种基础的数据结构，以key-value形式存储数据，这种数据结构在一般情况下查找效率为O(1)，但是key值经过hash函数的计算后难免会出现相同的情况，此时的value可能会需要转换成链表去存储，而链表越长，对于查询性能影响越大。而且由于哈希表的查询是通过key查找value，显然只能适用于等值查找，例如id = 1，显然不太符合数据库的查询场景；</p>
 <h4 id="有序数组"><a href="#有序数组" class="headerlink" title="有序数组"></a>有序数组</h4><p><strong>有序数组</strong>属于数组，数组的特点查询性能十分优秀，在数据库索引中做等值查询和范围查询都十分优秀，仅仅看查询效率的话，数组应该是最优秀的数据结构，但是在需要更新数据的时候就麻烦了，你往中间插一个记录就必须移动后面所有记录，成本很高，但是类似于一些长期不变的静态数据，有序数组是个不错的选择。</p>
@@ -333,7 +333,7 @@
   
   
     <a href="/2019/06/20/mysql-note-20190620-0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MySQL学习笔记（二）</div>
+      <div class="article-nav-title">MySQL学习笔记（二）一条SQL更新语句是如何执行的？</div>
       <i class="icon-circle-right"></i>
     </a>
   

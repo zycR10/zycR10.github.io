@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记（六） | Stay Hungry</title>
+  <title>MySQL学习笔记（六）全局锁和表锁 ：给表加个字段怎么有这么多阻碍？ | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="全局锁和表锁 ：给表加个字段怎么有这么多阻碍？本文要点：全局锁，表级锁">
+  <meta name="description" content="本文要点：全局锁，表级锁">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记（六）">
+<meta property="og:title" content="MySQL学习笔记（六）全局锁和表锁 ：给表加个字段怎么有这么多阻碍？">
 <meta property="og:url" content="http://yoursite.com/2019/07/17/mysql-note-20190717-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="全局锁和表锁 ：给表加个字段怎么有这么多阻碍？本文要点：全局锁，表级锁">
+<meta property="og:description" content="本文要点：全局锁，表级锁">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/mdl_lock.jpg">
-<meta property="og:updated_time" content="2019-11-11T15:35:50.201Z">
+<meta property="og:updated_time" content="2019-11-28T15:26:27.569Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记（六）">
-<meta name="twitter:description" content="全局锁和表锁 ：给表加个字段怎么有这么多阻碍？本文要点：全局锁，表级锁">
+<meta name="twitter:title" content="MySQL学习笔记（六）全局锁和表锁 ：给表加个字段怎么有这么多阻碍？">
+<meta name="twitter:description" content="本文要点：全局锁，表级锁">
 <meta name="twitter:image" content="http://yoursite.com/image/mdl_lock.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -175,7 +175,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL学习笔记（六）
+      MySQL学习笔记（六）全局锁和表锁 ：给表加个字段怎么有这么多阻碍？
     </h1>
   
 
@@ -188,7 +188,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="全局锁和表锁-：给表加个字段怎么有这么多阻碍？"><a href="#全局锁和表锁-：给表加个字段怎么有这么多阻碍？" class="headerlink" title="全局锁和表锁 ：给表加个字段怎么有这么多阻碍？"></a>全局锁和表锁 ：给表加个字段怎么有这么多阻碍？</h1><p><strong><em>本文要点：全局锁，表级锁</em></strong><br><a id="more"></a></p>
+        <p><strong><em>本文要点：全局锁，表级锁</em></strong><br><a id="more"></a></p>
 <h2 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h2><p>对整个数据库实例加锁，数据库只读</p>
 <ul>
 <li>如果对主库加锁，会造成数据库无法更新，基本所有与更新有关的业务都会停摆</li>

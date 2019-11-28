@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记（二） | Stay Hungry</title>
+  <title>MySQL学习笔记（二）一条SQL更新语句是如何执行的？ | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一条SQL更新语句是如何执行的？本文要点：redo log、binlog、两阶段提交">
+  <meta name="description" content="本文要点：redo log、binlog、两阶段提交">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记（二）">
+<meta property="og:title" content="MySQL学习笔记（二）一条SQL更新语句是如何执行的？">
 <meta property="og:url" content="http://yoursite.com/2019/06/20/mysql-note-20190620-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="一条SQL更新语句是如何执行的？本文要点：redo log、binlog、两阶段提交">
+<meta property="og:description" content="本文要点：redo log、binlog、两阶段提交">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/update_sql.jpg">
-<meta property="og:updated_time" content="2019-11-11T15:35:45.743Z">
+<meta property="og:updated_time" content="2019-11-28T15:26:57.910Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记（二）">
-<meta name="twitter:description" content="一条SQL更新语句是如何执行的？本文要点：redo log、binlog、两阶段提交">
+<meta name="twitter:title" content="MySQL学习笔记（二）一条SQL更新语句是如何执行的？">
+<meta name="twitter:description" content="本文要点：redo log、binlog、两阶段提交">
 <meta name="twitter:image" content="http://yoursite.com/image/update_sql.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -175,7 +175,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL学习笔记（二）
+      MySQL学习笔记（二）一条SQL更新语句是如何执行的？
     </h1>
   
 
@@ -188,7 +188,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="一条SQL更新语句是如何执行的？"><a href="#一条SQL更新语句是如何执行的？" class="headerlink" title="一条SQL更新语句是如何执行的？"></a>一条SQL更新语句是如何执行的？</h1><p><strong><em>本文要点：redo log、binlog、两阶段提交</em></strong></p>
+        <p><strong><em>本文要点：redo log、binlog、两阶段提交</em></strong></p>
 <a id="more"></a>
 <p>与查询流程不一样的是，更新流程还涉及两个重要的日志模块：redo log(重做日志)和binlog（归档日志）</p>
 <h2 id="1-redo-log"><a href="#1-redo-log" class="headerlink" title="1.redo log"></a>1.redo log</h2><p>MySQL作为数据库要经常进行数据的更新，如果每一次的更新都需要写入磁盘，然后通过磁盘找到那条记录，然后再做更新整个过程IO成本、查找成本都很高，所以MySQL用到了一种<strong>WAL技术</strong>,全称是Write-Ahead Logging，关键思想在于先写日志，再写磁盘。当一条记录需要更新时，InnoDB引擎先写到redo log里，并更新内存，此时已经算作更新结束。等到合适的时候，再将这个操作更新到磁盘里，一般是系统空闲的时候。<br>redo log是固定大小的，比如配置一组4个文件，每个文件都是1GB，总共可以记录4G的操作，从头开始写，写到末尾再回到开头循环写。<br>正是因为有了redo log，InnoDB就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力成为crash-safe。</p>
@@ -317,7 +317,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          MySQL学习笔记（三）
+          MySQL学习笔记（三）深入浅出索引（上）
         
       </div>
     </a>

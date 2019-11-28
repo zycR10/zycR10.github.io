@@ -6,21 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记（九） | Stay Hungry</title>
+  <title>MySQL学习笔记（九）普通索引和唯一索引应该如何选择？ | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="普通索引和唯一索引应该如何选择？本文摘要 普通索引，唯一索引，chagne buffer">
+  <meta name="description" content="本文摘要 普通索引，唯一索引，chagne buffer">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记（九）">
+<meta property="og:title" content="MySQL学习笔记（九）普通索引和唯一索引应该如何选择？">
 <meta property="og:url" content="http://yoursite.com/2019/11/11/mysql-note-20191111-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="普通索引和唯一索引应该如何选择？本文摘要 普通索引，唯一索引，chagne buffer">
+<meta property="og:description" content="本文摘要 普通索引，唯一索引，chagne buffer">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/InnoDB_index_model.jpg">
 <meta property="og:image" content="http://yoursite.com/image/redo_change-buffer.jpg">
-<meta property="og:updated_time" content="2019-11-18T15:17:46.862Z">
+<meta property="og:updated_time" content="2019-11-28T15:26:01.522Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记（九）">
-<meta name="twitter:description" content="普通索引和唯一索引应该如何选择？本文摘要 普通索引，唯一索引，chagne buffer">
+<meta name="twitter:title" content="MySQL学习笔记（九）普通索引和唯一索引应该如何选择？">
+<meta name="twitter:description" content="本文摘要 普通索引，唯一索引，chagne buffer">
 <meta name="twitter:image" content="http://yoursite.com/image/InnoDB_index_model.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -176,7 +176,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL学习笔记（九）
+      MySQL学习笔记（九）普通索引和唯一索引应该如何选择？
     </h1>
   
 
@@ -189,7 +189,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="普通索引和唯一索引应该如何选择？"><a href="#普通索引和唯一索引应该如何选择？" class="headerlink" title="普通索引和唯一索引应该如何选择？"></a>普通索引和唯一索引应该如何选择？</h1><p><strong><em>本文摘要 普通索引，唯一索引，chagne buffer</em></strong></p>
+        <p><strong><em>本文摘要 普通索引，唯一索引，chagne buffer</em></strong></p>
 <a id="more"></a>
 <p>仍然使用之前<a href="https://zycR10.github.io/2019/06/30/mysql-note-20190630-0/" target="_blank" rel="noopener">MySQL学习笔记(三)</a>中用过的一张表</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table T(</span><br><span class="line">id int primary key, </span><br><span class="line">k int not null, </span><br><span class="line">name varchar(16),</span><br><span class="line">index (k))engine=InnoDB;</span><br></pre></td></tr></table></figure>
@@ -337,7 +337,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          MySQL学习笔记（十）
+          MySQL学习笔记（十）MySQL为什么有时候会选错索引？
         
       </div>
     </a>

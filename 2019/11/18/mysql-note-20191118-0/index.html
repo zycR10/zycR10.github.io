@@ -6,23 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记（十） | Stay Hungry</title>
+  <title>MySQL学习笔记（十）MySQL为什么有时候会选错索引？ | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MySQL为什么有时候会选错索引？[toc] 本文摘要 索引，index">
+  <meta name="description" content="本文摘要 索引，index">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记（十）">
+<meta property="og:title" content="MySQL学习笔记（十）MySQL为什么有时候会选错索引？">
 <meta property="og:url" content="http://yoursite.com/2019/11/18/mysql-note-20191118-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="MySQL为什么有时候会选错索引？[toc] 本文摘要 索引，index">
+<meta property="og:description" content="本文摘要 索引，index">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/invalid-index1.jpg">
 <meta property="og:image" content="http://yoursite.com/image/invalid-index2.jpg">
 <meta property="og:image" content="http://yoursite.com/image/invalid-index3.jpg">
 <meta property="og:image" content="http://yoursite.com/image/invalid-index4.jpg">
-<meta property="og:updated_time" content="2019-11-19T15:53:25.044Z">
+<meta property="og:updated_time" content="2019-11-28T15:25:46.879Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记（十）">
-<meta name="twitter:description" content="MySQL为什么有时候会选错索引？[toc] 本文摘要 索引，index">
+<meta name="twitter:title" content="MySQL学习笔记（十）MySQL为什么有时候会选错索引？">
+<meta name="twitter:description" content="本文摘要 索引，index">
 <meta name="twitter:image" content="http://yoursite.com/image/invalid-index1.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -178,7 +178,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL学习笔记（十）
+      MySQL学习笔记（十）MySQL为什么有时候会选错索引？
     </h1>
   
 
@@ -191,8 +191,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="MySQL为什么有时候会选错索引？"><a href="#MySQL为什么有时候会选错索引？" class="headerlink" title="MySQL为什么有时候会选错索引？"></a>MySQL为什么有时候会选错索引？</h1><p>[toc]</p>
-<p><strong><em>本文摘要 索引，index</em></strong></p>
+        <p><strong><em>本文摘要 索引，index</em></strong></p>
 <a id="more"></a>
 <p>数据库表是支持多索引的，在写sql的过程中很少有人会指定索引，但是执行过程还是会用到索引，索引的选择是MySQL来决定的，但有的时候明明一句应该很快的语句，会因为MySQL选错了索引导致执行很久。</p>
 <p>假设有一张表t，我们向表中插入十万条数据，(1,1,1),(2,2,2),(3,3,3)…(10000,10000,10000)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `t` (</span><br><span class="line">  `id` int(11) NOT NULL,</span><br><span class="line">  `a` int(11) DEFAULT NULL,</span><br><span class="line">  `b` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  KEY `a` (`a`),</span><br><span class="line">  KEY `b` (`b`)</span><br><span class="line">) ENGINE=InnoDB;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">delimiter ;;</span><br><span class="line">create procedure idata()</span><br><span class="line">begin</span><br><span class="line">  declare i int;</span><br><span class="line">  set i=1;</span><br><span class="line">  while(i&lt;=100000)do</span><br><span class="line">    insert into t values(i, i, i);</span><br><span class="line">    set i=i+1;</span><br><span class="line">  end while;</span><br><span class="line">end;;</span><br><span class="line">delimiter ;</span><br><span class="line">call idata();</span><br></pre></td></tr></table></figure></p>
@@ -330,14 +329,14 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          MySQL学习笔记（十一）
+          MySQL学习笔记（十一）怎么给字符串字段加索引？
         
       </div>
     </a>
   
   
     <a href="/2019/11/11/mysql-note-20191111-0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MySQL学习笔记（九）</div>
+      <div class="article-nav-title">MySQL学习笔记（九）普通索引和唯一索引应该如何选择？</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记（五） | Stay Hungry</title>
+  <title>MySQL学习笔记（五）事务隔离：为什么你改了我还看不见？ | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="事务隔离：为什么你改了我还看不见？本文要点：ACID，隔离级别，事务">
+  <meta name="description" content="本文要点：ACID，隔离级别，事务">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记（五）">
+<meta property="og:title" content="MySQL学习笔记（五）事务隔离：为什么你改了我还看不见？">
 <meta property="og:url" content="http://yoursite.com/2019/07/09/mysql-note-20190709-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="事务隔离：为什么你改了我还看不见？本文要点：ACID，隔离级别，事务">
+<meta property="og:description" content="本文要点：ACID，隔离级别，事务">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/trans_isolation.jpg">
-<meta property="og:updated_time" content="2019-11-11T15:35:48.766Z">
+<meta property="og:updated_time" content="2019-11-28T15:26:37.519Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记（五）">
-<meta name="twitter:description" content="事务隔离：为什么你改了我还看不见？本文要点：ACID，隔离级别，事务">
+<meta name="twitter:title" content="MySQL学习笔记（五）事务隔离：为什么你改了我还看不见？">
+<meta name="twitter:description" content="本文要点：ACID，隔离级别，事务">
 <meta name="twitter:image" content="http://yoursite.com/image/trans_isolation.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -175,7 +175,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL学习笔记（五）
+      MySQL学习笔记（五）事务隔离：为什么你改了我还看不见？
     </h1>
   
 
@@ -188,7 +188,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="事务隔离：为什么你改了我还看不见？"><a href="#事务隔离：为什么你改了我还看不见？" class="headerlink" title="事务隔离：为什么你改了我还看不见？"></a>事务隔离：为什么你改了我还看不见？</h1><p><strong><em>本文要点：ACID，隔离级别，事务</em></strong><br><a id="more"></a></p>
+        <p><strong><em>本文要点：ACID，隔离级别，事务</em></strong><br><a id="more"></a></p>
 <p>简单来说，事务就是要保证一组数据库操作，要么全部成功，要么全部失败。在MySQL中事务的实现是在引擎层中，这一点很好记忆，因为MySQL中并不是所有引擎都支持事务。MySQL原生的MyISAM就不支持事务，这也是被InnoDB取代的一个重要原因。</p>
 <h2 id="隔离性与隔离级别"><a href="#隔离性与隔离级别" class="headerlink" title="隔离性与隔离级别"></a>隔离性与隔离级别</h2><p><em>数据库事务执行的四个基本要素ACID：</em></p>
 <ul>

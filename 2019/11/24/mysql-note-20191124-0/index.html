@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记（十一） | Stay Hungry</title>
+  <title>MySQL学习笔记（十一）怎么给字符串字段加索引？ | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="怎么给字符串字段加索引？本文摘要 前缀索引，覆盖索引">
+  <meta name="description" content="本文摘要 前缀索引，覆盖索引">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记（十一）">
+<meta property="og:title" content="MySQL学习笔记（十一）怎么给字符串字段加索引？">
 <meta property="og:url" content="http://yoursite.com/2019/11/24/mysql-note-20191124-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="怎么给字符串字段加索引？本文摘要 前缀索引，覆盖索引">
+<meta property="og:description" content="本文摘要 前缀索引，覆盖索引">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-24T11:23:56.042Z">
+<meta property="og:updated_time" content="2019-11-28T15:25:31.637Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记（十一）">
-<meta name="twitter:description" content="怎么给字符串字段加索引？本文摘要 前缀索引，覆盖索引">
+<meta name="twitter:title" content="MySQL学习笔记（十一）怎么给字符串字段加索引？">
+<meta name="twitter:description" content="本文摘要 前缀索引，覆盖索引">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
   
@@ -173,7 +173,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL学习笔记（十一）
+      MySQL学习笔记（十一）怎么给字符串字段加索引？
     </h1>
   
 
@@ -186,7 +186,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="怎么给字符串字段加索引？"><a href="#怎么给字符串字段加索引？" class="headerlink" title="怎么给字符串字段加索引？"></a>怎么给字符串字段加索引？</h1><p><strong><em>本文摘要 前缀索引，覆盖索引</em></strong><br><a id="more"></a></p>
+        <p><strong><em>本文摘要 前缀索引，覆盖索引</em></strong><br><a id="more"></a></p>
 <h2 id="字符串索引"><a href="#字符串索引" class="headerlink" title="字符串索引"></a>字符串索引</h2><p>假设存在一张用户表t_user_info, 表中存在用户姓名user_name, 日常使用中可能会存在这样的sql<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t_user_info where user_name = &apos;xxx&apos;;</span><br></pre></td></tr></table></figure></p>
 <p>在MySQL中如果需要为字符串添加索引有两种方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table t_user_info add index index1(user_name);</span><br><span class="line">alter table t_user_info add index index2(user_name(2));</span><br></pre></td></tr></table></figure></p>
 <p>第一个索引表示整个字段作为索引，第二个索引表示前两个字节作为索引，使用第二种索引方式的话能够节约空间，但是相应的索引区分度可能没有全字段高，导致查询的过程中可能会扫描更多行数据，但是如果恰当的设置前缀索引，<strong>那么就可以在节约空间成本的基础上又不额外增加更多的查询成本，所以需要在工作中根据业务特点和数据特性设置好前缀索引的长度。</strong></p>
@@ -242,11 +242,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/note//" class="article-tag-list-link color5">note</a>
+        			<a href="/categories/notes//" class="article-tag-list-link color1">notes</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/note/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/notes/MySQL//" class="article-tag-list-link color1">MySQL</a>
         		</li>
       		
 		</ul>
@@ -315,9 +315,18 @@
   
 <nav id="article-nav">
   
+    <a href="/2019/11/28/mysql-note-201911280-0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          MySQL学习笔记 (十二) 数据库“抖动”
+        
+      </div>
+    </a>
+  
   
     <a href="/2019/11/18/mysql-note-20191118-0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MySQL学习笔记（十）</div>
+      <div class="article-nav-title">MySQL学习笔记（十）MySQL为什么有时候会选错索引？</div>
       <i class="icon-circle-right"></i>
     </a>
   

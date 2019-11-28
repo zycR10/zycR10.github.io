@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记（一） | Stay Hungry</title>
+  <title>MySQL学习笔记（一）一条SQL查询语句是如何执行的 | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="数据库和MySQL可以说是现代程序员必会的一项技术，某种程度上来说，数据库知识的掌握程度甚至直接反映了一名程序员的实力水平，本系列学习笔记是基于极客时间《MySQL实战45讲》进行总结的，算是对学习过程的一个总结和提高。 一条SQL查询语句是如何执行的">
+  <meta name="description" content="数据库和MySQL可以说是现代程序员必会的一项技术，某种程度上来说，数据库知识的掌握程度甚至直接反映了一名程序员的实力水平，本系列学习笔记是基于极客时间《MySQL实战45讲》进行总结的，算是对学习过程的一个总结和提高。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记（一）">
+<meta property="og:title" content="MySQL学习笔记（一）一条SQL查询语句是如何执行的">
 <meta property="og:url" content="http://yoursite.com/2019/06/08/mysql-note-20190608-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="数据库和MySQL可以说是现代程序员必会的一项技术，某种程度上来说，数据库知识的掌握程度甚至直接反映了一名程序员的实力水平，本系列学习笔记是基于极客时间《MySQL实战45讲》进行总结的，算是对学习过程的一个总结和提高。 一条SQL查询语句是如何执行的">
+<meta property="og:description" content="数据库和MySQL可以说是现代程序员必会的一项技术，某种程度上来说，数据库知识的掌握程度甚至直接反映了一名程序员的实力水平，本系列学习笔记是基于极客时间《MySQL实战45讲》进行总结的，算是对学习过程的一个总结和提高。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/image/mysql_base.jpg">
-<meta property="og:updated_time" content="2019-11-11T15:35:37.648Z">
+<meta property="og:updated_time" content="2019-11-28T15:27:05.484Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记（一）">
-<meta name="twitter:description" content="数据库和MySQL可以说是现代程序员必会的一项技术，某种程度上来说，数据库知识的掌握程度甚至直接反映了一名程序员的实力水平，本系列学习笔记是基于极客时间《MySQL实战45讲》进行总结的，算是对学习过程的一个总结和提高。 一条SQL查询语句是如何执行的">
+<meta name="twitter:title" content="MySQL学习笔记（一）一条SQL查询语句是如何执行的">
+<meta name="twitter:description" content="数据库和MySQL可以说是现代程序员必会的一项技术，某种程度上来说，数据库知识的掌握程度甚至直接反映了一名程序员的实力水平，本系列学习笔记是基于极客时间《MySQL实战45讲》进行总结的，算是对学习过程的一个总结和提高。">
 <meta name="twitter:image" content="http://yoursite.com/image/mysql_base.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -175,7 +175,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL学习笔记（一）
+      MySQL学习笔记（一）一条SQL查询语句是如何执行的
     </h1>
   
 
@@ -189,7 +189,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><em>数据库和MySQL可以说是现代程序员必会的一项技术，某种程度上来说，数据库知识的掌握程度甚至直接反映了一名程序员的实力水平，本系列学习笔记是基于极客时间《MySQL实战45讲》进行总结的，算是对学习过程的一个总结和提高。</em></p>
-<h1 id="一条SQL查询语句是如何执行的"><a href="#一条SQL查询语句是如何执行的" class="headerlink" title="一条SQL查询语句是如何执行的"></a>一条SQL查询语句是如何执行的</h1><a id="more"></a>
+<a id="more"></a>
 <p> 1．MySQL 的基本架构示意图：<br><img src="/image/mysql_base.jpg" alt></p>
 <p> 2．大体上来讲分为server层和存储引擎层</p>
 <p> 3．Server 层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖MySQL的大多数核心服务功能，另外一些内置函数如日期、时间、数学等也在这一层，还有就是所有需要跨存储引擎的功能也在这层实现，例如存储过程、触发器、视图。而存储引擎层负责数据的存储和提取，支持多种存储引擎如InnoDB、MyISAM、Memory，其中InnoDB应该是使用最广泛且默认的存储引擎。</p>
