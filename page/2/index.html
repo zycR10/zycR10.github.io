@@ -60,7 +60,9 @@
 	        
 				<li><a href="/tags/wrong/">踩坑记</a></li>
 	        
-				<li><a href="/categories/notes">notes</a></li>
+				<li><a href="/categories/MySQL">数据库</a></li>
+	        
+				<li><a href="/categories/SpringCloud">微服务</a></li>
 	        
 				<li><a href="/tags/tingle">Peter-Tingle</a></li>
 	        
@@ -124,6 +126,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -144,13 +148,15 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 20%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/wrong/">踩坑记</a></li>
+					<li style="width: 20%"><a href="/tags/wrong/">踩坑记</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/notes">notes</a></li>
+					<li style="width: 20%"><a href="/categories/MySQL">数据库</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/tingle">Peter-Tingle</a></li>
+					<li style="width: 20%"><a href="/categories/SpringCloud">微服务</a></li>
+		        
+					<li style="width: 20%"><a href="/tags/tingle">Peter-Tingle</a></li>
 		        
 				</ul>
 			</nav>
@@ -166,6 +172,79 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-exhaust-id-omg-20190724-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/24/exhaust-id-omg-20190724-0/">数据库自增id竟然被我用完了！！！</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/24/exhaust-id-omg-20190724-0/" class="archive-article-date">
+  	<time datetime="2019-07-24T15:26:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="业务背景"><a href="#业务背景" class="headerlink" title="业务背景"></a>业务背景</h2><p>事情的起因是这样的…几个月前做过一个统计类型的job，上线之后小修小补了几次一直运行的很平稳，就是有一个缺点：慢。起初我一直以为是因为数据量过大导致的，每天早上六点准时开跑，一般要到下午一两点才能跑完，其实现在想想这么长时间的运行肯定是不合理的，而且本身业务的数据量也没有大到那个地步，但是由于一直工作太忙了（懒），再加上本身不算特别重要的模块就没有过多在意，但是由于我们的job只有一个节点，所以如果存在这种长时间运行的job就会导致我们项目的发版时间非常受限制，基本每天只有下午三点到六点左右可以发版，终于我在忍无可忍之后决定重构代码，彻底优化。</p>
+<p>优化的结果还是十分理想的，现在只需要到七点半就可以跑完了，但是我却发现了一个严重的问题，快是快了…可是跑完了表里没数据啊…<br>
+        
+          <a class="article-more-a" href="/2019/07/24/exhaust-id-omg-20190724-0/#more">more >></a>
+        
+      
+
+      
+    </p></div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-mysql-note-20190717-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -204,11 +283,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/notes//" class="article-tag-list-link color1">notes</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/notes/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
         		</li>
       		
 		</ul>
@@ -355,11 +430,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/notes//" class="article-tag-list-link color1">notes</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/notes/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
         		</li>
       		
 		</ul>
@@ -502,11 +573,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/notes//" class="article-tag-list-link color1">notes</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/notes/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
         		</li>
       		
 		</ul>
@@ -649,11 +716,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/notes//" class="article-tag-list-link color1">notes</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/notes/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
         		</li>
       		
 		</ul>
@@ -725,11 +788,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/notes//" class="article-tag-list-link color1">notes</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/notes/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
         		</li>
       		
 		</ul>
@@ -847,82 +906,6 @@
 
 
   
-    <article id="post-mysql-note-20190608-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/08/mysql-note-20190608-0/">MySQL学习笔记（一）一条SQL查询语句是如何执行的</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/08/mysql-note-20190608-0/" class="archive-article-date">
-  	<time datetime="2019-06-08T14:23:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><em>数据库和MySQL可以说是现代程序员必会的一项技术，某种程度上来说，数据库知识的掌握程度甚至直接反映了一名程序员的实力水平，本系列学习笔记是基于极客时间《MySQL实战45讲》进行总结的，算是对学习过程的一个总结和提高。</em></p>
-        
-          <a class="article-more-a" href="/2019/06/08/mysql-note-20190608-0/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/notes//" class="article-tag-list-link color1">notes</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/notes/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -954,7 +937,7 @@
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
-		open_in_new: false,
+		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,

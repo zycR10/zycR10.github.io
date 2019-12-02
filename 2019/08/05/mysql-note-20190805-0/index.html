@@ -18,7 +18,7 @@
 <meta property="og:image" content="http://yoursite.com/image/trans_test.jpg">
 <meta property="og:image" content="http://yoursite.com/image/record_version.jpg">
 <meta property="og:image" content="http://yoursite.com/image/read_rule.jpg">
-<meta property="og:updated_time" content="2019-11-28T15:26:09.585Z">
+<meta property="og:updated_time" content="2019-12-02T15:35:19.626Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL学习笔记（八）事务到底是隔离的还是不隔离的？">
 <meta name="twitter:description" content="本文摘要：可重复读，快照，事务隔离">
@@ -65,7 +65,9 @@
 	        
 				<li><a href="/tags/wrong/">踩坑记</a></li>
 	        
-				<li><a href="/categories/notes">notes</a></li>
+				<li><a href="/categories/MySQL">数据库</a></li>
+	        
+				<li><a href="/categories/SpringCloud">微服务</a></li>
 	        
 				<li><a href="/tags/tingle">Peter-Tingle</a></li>
 	        
@@ -129,6 +131,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -149,13 +153,15 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 20%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/wrong/">踩坑记</a></li>
+					<li style="width: 20%"><a href="/tags/wrong/">踩坑记</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/notes">notes</a></li>
+					<li style="width: 20%"><a href="/categories/MySQL">数据库</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/tingle">Peter-Tingle</a></li>
+					<li style="width: 20%"><a href="/categories/SpringCloud">微服务</a></li>
+		        
+					<li style="width: 20%"><a href="/tags/tingle">Peter-Tingle</a></li>
 		        
 				</ul>
 			</nav>
@@ -224,27 +230,6 @@
       
 
       
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
     </div>
     <div class="article-info article-info-index">
       
@@ -255,11 +240,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/notes//" class="article-tag-list-link color1">notes</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/notes/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
         		</li>
       		
 		</ul>
@@ -359,6 +340,19 @@
         </div>
         
         
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#“快照”在MVCC里是怎么工作的"><span class="toc-number">1.</span> <span class="toc-text">“快照”在MVCC里是怎么工作的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新逻辑"><span class="toc-number">2.</span> <span class="toc-text">更新逻辑</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
     </div>
 </aside>
 
@@ -399,7 +393,7 @@
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
-		open_in_new: false,
+		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
