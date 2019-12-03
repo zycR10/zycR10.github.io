@@ -173,6 +173,80 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-springcloud-eureka-20191203-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/03/springcloud-eureka-20191203-0/">SpringCloud学习笔记——服务治理：Spring Cloud Eureka</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/03/springcloud-eureka-20191203-0/" class="archive-article-date">
+  	<time datetime="2019-12-03T15:46:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="服务治理"><a href="#服务治理" class="headerlink" title="服务治理"></a>服务治理</h1><p>服务治理是微服务中最核心和最基础的模块，用于各个微服务的注册和发现功能。在系统发展的初期可能由于模块不多，完全可以通过一些静态配置文件保存各个服务的地址，在各个项目中手工维护一份服务的实例清单。其实技术没有好与坏之分，只有适合与不适合，如果你的公司规模不大，拆分的服务项目一只手就数的过来，那为了顺应微服务的潮流而引入了一套spring cloud完全是加重项目负担，没有任何实际意义。但是相反，如果公司规模越来越大，拆分的服务越来越多，系统功能逐渐复杂，继续采用静态配置的方式就会非常难以维护，而且万一某个服务需要迁移或者变动，会产生牵一发而动全身的效果，相应的调用方都需要修改配置，所以遵从计算机领域真理，没有什么是加一个中间层不能解决的，<strong>注册中心</strong>这样的模块应运而生。</p>
+<ul>
+<li>服务注册<br>服务治理框架中通常都会有一个注册中心，各个服务端像注册中心登记自己以及提供的服务，包括主机、端口号、版本号甚至服务协议等信息，由注册中心来维护各个服务实例的实例清单。另外注册中心还会通过心跳的方式检测实例健康程度，在实例不可用后会将实例剔除。</li>
+<li>服务发现<br>相应的服务调用的时候肯定不会再是直接进行实例调用，而是会通过服务名称的方式向注册中心发出请求，获取实例清单以进行调用或访问</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-springcloud-microbase-20191202-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -787,78 +861,6 @@
 
       
     </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20190729-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/29/mysql-note-20190729-0/">MySQL学习笔记（七）行锁功过：怎么减少行锁对性能的影响？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/29/mysql-note-20190729-0/" class="archive-article-date">
-  	<time datetime="2019-07-29T15:16:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文要点：两阶段锁，死锁</em></strong><br>
-        
-          <a class="article-more-a" href="/2019/07/29/mysql-note-20190729-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
     <div class="article-info article-info-index">
       
       
