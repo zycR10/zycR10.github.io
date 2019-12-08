@@ -6,18 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>SpringCloud学习笔记——服务治理：Spring Cloud Eureka | Stay Hungry</title>
+  <title>Spring Cloud学习笔记——服务治理：Spring Cloud Eureka | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="服务治理服务治理是微服务中最核心和最基础的模块，用于各个微服务的注册和发现功能。在系统发展的初期可能由于模块不多，完全可以通过一些静态配置文件保存各个服务的地址，在各个项目中手工维护一份服务的实例清单。其实技术没有好与坏之分，只有适合与不适合，如果你的公司规模不大，拆分的服务项目一只手就数的过来，那为了顺应微服务的潮流而引入了一套spring cloud完全是加重项目负担，没有任何实际意义。但是相">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringCloud学习笔记——服务治理：Spring Cloud Eureka">
+<meta property="og:title" content="Spring Cloud学习笔记——服务治理：Spring Cloud Eureka">
 <meta property="og:url" content="http://yoursite.com/2019/12/03/springcloud-eureka-20191203-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
 <meta property="og:description" content="服务治理服务治理是微服务中最核心和最基础的模块，用于各个微服务的注册和发现功能。在系统发展的初期可能由于模块不多，完全可以通过一些静态配置文件保存各个服务的地址，在各个项目中手工维护一份服务的实例清单。其实技术没有好与坏之分，只有适合与不适合，如果你的公司规模不大，拆分的服务项目一只手就数的过来，那为了顺应微服务的潮流而引入了一套spring cloud完全是加重项目负担，没有任何实际意义。但是相">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-03T16:00:17.006Z">
+<meta property="og:updated_time" content="2019-12-08T09:00:12.119Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringCloud学习笔记——服务治理：Spring Cloud Eureka">
+<meta name="twitter:title" content="Spring Cloud学习笔记——服务治理：Spring Cloud Eureka">
 <meta name="twitter:description" content="服务治理服务治理是微服务中最核心和最基础的模块，用于各个微服务的注册和发现功能。在系统发展的初期可能由于模块不多，完全可以通过一些静态配置文件保存各个服务的地址，在各个项目中手工维护一份服务的实例清单。其实技术没有好与坏之分，只有适合与不适合，如果你的公司规模不大，拆分的服务项目一只手就数的过来，那为了顺应微服务的潮流而引入了一套spring cloud完全是加重项目负担，没有任何实际意义。但是相">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -179,7 +179,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      SpringCloud学习笔记——服务治理：Spring Cloud Eureka
+      Spring Cloud学习笔记——服务治理：Spring Cloud Eureka
     </h1>
   
 
@@ -197,6 +197,15 @@
 <li>服务注册<br>服务治理框架中通常都会有一个注册中心，各个服务端像注册中心登记自己以及提供的服务，包括主机、端口号、版本号甚至服务协议等信息，由注册中心来维护各个服务实例的实例清单。另外注册中心还会通过心跳的方式检测实例健康程度，在实例不可用后会将实例剔除。</li>
 <li>服务发现<br>相应的服务调用的时候肯定不会再是直接进行实例调用，而是会通过服务名称的方式向注册中心发出请求，获取实例清单以进行调用或访问</li>
 </ul>
+<h1 id="搭建服务注册中心"><a href="#搭建服务注册中心" class="headerlink" title="搭建服务注册中心"></a>搭建服务注册中心</h1><p><strong>Spring Cloud Eureka</strong>，使用Netfilx Eureka来实现服务的注册与发现，Spring Cloud项目是基于Spring Boot项目搭建的，网上有非常多关于搭建SpringBoot项目的相关的而且使用非常简单，这里不再赘述，我使用的项目管理工具的gradle，在build.gradle文件中加入如下代码：<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">	id &apos;org.springframework.boot&apos; version &apos;2.1.3.RELEASE&apos;</span><br><span class="line">	id &apos;java&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">apply plugin: &apos;io.spring.dependency-management&apos;</span><br><span class="line"></span><br><span class="line">group = &apos;org.zyc.springcloud&apos;</span><br><span class="line">version = &apos;0.0.1-SNAPSHOT&apos;</span><br><span class="line">sourceCompatibility = &apos;1.8&apos;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">repositories &#123;</span><br><span class="line">	maven&#123; url &apos;http://maven.aliyun.com/nexus/content/groups/public/&apos; &#125;</span><br><span class="line">	maven&#123; url &apos;http://maven.aliyun.com/nexus/content/repositories/jcenter&apos;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ext &#123;</span><br><span class="line">	set(&apos;springCloudVersion&apos;, &apos;Greenwich.RELEASE&apos;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">	implementation &apos;org.springframework.cloud:spring-cloud-starter-netflix-eureka-server&apos;</span><br><span class="line">	testImplementation &apos;org.springframework.boot:spring-boot-starter-test&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>启动一个服务注册中心页非常简单，可以通过@EnableEurekaServer注解启动，在SpringBoot启动类中加入这个注解即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@EnableEurekaServer</span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class EurekaServerApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(EurekaServerApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在默认设置中，服务注册中心会把自身作为客户端来尝试注册自己，可以通过配置项进行配置，同时为了区分后续可能启动的其他服务注册中心，这里通过设置端口号的方式进行区分，在项目的application.properties中设置即可，为了便于区分不同环境的配置，我们这里新建一个application-peer1.properties，作为第一个配置中心的配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 1111</span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: peer1</span><br></pre></td></tr></table></figure></p>
+<p>配置完成后启动SpringBoot项目即可，注意启动时加入启动应用参数–spring.profiles.active=peer1，用于区分使用配置文件，此时<a href="http://localhost:1111" target="_blank" rel="noopener">http://localhost:1111</a> 即可访问服务注册中心</p>
+<h2 id="注册服务提供者"><a href="#注册服务提供者" class="headerlink" title="注册服务提供者"></a>注册服务提供者</h2><p>既然服务注册中心搭建完成，但是空有一个注册中心毫无意义，重要的是提供服务，所以我们现在可以尝试像注册中心注册一个服务的提供者，依旧类似于之前的方式生成一个SpringBoot项目，我们新建一个hello-service项目当作服务的提供者，build.gradle文件中稍作修改，加入如下依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.boot:spring-boot-starter-web&apos;</span><br><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-starter-netflix-eureka-client&apos;</span><br></pre></td></tr></table></figure></p>
+<p>为了测试服务提供效果，我们简单的写一个HelloController，通过接口返回一个hello字符串即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    private final Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private DiscoveryClient client;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/hello&quot;, method = RequestMethod.GET)</span><br><span class="line">    public String hello() &#123;</span><br><span class="line">        return &quot;Hello World&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>马上就要大功告成了，最后在启动类加上注解@EnableDiscoveryClient，这样代码我们就完成了，但是到这里还不够，既然是要将服务提供者注册到服务注册中心，那么首先肯定要让提供者知道像哪里注册，所以还需要在application.properties中配置一下注册中心的url<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.port=2222</span><br><span class="line">spring.application.name=hello-service</span><br><span class="line">eureka.client.service-url.defaultZone = http://peer1:1111/eureka/</span><br></pre></td></tr></table></figure></p>
+<p>这里我们指定了端口号为2222，服务名字为hello-service以及刚刚搭建的eureka，这里完成后我们可以启动一下hello-service项目，在启动日志中应该可以看到如下信息，说明我们的服务已经注册成功了，同时在刚刚的eureka管理页面<a href="http://localhost:1111" target="_blank" rel="noopener">http://localhost:1111</a> 中<strong>Instances currently registered with Eureka</strong>一栏中应该可以看到我们hello-service的注册信息了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DiscoveryClient_HELLO-SERVICE/192.168.56.1:hello-service:2222: registering service...</span><br><span class="line">DiscoveryClient_HELLO-SERVICE/192.168.56.1:hello-service:2222 - registration status: 204</span><br><span class="line">Tomcat started on port(s): 2222 (http) with context path &apos;&apos;</span><br><span class="line">Updating port to 2222</span><br><span class="line">Started HelloServiceApplication in 6.352 seconds (JVM running for 16.223)</span><br></pre></td></tr></table></figure></p>
+<p>通过访问<a href="http://localhost:2222/hello" target="_blank" rel="noopener">http://localhost:2222/hello</a> 可以看到返回了hello world，那么至此，我们就拥有了一个服务注册中心和一个注册的服务，可以说，一个最简单微服务系统已经搭建了</p>
 
       
 
@@ -309,7 +318,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#服务治理"><span class="toc-number">1.</span> <span class="toc-text">服务治理</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#服务治理"><span class="toc-number">1.</span> <span class="toc-text">服务治理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#搭建服务注册中心"><span class="toc-number">2.</span> <span class="toc-text">搭建服务注册中心</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#注册服务提供者"><span class="toc-number">2.1.</span> <span class="toc-text">注册服务提供者</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -421,11 +430,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
+                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
+                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
               </li>
             
             <div class="clearfix"></div>
