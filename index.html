@@ -173,6 +173,80 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-springcloud-register-20191212-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/12/springcloud-register-20191212-0/">Spring Cloud学习笔记——服务注册</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/12/springcloud-register-20191212-0/" class="archive-article-date">
+  	<time datetime="2019-12-12T15:50:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="注册服务提供者"><a href="#注册服务提供者" class="headerlink" title="注册服务提供者"></a>注册服务提供者</h2><p>在<a href="https://zycR10.github.io/2019/12/03/springcloud-eureka-20191203-0/" target="_blank" rel="noopener">上一篇文章</a>中我们搭建了一个高可用的服务注册中心，既然服务注册中心搭建完成，那么空有一个注册中心毫无意义，重要的是提供服务，所以我们现在可以尝试像注册中心注册一个服务的提供者，依旧类似于之前的方式生成一个SpringBoot项目，我们新建一个hello-service项目当作服务的提供者，build.gradle文件中稍作修改，加入如下依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.boot:spring-boot-starter-web&apos;</span><br><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-starter-netflix-eureka-client&apos;</span><br></pre></td></tr></table></figure></p>
+<p>为了测试服务提供效果，我们简单的写一个HelloController，通过接口返回一个hello字符串即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    private final Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private DiscoveryClient client;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/hello&quot;, method = RequestMethod.GET)</span><br><span class="line">    public String hello() &#123;</span><br><span class="line">        return &quot;Hello World&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后在启动类加上注解@EnableDiscoveryClient，这样代码我们就完成了，但是到这里还不够，既然是要将服务提供者注册到服务注册中心，那么首先肯定要让提供者知道像哪里注册，所以还需要在application.properties中配置一下注册中心的url<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.port=2222</span><br><span class="line">spring.application.name=hello-service</span><br><span class="line">eureka.client.service-url.defaultZone = http://peer1:1111/eureka/,http://peer2:1112/eureka/</span><br></pre></td></tr></table></figure></p>
+<p>这里我们指定了端口号为2222，服务名字为hello-service以及刚刚搭建的eureka，这里完成后我们可以启动一下hello-service项目，当然在启动之前，别忘了先将我们之前搭建好的服务注册中心先启动，在启动日志中应该可以看到如下信息，说明我们的服务已经注册成功了，同时在注册中心管理页面<a href="http://localhost:1111" target="_blank" rel="noopener">http://localhost:1111</a> 和 <a href="http://localhost:1112" target="_blank" rel="noopener">http://localhost:1112</a> 中<strong>Instances currently registered with Eureka</strong>一栏中应该可以看到我们hello-service的注册信息了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DiscoveryClient_HELLO-SERVICE/&#123;#localIP&#125;:hello-service:2222: registering service...</span><br><span class="line">DiscoveryClient_HELLO-SERVICE/&#123;#localIP&#125;:hello-service:2222 - registration status: 204</span><br><span class="line">Tomcat started on port(s): 2222 (http) with context path &apos;&apos;</span><br><span class="line">Updating port to 2222</span><br><span class="line">Started HelloServiceApplication in 6.352 seconds (JVM running for 16.223)</span><br></pre></td></tr></table></figure></p>
+<p>那么至此，我们就拥有了一个高可用的服务注册中心，并将一个服务注册成功，可以说，一个最简单微服务系统已经搭建了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-springcloud-eureka-20191203-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -180,7 +254,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/03/springcloud-eureka-20191203-0/">Spring Cloud学习笔记——注册中心：Spring Cloud Eureka</a>
+      <a class="article-title" href="/2019/12/03/springcloud-eureka-20191203-0/">Spring Cloud学习笔记——搭建注册中心</a>
     </h1>
   
 
@@ -807,78 +881,6 @@
 	</div>
 
       
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20190805-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/05/mysql-note-20190805-0/">MySQL学习笔记（八）事务到底是隔离的还是不隔离的？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/05/mysql-note-20190805-0/" class="archive-article-date">
-  	<time datetime="2019-08-05T14:59:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文摘要：可重复读，快照，事务隔离</em></strong></p>
-        
-          <a class="article-more-a" href="/2019/08/05/mysql-note-20190805-0/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
 
