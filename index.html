@@ -173,6 +173,77 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-springcloud-consume-20191216-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/16/springcloud-consume-20191216-0/">SpringCloud学习笔记——服务消费</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/16/springcloud-consume-20191216-0/" class="archive-article-date">
+  	<time datetime="2019-12-16T15:18:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在前文中我们已经搭建了高可用的注册中心，并向注册中心注册了两个服务，hello-service，现在已经有了服务的提供方，那么自然也要有服务的消费方，这篇文章就来搭建一个服务消费者，可以发现并且消费服务。服务的发现是由Eureka的客户端完成的，而服务的消费是由Ribbon完成的。Ribbon是一个负载均衡器，在客户端配置了ribbonServerList后即可达到负载均衡的效果，先不深究Ribbon的具体实现原理，<strong>我们只需要理解它可以做到负载均衡，配合Eureka的服务发现机制可以达到选择服务实例的目的从而实现服务消费</strong></p>
+<p>首先我们启动前文中搭建的两个注册中心和两个hello-service实例，启动后在注册中心的管理界面应该可以看到如下的服务：<br><img src="/image/server_instance.jpg" alt></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-springcloud-register-20191212-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -180,7 +251,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/12/springcloud-register-20191212-0/">Spring Cloud学习笔记——服务注册</a>
+      <a class="article-title" href="/2019/12/12/springcloud-register-20191212-0/">SpringCloud学习笔记——服务注册</a>
     </h1>
   
 
@@ -254,7 +325,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/03/springcloud-eureka-20191203-0/">Spring Cloud学习笔记——搭建注册中心</a>
+      <a class="article-title" href="/2019/12/03/springcloud-eureka-20191203-0/">SpringCloud学习笔记——搭建注册中心</a>
     </h1>
   
 
@@ -331,7 +402,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/02/springcloud-microbase-20191202-0/">Spring Cloud学习笔记——微服务基础知识</a>
+      <a class="article-title" href="/2019/12/02/springcloud-microbase-20191202-0/">SpringCloud学习笔记——微服务基础知识</a>
     </h1>
   
 
@@ -789,78 +860,6 @@
 <p>然后我和QA同学就开始了尴尬的等待时间…看着我的查询转啊转，将近15秒才查出来，这时间里我和QA同学当然是假装思考人生和不经意的看窗外的风景，并且还被吐槽了一句，你这软件有问题还是电脑有问题啊。你还别说，我当时真的以为是软件(navicat)或者电脑的问题，作为一个技术人员把锅甩给硬件和环境应该是基本操作吧~<br>
         
           <a class="article-more-a" href="/2019/09/10/type-invalid-index-20190910-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tingle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-arraylist-linkedlist-20190815-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/15/arraylist-linkedlist-20190815-0/">ArrayList和LinkedList优缺点对比，和你背的一样吗？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/15/arraylist-linkedlist-20190815-0/" class="archive-article-date">
-  	<time datetime="2019-08-15T15:04:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>假如今天你去面试了，面试官问你，arraylist和linkedlist有什么特点？我相信基本准备过或者说学习过的人应该都对答如流吧，底层实现，数据结构，数组，链表，查找效率，增删效率等等，这些基本上搜索引擎可以随便找到，而且基本上所有的文章差不多都是那点儿货，大家也把这些东西奉若真理，人云亦云，其实只需要非常简单的代码就可以测试这个结论到底对不对。<br>
-        
-          <a class="article-more-a" href="/2019/08/15/arraylist-linkedlist-20190815-0/#more">more >></a>
         
       
 
