@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Stay Hungry">
 <meta property="og:description" content="Ribbon是一个基于HTTP和TCP客户端的负载均衡工具，spring cloud在netflix ribbon的基础上对其进行了封装，我们可以简单的将一个REST请求转换成负载均衡的服务调用，Ribbon作为一个框架工具，不同于我们前面所操作的注册中心，服务提供者等模块，它并不需要独立的机器部署，而是只需要在代码中使用即可。 客户端负载均衡负载均衡在系统框架中属于不算复杂的模块，但绝对是非常重">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-06T15:54:45.831Z">
+<meta property="og:updated_time" content="2020-02-12T15:17:02.572Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringCloud学习笔记——客户端负载均衡">
 <meta name="twitter:description" content="Ribbon是一个基于HTTP和TCP客户端的负载均衡工具，spring cloud在netflix ribbon的基础上对其进行了封装，我们可以简单的将一个REST请求转换成负载均衡的服务调用，Ribbon作为一个框架工具，不同于我们前面所操作的注册中心，服务提供者等模块，它并不需要独立的机器部署，而是只需要在代码中使用即可。 客户端负载均衡负载均衡在系统框架中属于不算复杂的模块，但绝对是非常重">
@@ -203,7 +203,7 @@
 <p>如果接口的返回值比较复杂，那我们可能还需要在代码中定义好返回值的DTO供后续使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RestTemplate restTemplate = new RestTemplate();</span><br><span class="line">        ResponseEntity&lt;XXXDTO&gt; responseEntity = restTemplate.getForEntity(</span><br><span class="line">                &quot;http://host:port/path?param=&#123;1&#125;&quot;,</span><br><span class="line">                XXXDTO.class,</span><br><span class="line">                &quot;value&quot;);</span><br><span class="line">        XXXDTO bode = responseEntity.getBody();</span><br></pre></td></tr></table></figure></p>
 <p>getForEntity还有几个重载方法，基本上都是对于参数取值的调整，还有类似于getForObject方法是只关心返回值body而不在乎其他信息，使用方法比较简单，这里不再过多介绍。</p>
 <h2 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h2><p>了解完GET请求后再看POST请求你会发现使用上基本大同小异，基本上GET和POST方法就可以涵盖我们日常开发的任务，如果更细分的话还有PUT请求，DELETE请求等，实际使用起来基本都是差不多了，这里也就不再占用篇幅了，有兴趣的可以自己尝试一下</p>
-<h2 id="源码浅析"><a href="#源码浅析" class="headerlink" title="源码浅析"></a>源码浅析</h2><p>ribbon如此的简单以至于到这里我们可以说已经基本掌握了ribbon的使用，只需要一个简单的@LoadBalanced注解就可以使用负载均衡了，但是使用越简单一般就意味着代码封装性很强，作为技术人员不知道原理细节很容易踩坑，所以接下来就简单从源码中探索下Ribbon是如何与RestTemplate合作完成如此简单的负载均衡任务的：</p>
+<h2 id="源码浅析"><a href="#源码浅析" class="headerlink" title="源码浅析"></a>源码浅析</h2><p>（未完待续。。。）</p>
 
       
 
@@ -286,6 +286,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2020/02/12/springcloud-hytrix-20200212-0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          SpringCloud学习笔记——服务容错保护
+        
+      </div>
+    </a>
   
   
     <a href="/2019/12/16/springcloud-consume-20191216-0/" id="article-nav-older" class="article-nav-link-wrap">

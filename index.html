@@ -173,6 +173,80 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-springcloud-hytrix-20200212-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/12/springcloud-hytrix-20200212-0/">SpringCloud学习笔记——服务容错保护</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/12/springcloud-hytrix-20200212-0/" class="archive-article-date">
+  	<time datetime="2020-02-12T14:54:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="服务容错保护"><a href="#服务容错保护" class="headerlink" title="服务容错保护"></a>服务容错保护</h1><p>在前面的微服务架构学习中我们已经有了自己的注册中心集群，服务提供者集群，以及一个处理客户端请求的负载均衡，但是微服务的世界里首先有一条黄金法则：<strong>永远不要相信第三方服务</strong>。也就是说在微服务中系统被拆分成了很多个模块，随着模块的增多，系统发生故障的概率也是指数倍的增加，常见的异常如网络超时，代码bug等，严重的可能由于某个服务的瘫痪而导致多个系统响应超时，如果事先没有有效的防范措施的话，很有可能会因此产生慢响应甚至宕机等问题，所以微服务断路器模式应运而生。</p>
+<h2 id="断路器模式"><a href="#断路器模式" class="headerlink" title="断路器模式"></a>断路器模式</h2><p>学过电路的人应该都听说过断路器，其实就是在电路上起到保护作用的装置，当电路发生短路导致过载时，断路器能够快速熔断电路，防止因过载导致的发热甚至火灾等更严重的后续问题，这个场景用在微服务中就十分贴切，当整个系统中某个服务发生了异常，很有可能导致与其关联的服务也出现异常，那么异常就会像病毒传播一样迅速影响整个系统，而如果有了熔断机制，那么当请求中存在异常节点时可以直接返回调用方明确的异常信息，从而降低风险</p>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><p>我们仍然沿用之前搭建的微服务系统，启动我们的注册中心服务eureka-server，端口号1111，再启动两个服务单元hello-service，端口号分别为2221和2222，再启动一个ribbon客户端，端口号3333，此时直接访问我们之前写好的接口地址<a href="http://localhost:3333/ribbon-consumer，" target="_blank" rel="noopener">http://localhost:3333/ribbon-consumer，</a> 反复刷新几次，页面上会轮流出现每次负载均衡后的端口号2221和2222，说明整个微服务系统在正常运转，这时我们只需要关闭端口号为2221的服务单元，当下次请求该server的请求发出后会有短暂的等待时间，然后接口抛出异常信息：<br>{<br>    “timestamp”: “2020-02-12T15:18:55.004+0000”,<br>    “status”: 500,<br>    “error”: “Internal Server Error”,<br>    “message”: “I/O error on GET request for \” <a href="http://hello-service/hello\" target="_blank" rel="noopener">http://hello-service/hello\</a> “: Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect”,<br>    “path”: “/ribbon-consumer”<br>}<br>说明此时我们有个服务已经挂了，我本地使用post进行调试，本次接口耗时2.06s，两秒的时间也许不算长，但是如果这个服务每秒有成千上万次的调用呢？或者当前正处于高峰期时间，一个两秒响应的接口足以造成灾难性的后果了。</p>
+<p>所以接下来我们就要引入我们的微服务断路器：Spring Cloud Hystrix</p>
+<p>在ribbon-consumer项目的build.gradle文件中引入依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-starter-netflix-hystrix&apos;</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-springcloud-balance-20191230-0-md" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -204,7 +278,7 @@
 <p>如果接口的返回值比较复杂，那我们可能还需要在代码中定义好返回值的DTO供后续使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RestTemplate restTemplate = new RestTemplate();</span><br><span class="line">        ResponseEntity&lt;XXXDTO&gt; responseEntity = restTemplate.getForEntity(</span><br><span class="line">                &quot;http://host:port/path?param=&#123;1&#125;&quot;,</span><br><span class="line">                XXXDTO.class,</span><br><span class="line">                &quot;value&quot;);</span><br><span class="line">        XXXDTO bode = responseEntity.getBody();</span><br></pre></td></tr></table></figure></p>
 <p>getForEntity还有几个重载方法，基本上都是对于参数取值的调整，还有类似于getForObject方法是只关心返回值body而不在乎其他信息，使用方法比较简单，这里不再过多介绍。</p>
 <h2 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h2><p>了解完GET请求后再看POST请求你会发现使用上基本大同小异，基本上GET和POST方法就可以涵盖我们日常开发的任务，如果更细分的话还有PUT请求，DELETE请求等，实际使用起来基本都是差不多了，这里也就不再占用篇幅了，有兴趣的可以自己尝试一下</p>
-<h2 id="源码浅析"><a href="#源码浅析" class="headerlink" title="源码浅析"></a>源码浅析</h2><p>ribbon如此的简单以至于到这里我们可以说已经基本掌握了ribbon的使用，只需要一个简单的@LoadBalanced注解就可以使用负载均衡了，但是使用越简单一般就意味着代码封装性很强，作为技术人员不知道原理细节很容易踩坑，所以接下来就简单从源码中探索下Ribbon是如何与RestTemplate合作完成如此简单的负载均衡任务的：</p>
+<h2 id="源码浅析"><a href="#源码浅析" class="headerlink" title="源码浅析"></a>源码浅析</h2><p>（未完待续。。。）</p>
 
       
 
@@ -822,78 +896,6 @@
 		</ul>
 	</div>
 
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-orderby-time-20190919-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/19/orderby-time-20190919-0/">MySQL数据orderby时间排序bug</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/19/orderby-time-20190919-0/" class="archive-article-date">
-  	<time datetime="2019-09-19T15:17:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近为公司做了一个简单的用户账户项目中台，其中涉及了用户积分，转账，提现等，由于第一次做缺乏经验，再加上一旦涉及钱的项目肯定是要求正确率极高，所以踩了不少坑，这里记录其中一个关于MySQL数据排序的坑。</p>
-        
-          <a class="article-more-a" href="/2019/09/19/orderby-time-20190919-0/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
 
       
 

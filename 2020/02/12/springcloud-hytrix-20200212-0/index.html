@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | Stay Hungry</title>
+  <title>SpringCloud学习笔记——服务容错保护 | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="What hurts more, the pain of hard work or the pain of regret?">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Stay Hungry">
-<meta property="og:url" content="http://yoursite.com/archives/page/2/index.html">
+  <meta name="description" content="服务容错保护在前面的微服务架构学习中我们已经有了自己的注册中心集群，服务提供者集群，以及一个处理客户端请求的负载均衡，但是微服务的世界里首先有一条黄金法则：永远不要相信第三方服务。也就是说在微服务中系统被拆分成了很多个模块，随着模块的增多，系统发生故障的概率也是指数倍的增加，常见的异常如网络超时，代码bug等，严重的可能由于某个服务的瘫痪而导致多个系统响应超时，如果事先没有有效的防范措施的话，很有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud学习笔记——服务容错保护">
+<meta property="og:url" content="http://yoursite.com/2020/02/12/springcloud-hytrix-20200212-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="What hurts more, the pain of hard work or the pain of regret?">
+<meta property="og:description" content="服务容错保护在前面的微服务架构学习中我们已经有了自己的注册中心集群，服务提供者集群，以及一个处理客户端请求的负载均衡，但是微服务的世界里首先有一条黄金法则：永远不要相信第三方服务。也就是说在微服务中系统被拆分成了很多个模块，随着模块的增多，系统发生故障的概率也是指数倍的增加，常见的异常如网络超时，代码bug等，严重的可能由于某个服务的瘫痪而导致多个系统响应超时，如果事先没有有效的防范措施的话，很有">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-02-12T15:26:57.659Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Stay Hungry">
-<meta name="twitter:description" content="What hurts more, the pain of hard work or the pain of regret?">
+<meta name="twitter:title" content="SpringCloud学习笔记——服务容错保护">
+<meta name="twitter:description" content="服务容错保护在前面的微服务架构学习中我们已经有了自己的注册中心集群，服务提供者集群，以及一个处理客户端请求的负载均衡，但是微服务的世界里首先有一条黄金法则：永远不要相信第三方服务。也就是说在微服务中系统被拆分成了很多个模块，随着模块的增多，系统发生故障的概率也是指数倍的增加，常见的异常如网络超时，代码bug等，严重的可能由于某个服务的瘫痪而导致多个系统响应超时，如果事先没有有效的防范措施的话，很有">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
   
@@ -171,405 +172,162 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-springcloud-hytrix-20200212-0" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SpringCloud学习笔记——服务容错保护
+    </h1>
+  
+
+        
+        <a href="/2020/02/12/springcloud-hytrix-20200212-0/" class="archive-article-date">
+  	<time datetime="2020-02-12T14:54:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-12</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="服务容错保护"><a href="#服务容错保护" class="headerlink" title="服务容错保护"></a>服务容错保护</h1><p>在前面的微服务架构学习中我们已经有了自己的注册中心集群，服务提供者集群，以及一个处理客户端请求的负载均衡，但是微服务的世界里首先有一条黄金法则：<strong>永远不要相信第三方服务</strong>。也就是说在微服务中系统被拆分成了很多个模块，随着模块的增多，系统发生故障的概率也是指数倍的增加，常见的异常如网络超时，代码bug等，严重的可能由于某个服务的瘫痪而导致多个系统响应超时，如果事先没有有效的防范措施的话，很有可能会因此产生慢响应甚至宕机等问题，所以微服务断路器模式应运而生。</p>
+<h2 id="断路器模式"><a href="#断路器模式" class="headerlink" title="断路器模式"></a>断路器模式</h2><p>学过电路的人应该都听说过断路器，其实就是在电路上起到保护作用的装置，当电路发生短路导致过载时，断路器能够快速熔断电路，防止因过载导致的发热甚至火灾等更严重的后续问题，这个场景用在微服务中就十分贴切，当整个系统中某个服务发生了异常，很有可能导致与其关联的服务也出现异常，那么异常就会像病毒传播一样迅速影响整个系统，而如果有了熔断机制，那么当请求中存在异常节点时可以直接返回调用方明确的异常信息，从而降低风险</p>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><p>我们仍然沿用之前搭建的微服务系统，启动我们的注册中心服务eureka-server，端口号1111，再启动两个服务单元hello-service，端口号分别为2221和2222，再启动一个ribbon客户端，端口号3333，此时直接访问我们之前写好的接口地址<a href="http://localhost:3333/ribbon-consumer，" target="_blank" rel="noopener">http://localhost:3333/ribbon-consumer，</a> 反复刷新几次，页面上会轮流出现每次负载均衡后的端口号2221和2222，说明整个微服务系统在正常运转，这时我们只需要关闭端口号为2221的服务单元，当下次请求该server的请求发出后会有短暂的等待时间，然后接口抛出异常信息：<br>{<br>    “timestamp”: “2020-02-12T15:18:55.004+0000”,<br>    “status”: 500,<br>    “error”: “Internal Server Error”,<br>    “message”: “I/O error on GET request for \” <a href="http://hello-service/hello\" target="_blank" rel="noopener">http://hello-service/hello\</a> “: Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect”,<br>    “path”: “/ribbon-consumer”<br>}<br>说明此时我们有个服务已经挂了，我本地使用post进行调试，本次接口耗时2.06s，两秒的时间也许不算长，但是如果这个服务每秒有成千上万次的调用呢？或者当前正处于高峰期时间，一个两秒响应的接口足以造成灾难性的后果了。</p>
+<p>所以接下来我们就要引入我们的微服务断路器：Spring Cloud Hystrix</p>
+<p>在ribbon-consumer项目的build.gradle文件中引入依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-starter-netflix-hystrix&apos;</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/19/orderby-time-20190919-0/" class="archive-article-date">
-  	<time datetime="2019-09-19T15:17:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/19/orderby-time-20190919-0/">MySQL数据orderby时间排序bug</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/10/type-invalid-index-20190910-0/" class="archive-article-date">
-  	<time datetime="2019-09-10T15:25:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/10/type-invalid-index-20190910-0/">类型转换导致索引失效</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tingle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/08/15/arraylist-linkedlist-20190815-0/" class="archive-article-date">
-  	<time datetime="2019-08-15T15:04:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/08/15/arraylist-linkedlist-20190815-0/">ArrayList和LinkedList优缺点对比，和你背的一样吗？</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tingle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/08/05/mysql-note-20190805-0/" class="archive-article-date">
-  	<time datetime="2019-08-05T14:59:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/08/05/mysql-note-20190805-0/">MySQL学习笔记（八）事务到底是隔离的还是不隔离的？</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/02/12/springcloud-hytrix-20200212-0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/29/mysql-note-20190729-0/" class="archive-article-date">
-  	<time datetime="2019-07-29T15:16:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-29</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/12/30/springcloud-balance-20191230-0-md/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SpringCloud学习笔记——客户端负载均衡</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/29/mysql-note-20190729-0/">MySQL学习笔记（七）行锁功过：怎么减少行锁对性能的影响？</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#服务容错保护"><span class="toc-number">1.</span> <span class="toc-text">服务容错保护</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#断路器模式"><span class="toc-number">1.1.</span> <span class="toc-text">断路器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快速入门"><span class="toc-number">1.2.</span> <span class="toc-text">快速入门</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/24/exhaust-id-omg-20190724-0/" class="archive-article-date">
-  	<time datetime="2019-07-24T15:26:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/24/exhaust-id-omg-20190724-0/">数据库自增id竟然被我用完了！！！</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/17/mysql-note-20190717-0/" class="archive-article-date">
-  	<time datetime="2019-07-17T15:26:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/17/mysql-note-20190717-0/">MySQL学习笔记（六）全局锁和表锁 ：给表加个字段怎么有这么多阻碍？</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/11/cast-int-20190711-0/" class="archive-article-date">
-  	<time datetime="2019-07-11T15:23:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-11</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/11/cast-int-20190711-0/">强转Integer的危险性以及工具类的理解</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/09/mysql-note-20190709-0/" class="archive-article-date">
-  	<time datetime="2019-07-09T15:20:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/09/mysql-note-20190709-0/">MySQL学习笔记（五）事务隔离：为什么你改了我还看不见？</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/04/biased-hashcode-20190704-0/" class="archive-article-date">
-  	<time datetime="2019-07-04T15:24:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/04/biased-hashcode-20190704-0/">偏向锁竟然与hashcode有关</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tingle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/3/">Next &raquo;</a>
-    </nav>
   
 
 
@@ -593,8 +351,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
