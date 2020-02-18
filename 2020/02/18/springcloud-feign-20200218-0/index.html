@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Stay Hungry</title>
+  <title>SpringCloud学习笔记——声明式服务调用Feign | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="What hurts more, the pain of hard work or the pain of regret?">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Stay Hungry">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="Feign简介在前面我们已经搭建了Spring Cloud中的Ribbon和Hytrix，从而实现了微服务架构中客户端的负载均衡以及断路器机制保护服务，这两者的使用非常广泛并且经常一起出现，SpringCloud Feign其实就是一个整合工具，对两者进行了整合，除了原有的功能外，还提供了声明式的Web服务客户端定义方式。 快速搭建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud学习笔记——声明式服务调用Feign">
+<meta property="og:url" content="http://yoursite.com/2020/02/18/springcloud-feign-20200218-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="What hurts more, the pain of hard work or the pain of regret?">
+<meta property="og:description" content="Feign简介在前面我们已经搭建了Spring Cloud中的Ribbon和Hytrix，从而实现了微服务架构中客户端的负载均衡以及断路器机制保护服务，这两者的使用非常广泛并且经常一起出现，SpringCloud Feign其实就是一个整合工具，对两者进行了整合，除了原有的功能外，还提供了声明式的Web服务客户端定义方式。 快速搭建">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-02-18T15:17:31.470Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Stay Hungry">
-<meta name="twitter:description" content="What hurts more, the pain of hard work or the pain of regret?">
+<meta name="twitter:title" content="SpringCloud学习笔记——声明式服务调用Feign">
+<meta name="twitter:description" content="Feign简介在前面我们已经搭建了Spring Cloud中的Ribbon和Hytrix，从而实现了微服务架构中客户端的负载均衡以及断路器机制保护服务，这两者的使用非常广泛并且经常一起出现，SpringCloud Feign其实就是一个整合工具，对两者进行了整合，除了原有的功能外，还提供了声明式的Web服务客户端定义方式。 快速搭建">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
   
@@ -171,16 +172,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-springcloud-feign-20200218-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-springcloud-feign-20200218-0" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/18/springcloud-feign-20200218-0/">SpringCloud学习笔记——声明式服务调用Feign</a>
+    <h1 class="article-title" itemprop="name">
+      SpringCloud学习笔记——声明式服务调用Feign
     </h1>
   
 
@@ -218,10 +217,73 @@
       
 
       
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/02/18/springcloud-feign-20200218-0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/02/12/springcloud-hytrix-20200212-0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SpringCloud学习笔记——服务容错保护Hytrix</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -236,703 +298,32 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-springcloud-hytrix-20200212-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/12/springcloud-hytrix-20200212-0/">SpringCloud学习笔记——服务容错保护Hytrix</a>
-    </h1>
-  
-
-        
-        <a href="/2020/02/12/springcloud-hytrix-20200212-0/" class="archive-article-date">
-  	<time datetime="2020-02-12T14:54:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="服务容错保护"><a href="#服务容错保护" class="headerlink" title="服务容错保护"></a>服务容错保护</h1><p>在前面的微服务架构学习中我们已经有了自己的注册中心集群，服务提供者集群，以及一个处理客户端请求的负载均衡，但是微服务的世界里首先有一条黄金法则：<strong>永远不要相信第三方服务</strong>。也就是说在微服务中系统被拆分成了很多个模块，随着模块的增多，系统发生故障的概率也是指数倍的增加，常见的异常如网络超时，代码bug等，严重的可能由于某个服务的瘫痪而导致多个系统响应超时，如果事先没有有效的防范措施的话，很有可能会因此产生慢响应甚至宕机等问题，所以微服务断路器模式应运而生。</p>
-<h2 id="断路器模式"><a href="#断路器模式" class="headerlink" title="断路器模式"></a>断路器模式</h2><p>学过电路的人应该都听说过断路器，其实就是在电路上起到保护作用的装置，当电路发生短路导致过载时，断路器能够快速熔断电路，防止因过载导致的发热甚至火灾等更严重的后续问题，这个场景用在微服务中就十分贴切，当整个系统中某个服务发生了异常，很有可能导致与其关联的服务也出现异常，那么异常就会像病毒传播一样迅速影响整个系统，而如果有了熔断机制，那么当请求中存在异常节点时可以直接返回调用方明确的异常信息，从而降低风险</p>
-<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><p>我们仍然沿用之前搭建的微服务系统，启动我们的注册中心服务eureka-server，端口号1111，再启动两个服务单元hello-service，端口号分别为2221和2222，再启动一个ribbon客户端，端口号3333，此时直接访问我们之前写好的接口地址<a href="http://localhost:3333/ribbon-consumer，" target="_blank" rel="noopener">http://localhost:3333/ribbon-consumer，</a> 反复刷新几次，页面上会轮流出现每次负载均衡后的端口号2221和2222，说明整个微服务系统在正常运转，这时我们只需要关闭端口号为2221的服务单元，当下次请求该server的请求发出后会有短暂的等待时间，然后接口抛出异常信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;timestamp&quot;: &quot;2020-02-12T15:18:55.004+0000&quot;,</span><br><span class="line">    &quot;status&quot;: 500,</span><br><span class="line">    &quot;error&quot;: &quot;Internal Server Error&quot;,</span><br><span class="line">    &quot;message&quot;: &quot;I/O error on GET request for \&quot; http://hello-service/hello\ &quot;: Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect&quot;,</span><br><span class="line">    &quot;path&quot;: &quot;/ribbon-consumer&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>说明此时我们有个服务已经挂了，我本地使用post进行调试，本次接口耗时2.06s，两秒的时间也许不算长，但是如果这个服务每秒有成千上万次的调用呢？或者当前正处于高峰期时间，一个两秒响应的接口足以造成灾难性的后果了。</p>
-<p>所以接下来我们就要引入我们的微服务断路器：<strong><em>Spring Cloud Hystrix</em></strong></p>
-<p>在ribbon-consumer项目的build.gradle文件中引入依赖，并在application类上使用注解 <strong>@EnableCircuitBreaker</strong>从而开启熔断功能<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-starter-netflix-hystrix&apos;</span><br></pre></td></tr></table></figure></p>
-<p>同时我们改进一下我们的代码，虽然只是个小demo，但是很多规则还是要遵守的，比如业务代码不要写在controller里，这里我们再新建一个HelloService，把之前的代码挪到service类中的hello方法中，并在方法上增加@HystrixCommand注解，并标明回调方法(fallbackMethod = “helloFallback”)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class HelloService &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    RestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">    @HystrixCommand(fallbackMethod = &quot;helloFallback&quot;)</span><br><span class="line">    public String hello() &#123;</span><br><span class="line">        return restTemplate.getForEntity(&quot;http://hello-service/hello&quot;, String.class).getBody();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String fallback() &#123;</span><br><span class="line">        return &quot;system error!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>对应修改controller类中的方法，重新注入HelloService进行调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class ConsumerController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    HelloService helloService;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/ribbon-consumer&quot;)</span><br><span class="line">    public String helloConsumer() &#123;</span><br><span class="line">        return helloService.hello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>此时再次运行ribbon consumer项目，保持端口号为2221的服务单元终止服务状态，这次我们再来看下通过postman调用结果就会变成我们预设的返回值system error!，当然了，在回调函数中可以自定义友好的错误提示信息或者进行额外的业务处理。此外，除了服务宕机导致的不可用之外，可能由于当前系统正在承受非常大的流量请求或其他异常导致接口响应时间过长，hytrix同样可以达到断路的效果，hytrix默认的响应时间为2000毫秒最长，也就是说如果接口响应时间超过了两千毫秒，hytrix也会认为当前服务不再可用，从而像前面模拟服务器宕机一样调用我们预设的回调函数，这里我们需要修改以下hello-service的代码，在/hello接口中我们加入随机睡眠时间来随机性触发响应时间过长的问题，并且在ribbon-consumer调用代码中增加接口响应时长的日志打印，便于我们观察，以下是代码修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int time = new Random().nextInt(5000);</span><br><span class="line">Thread.sleep(time);</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class HelloService &#123;</span><br><span class="line">    private static final Logger LOGGER = LoggerFactory.getLogger(HelloService.class);</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    RestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">    @HystrixCommand(fallbackMethod = &quot;helloFallback&quot;)</span><br><span class="line">    public String hello() &#123;</span><br><span class="line">        long start = System.currentTimeMillis();</span><br><span class="line">        String res = restTemplate.getForEntity(&quot;http://hello-service/hello&quot;, String.class).getBody();</span><br><span class="line">        LOGGER.info(&quot;hellor cost : &#123;&#125;ms&quot;, System.currentTimeMillis() - start);</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String helloFallback() &#123;</span><br><span class="line">        return &quot;system error!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>重新启动后继续通过postman调用，通过观察控制条输出日志和接口返回信息不难发现，凡是大于2000ms的请求全部调用了回调函数返回错误信息，其他请求则正常返回，那么在日常使用的过程中，合理的在请求中加入hytrix可以简单有效的防止服务宕机等因素带来的异常问题，同时要记得记录好日志以及回调之后的后续补偿操作。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Feign简介"><span class="toc-number">1.</span> <span class="toc-text">Feign简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#快速搭建"><span class="toc-number">2.</span> <span class="toc-text">快速搭建</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-  
-    <article id="post-springcloud-balance-20191230-0-md" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/30/springcloud-balance-20191230-0-md/">SpringCloud学习笔记——客户端负载均衡Ribbon</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/30/springcloud-balance-20191230-0-md/" class="archive-article-date">
-  	<time datetime="2019-12-30T15:22:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Ribbon是一个基于HTTP和TCP客户端的负载均衡工具，spring cloud在netflix ribbon的基础上对其进行了封装，我们可以简单的将一个REST请求转换成负载均衡的服务调用，Ribbon作为一个框架工具，不同于我们前面所操作的注册中心，服务提供者等模块，它并不需要独立的机器部署，而是只需要在代码中使用即可。</p>
-<h1 id="客户端负载均衡"><a href="#客户端负载均衡" class="headerlink" title="客户端负载均衡"></a>客户端负载均衡</h1><p>负载均衡在系统框架中属于不算复杂的模块，但绝对是非常重要而且必须要实施的内容，因为负载均衡是解决高可用，缓解峰值压力和快速扩容的基本手段之一，一般情况下我们所说的负载均衡都是指服务端负载均衡，其中又分为硬件和软件均衡，其中F5是比较常见的硬件手段之一，而软件负载一般就是在服务端部署具有负载均衡功能的软件来支持分发工作，常见的如nginx等。而我们今天要讨论的ribbon负载均衡其实属于是客户端负载均衡，客户端可以通过注册中心获取到服务端的注册实例列表，并且通过心跳来维护服务端清单的健康性，有了服务清单后使用ribbon负载均衡非常简单：</p>
-<ul>
-<li>服务提供者启动多个实例注册到注册中心</li>
-<li>消费者直接调用被@LoadBalanced修饰的RestTemplate实现接口调用即可</li>
-</ul>
-<h1 id="RestTemplate"><a href="#RestTemplate" class="headerlink" title="RestTemplate"></a>RestTemplate</h1><p>之前我们使用了一个非常有用的对象RestTemplate，该类可以简单的实现针对不同请求类型和参数的调用，我们日常开发中最常见的可能是GET和POST方法，所以这里简单的介绍一下RestTemplate的使用：</p>
-<h2 id="GET请求"><a href="#GET请求" class="headerlink" title="GET请求"></a>GET请求</h2><p>getForEntity是调用GET请求的方法，该方法返回值ResponseEntity是Spring框架对于http相应的封装，其中储存了http状态码，头信息，请求体对象等信息，常见的使用方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RestTemplate restTemplate = new RestTemplate();</span><br><span class="line">        ResponseEntity&lt;String&gt; responseEntity = restTemplate.getForEntity(</span><br><span class="line">                &quot;http://host:port/path?param=&#123;1&#125;&quot;,</span><br><span class="line">                String.class,</span><br><span class="line">                &quot;value&quot;);</span><br><span class="line">        String bode = responseEntity.getBody();</span><br></pre></td></tr></table></figure></p>
-<p>如果接口的返回值比较复杂，那我们可能还需要在代码中定义好返回值的DTO供后续使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RestTemplate restTemplate = new RestTemplate();</span><br><span class="line">        ResponseEntity&lt;XXXDTO&gt; responseEntity = restTemplate.getForEntity(</span><br><span class="line">                &quot;http://host:port/path?param=&#123;1&#125;&quot;,</span><br><span class="line">                XXXDTO.class,</span><br><span class="line">                &quot;value&quot;);</span><br><span class="line">        XXXDTO bode = responseEntity.getBody();</span><br></pre></td></tr></table></figure></p>
-<p>getForEntity还有几个重载方法，基本上都是对于参数取值的调整，还有类似于getForObject方法是只关心返回值body而不在乎其他信息，使用方法比较简单，这里不再过多介绍。</p>
-<h2 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h2><p>了解完GET请求后再看POST请求你会发现使用上基本大同小异，基本上GET和POST方法就可以涵盖我们日常开发的任务，如果更细分的话还有PUT请求，DELETE请求等，实际使用起来基本都是差不多了，这里也就不再占用篇幅了，有兴趣的可以自己尝试一下</p>
-<h2 id="源码浅析"><a href="#源码浅析" class="headerlink" title="源码浅析"></a>源码浅析</h2><p>（未完待续。。。）</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-springcloud-consume-20191216-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/16/springcloud-consume-20191216-0/">SpringCloud学习笔记——服务消费</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/16/springcloud-consume-20191216-0/" class="archive-article-date">
-  	<time datetime="2019-12-16T15:18:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在前文中我们已经搭建了高可用的注册中心，并向注册中心注册了两个服务，hello-service，现在已经有了服务的提供方，那么自然也要有服务的消费方，这篇文章就来搭建一个服务消费者，可以发现并且消费服务。服务的发现是由Eureka的客户端完成的，而服务的消费是由Ribbon完成的。Ribbon是一个负载均衡器，在客户端配置了ribbonServerList后即可达到负载均衡的效果，先不深究Ribbon的具体实现原理，<strong>我们只需要理解它可以做到负载均衡，配合Eureka的服务发现机制可以达到选择服务实例的目的从而实现服务消费</strong></p>
-<p>首先我们启动前文中搭建的两个注册中心和两个hello-service实例，启动后在注册中心的管理界面应该可以看到如下的服务：<br><img src="/image/server_instance.jpg" alt></p>
-<p>接下来仿照前面的项目，再创建一个新项目叫做ribbon-consumer，配置同样非常简单，在启动类上加入注解@EnableDiscoveryClient即可让应用注册为Eureka的客户端并具有发现服务的能力，同时在启动类中注入RestTemplate，并通过注解@LoadBalance注解开启该客户端的负载均衡功能，启动类代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@EnableDiscoveryClient</span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class ConsumerApplication &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    @LoadBalanced</span><br><span class="line">    RestTemplate restTemplate() &#123;</span><br><span class="line">        return new RestTemplate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(ConsumerApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>配置了启动类之后我们再新建一个ConsumerController类，在该类中实现一个/ribbon-consumer接口，该接口通过RestTemplate调用hello-service的/hello接口，注意在代码中我们只需要指定service name，即HELLO-SERVICE，而并不需要输入具体的host和port，这也是服务治理框架中一个非常重要的特性，你需要知道的是服务，而不是背后具体的服务器，否则的话就和一个http调用的rpc接口请求没什么区别了，controller参考代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class ConsumerController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    RestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/ribbon-consumer&quot;)</span><br><span class="line">    public String helloConsumer() &#123;</span><br><span class="line">        return restTemplate.getForEntity(&quot;http://hello-service/hello&quot;, String.class).getBody();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>当然最后不要忘记在配置文件application.yml中加入Eureka注册中心客户端的相关配置，注意端口号不要和前面的其他项目冲突：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: ribbon-consumer</span><br><span class="line">server:</span><br><span class="line">  port: 3333</span><br><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">      defaultZone: http://localhost:1111/eureka</span><br></pre></td></tr></table></figure></p>
-<p>全部配置完成后启动ribbon-consumer项目，在Eureka的信息面板页面应该会发现多了一个ribbon-consumer应用，至此说明我们的服务发现和消费服务已经成功注册到了注册中心，接下来我们需要测试一下，不过在测试前我们可以优化一下之前hello-service的返回值，由于ribbon-consumer采用了负载均衡，而且我们有两个hello-service提供服务，所以我们可以通过在接口返回中打印具体的server端口号来区分调用被发送到了哪个server上，所以这里我们稍微改一下之前的/hello接口，在项目log和返回值中都加入一些信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    private final Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private DiscoveryClient client;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private Registration registration;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private ServerConfig serverConfig;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/hello&quot;, method = RequestMethod.GET)</span><br><span class="line">    public String index() &#123;</span><br><span class="line">        List&lt;ServiceInstance&gt; instances = client.getInstances(registration.getServiceId());</span><br><span class="line">        if (CollectionUtils.isEmpty(instances)) &#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        int port = serverConfig.getServerPort();</span><br><span class="line">        for (ServiceInstance si : instances) &#123;</span><br><span class="line">            if (si.getPort() == port) &#123;</span><br><span class="line">                logger.info(&quot;/hello, host :&quot; + si.getHost() + &quot;, service_id :&quot; + si.getServiceId());</span><br><span class="line">                return &quot;Hello World @&quot; + port;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>现在我们重启一下hello-service，然后可以直接在浏览器中访问<a href="http://localhost:3333/ribbon-consumer" target="_blank" rel="noopener">http://localhost:3333/ribbon-consumer</a> ，我们可以看到返回了<strong>Hello World @2221</strong>， 我们重新刷新一下页面，会发现变成了<strong>Hello World @2222</strong>，说明我们不仅成功的发现服务并且进行了消费，而且采用了轮询的负载均衡策略<br><img src="/image/ribbon-consumer1.jpg" alt><br><img src="/image/ribbon-consumer2.jpg" alt></p>
-<p>另外有兴趣的朋友可以观察一下各个项目控制台中的日志，为我们打印了关于请求数，连接数，连接信息，失败信息等有用的信息供大家在实际工作学习排查问题。那么至此，微服务框架就已经具有了一个高可用注册中心，两个服务提供者hello-service，和一个服务发现者ribbon-consumer。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-springcloud-register-20191212-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/12/springcloud-register-20191212-0/">SpringCloud学习笔记——服务注册</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/12/springcloud-register-20191212-0/" class="archive-article-date">
-  	<time datetime="2019-12-12T15:50:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="注册服务提供者"><a href="#注册服务提供者" class="headerlink" title="注册服务提供者"></a>注册服务提供者</h2><p>在<a href="https://zycR10.github.io/2019/12/03/springcloud-eureka-20191203-0/" target="_blank" rel="noopener">上一篇文章</a>中我们搭建了一个高可用的服务注册中心，既然服务注册中心搭建完成，那么空有一个注册中心毫无意义，重要的是提供服务，所以我们现在可以尝试像注册中心注册一个服务的提供者，依旧类似于之前的方式生成一个SpringBoot项目，我们新建一个hello-service项目当作服务的提供者，build.gradle文件中稍作修改，加入如下依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.boot:spring-boot-starter-web&apos;</span><br><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-starter-netflix-eureka-client&apos;</span><br></pre></td></tr></table></figure></p>
-<p>为了测试服务提供效果，我们简单的写一个HelloController，通过接口返回一个hello字符串即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    private final Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private DiscoveryClient client;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/hello&quot;, method = RequestMethod.GET)</span><br><span class="line">    public String hello() &#123;</span><br><span class="line">        return &quot;Hello World&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>最后在启动类加上注解@EnableDiscoveryClient，这样代码我们就完成了，但是到这里还不够，既然是要将服务提供者注册到服务注册中心，那么首先肯定要让提供者知道像哪里注册，所以还需要在application.properties中配置一下注册中心的url<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.port=2222</span><br><span class="line">spring.application.name=hello-service</span><br><span class="line">eureka.client.service-url.defaultZone = http://peer1:1111/eureka/,http://peer2:1112/eureka/</span><br></pre></td></tr></table></figure></p>
-<p>这里我们指定了端口号为2222，服务名字为hello-service以及刚刚搭建的eureka，这里完成后我们可以启动一下hello-service项目，当然在启动之前，别忘了先将我们之前搭建好的服务注册中心先启动，在启动日志中应该可以看到如下信息，说明我们的服务已经注册成功了，同时在注册中心管理页面<a href="http://localhost:1111" target="_blank" rel="noopener">http://localhost:1111</a> 和 <a href="http://localhost:1112" target="_blank" rel="noopener">http://localhost:1112</a> 中<strong>Instances currently registered with Eureka</strong>一栏中应该可以看到我们hello-service的注册信息了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DiscoveryClient_HELLO-SERVICE/&#123;#localIP&#125;:hello-service:2222: registering service...</span><br><span class="line">DiscoveryClient_HELLO-SERVICE/&#123;#localIP&#125;:hello-service:2222 - registration status: 204</span><br><span class="line">Tomcat started on port(s): 2222 (http) with context path &apos;&apos;</span><br><span class="line">Updating port to 2222</span><br><span class="line">Started HelloServiceApplication in 6.352 seconds (JVM running for 16.223)</span><br></pre></td></tr></table></figure></p>
-<p>那么至此，我们就拥有了一个高可用的服务注册中心，并将一个服务注册成功，可以说，一个最简单微服务系统已经搭建了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-springcloud-eureka-20191203-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/03/springcloud-eureka-20191203-0/">SpringCloud学习笔记——搭建注册中心Eureka</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/03/springcloud-eureka-20191203-0/" class="archive-article-date">
-  	<time datetime="2019-12-03T15:46:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="服务治理"><a href="#服务治理" class="headerlink" title="服务治理"></a>服务治理</h1><p>服务治理是微服务中最核心和最基础的模块，用于各个微服务的注册和发现功能。在系统发展的初期可能由于模块不多，完全可以通过一些静态配置文件保存各个服务的地址，在各个项目中手工维护一份服务的实例清单。其实技术没有好与坏之分，只有适合与不适合，如果你的公司规模不大，拆分的服务项目一只手就数的过来，那为了顺应微服务的潮流而引入了一套spring cloud完全是加重项目负担，没有任何实际意义。但是相反，如果公司规模越来越大，拆分的服务越来越多，系统功能逐渐复杂，继续采用静态配置的方式就会非常难以维护，而且万一某个服务需要迁移或者变动，会产生牵一发而动全身的效果，相应的调用方都需要修改配置，所以遵从计算机领域真理，没有什么是加一个中间层不能解决的，<strong>注册中心</strong>这样的模块应运而生。</p>
-<ul>
-<li>服务注册<br>服务治理框架中通常都会有一个注册中心，各个服务端像注册中心登记自己以及提供的服务，包括主机、端口号、版本号甚至服务协议等信息，由注册中心来维护各个服务实例的实例清单。另外注册中心还会通过心跳的方式检测实例健康程度，在实例不可用后会将实例剔除。</li>
-<li>服务发现<br>相应的服务调用的时候肯定不会再是直接进行实例调用，而是会通过服务名称的方式向注册中心发出请求，获取实例清单以进行调用或访问</li>
-</ul>
-<h1 id="搭建服务注册中心"><a href="#搭建服务注册中心" class="headerlink" title="搭建服务注册中心"></a>搭建服务注册中心</h1><p><strong>Spring Cloud Eureka</strong>，使用Netfilx Eureka来实现服务的注册与发现，Spring Cloud项目是基于Spring Boot项目搭建的，网上有非常多关于搭建SpringBoot项目的相关的而且使用非常简单，这里不再赘述，我使用的项目管理工具的gradle，在build.gradle文件中加入如下代码：<br>
-        
-          <a class="article-more-a" href="/2019/12/03/springcloud-eureka-20191203-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-springcloud-microbase-20191202-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/02/springcloud-microbase-20191202-0/">SpringCloud学习笔记——微服务基础知识</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/02/springcloud-microbase-20191202-0/" class="archive-article-date">
-  	<time datetime="2019-12-02T15:37:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h2><p>简单来说微服务架构就是把一个原本整合在一起的系统拆分成多个系统。微，代表了每个系统拆分的体积都不是很大，便于后期的维护和管理。服务，代表了系统拆分后的职责是对外提供服务，无论是业务功能或者是数据支持等等，是一种对外，面向其他系统的设计。由于拆分成了不同的项目，每个项目都可以存在自己的架构、体系、数据存储、自动化测试等等，各个服务之间没有耦合使得每个单体的自由度非常高，甚至可以使用不同的语言来编写。</p>
-<h2 id="为什么要做微服务"><a href="#为什么要做微服务" class="headerlink" title="为什么要做微服务"></a>为什么要做微服务</h2><p>其实就算你的公司里没有使用Spring Cloud之类的微服务框架，但是只要存在系统拆分之后相互调用的关系，其实也就可以说是一种微服务架构，为什么要使用微服务架构其实答案很简单，现在的互联网行业发展迅速竞争激烈，基本上各种app，活动都是几天一变，反映到我们开发人员的身上基本就是各种需求变更，快速迭代。如果你们的系统是一整个完整的单体系统的话，那么显然随着业务发展和公司壮大，这个系统将会越来越大，越来越复杂，维护成本越来越高甚至于到最后没有人敢维护，而且这么大的项目，编译打包一次都需要很长时间吧？而拆分了微服务之后每个团队各司其职，需求来了之后各自开发再对接接口即可，出了问题可以快速定位到是哪个服务哪个接口甚至哪个人身上，省时省力而且系统架构更加清晰。而且各个服务之间的侧重点不同，甚至可以结合自己系统的特点选择做适当的技术选型，灵活又方便。</p>
-<h2 id="微服务带来的挑战"><a href="#微服务带来的挑战" class="headerlink" title="微服务带来的挑战"></a>微服务带来的挑战</h2><ul>
-<li>运维成本增加<br>既然拆分了服务，那么对应的部署的服务肯定会大量增加，对于运维人员来说工作量和工作难度应该都会有所增加。</li>
-<li>接口的质量<br>虽然拆分了服务，但是毕竟服务永远是服务于业务的，那么各个系统之间肯定还会存在业务依赖，只不过不再是单体服务中代码互相调用，而是系统间通信调用，所以接口的质量和管理就显得更加重要了</li>
-<li>分布式的复杂性<br>一提起分布式显然大家都明白，很多情况会变得复杂起来，包括写代码的过程中可能要引入分布式事务，异步消息等等，而分布式之间可能还存在网络、环境等各种问题，对于开发和运维人员排查问题都是挑战。</li>
-</ul>
-<h2 id="微服务的实施要点"><a href="#微服务的实施要点" class="headerlink" title="微服务的实施要点"></a>微服务的实施要点</h2><h3 id="组件化"><a href="#组件化" class="headerlink" title="组件化"></a>组件化</h3><p>每个服务都应该被拆分后看作是整个公司系统运转的组件，大家各司其职又团结合作，相互之间既有依赖也有独立，每个组件独立部署、维护、升级，不影响其他组件</p>
-<h3 id="按业务区分"><a href="#按业务区分" class="headerlink" title="按业务区分"></a>按业务区分</h3><p>一般来讲微服务会以业务区分，过往的体系中也许我们只需要从技术角度区分人员团队，例如DBA团队，运维团队，后端团队，前端团队，但是微服务中，我们大可以打破这种界限，直接根据业务去进行划分，而业务中可以是全栈式的，从前端到DBA甚至到产品，应有尽有。</p>
-<h3 id="去中心化治理"><a href="#去中心化治理" class="headerlink" title="去中心化治理"></a>去中心化治理</h3><p>当一个项目是集中化管理的话，那么很有可能存在一套统一的标准体系，但是毕竟所有事物都是在进步和改变的，当初设计的标准对于某些方面来说可能已经拖了后腿，但对于某些方面来说又是金科玉律，尤其是各种技术几乎都有自己擅长和不擅长的事情，完美的编程语言或者技术目前来说是不存在的，所以造成了业务和技术不匹配，但是如果采用了微服务治理可以有效地做到去中心化治理，各个服务自己扬长避短。</p>
-<h3 id="容错"><a href="#容错" class="headerlink" title="容错"></a>容错</h3><p>一个单体应用的话可能由于某个模块的崩溃导致整个系统同时也不可用，而微服务很可能存在某个服务出现了问题，但是其他服务用的好好的，这看似是个优点，但是如果某个业务由于崩溃，导致其接口全部超时，其他项目调用接口时会阻塞等待，那时间长了甚至有可能由此引起其他项目的崩溃，原因恰恰是使用了微服务导致服务下线没有第一时间被相关人员注意到。</p>
-<h2 id="Spring-Cloud"><a href="#Spring-Cloud" class="headerlink" title="Spring Cloud"></a>Spring Cloud</h2><p>Spring Cloud可以说是微服务领域的佼佼者，虽然不是最早的微服务框架，但是可以说是目前最完善并且最流行的。Spring Cloud是基于SpringBoot实现的微服务架构开发工具，整套微服务架构中包括了配置中心，注册中心，服务治理，网关，负载均衡，断流器，智能路由，全局锁，集群决策，分布式会话等等一系列的工作，对于中小型企业来说，可能没有足够的人力和能力去研发自己的微服务架构，那么Spring Cloud绝对是不二之选。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-201911280-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/28/mysql-note-201911280-0/">MySQL学习笔记 (十二) 数据库“抖动”</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/28/mysql-note-201911280-0/" class="archive-article-date">
-  	<time datetime="2019-11-28T15:00:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文摘要 redo log，flush</em></strong><br>
-        
-          <a class="article-more-a" href="/2019/11/28/mysql-note-201911280-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20191124-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/24/mysql-note-20191124-0/">MySQL学习笔记（十一）怎么给字符串字段加索引？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/24/mysql-note-20191124-0/" class="archive-article-date">
-  	<time datetime="2019-11-24T10:55:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文摘要 前缀索引，覆盖索引</em></strong><br>
-        
-          <a class="article-more-a" href="/2019/11/24/mysql-note-20191124-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20191118-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/18/mysql-note-20191118-0/">MySQL学习笔记（十）MySQL为什么有时候会选错索引？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/18/mysql-note-20191118-0/" class="archive-article-date">
-  	<time datetime="2019-11-18T14:55:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文摘要 索引，index</em></strong></p>
-        
-          <a class="article-more-a" href="/2019/11/18/mysql-note-20191118-0/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -955,8 +346,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

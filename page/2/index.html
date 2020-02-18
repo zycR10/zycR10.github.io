@@ -173,6 +173,78 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql-note-20191111-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/11/mysql-note-20191111-0/">MySQL学习笔记（九）普通索引和唯一索引应该如何选择？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/11/11/mysql-note-20191111-0/" class="archive-article-date">
+  	<time datetime="2019-11-11T15:33:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong><em>本文摘要 普通索引，唯一索引，chagne buffer</em></strong></p>
+        
+          <a class="article-more-a" href="/2019/11/11/mysql-note-20191111-0/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-orderby-time-20190919-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -797,77 +869,6 @@
 		</ul>
 	</div>
 
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-biased-hashcode-20190704-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/04/biased-hashcode-20190704-0/">偏向锁竟然与hashcode有关</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/04/biased-hashcode-20190704-0/" class="archive-article-date">
-  	<time datetime="2019-07-04T15:24:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>偶然间得知的一个知识点，在没有重写hashcode的情况下，如果调用了hashCode()方法，那么会导致偏向锁无法使用，如果你不了解技术内幕的话一定会觉得匪夷所思，hashcode和偏向锁有什么关系吗？<br>1.hashcode不做过多介绍了，应该大部分人都很了解了，如果不知道的建议随便搜索引擎查一下，重点说一下hashCode()方法，如果你没有重写Object类的hashCode方法的话那么会默认调用System.identityHashCode获取；<br>2.偏向锁是java为了优化synchronized同步锁而做的技术优化，当一个对象总是被同一线程获取，也就是说没有任何线程冲突的情况下，那么java自动会加上偏向锁，即永远偏向当前线程，每次会通过cas方法判断是否是同一线程在获取锁；<br>3.一个java对象的对象结构是由对象头，实例数据和对齐填充字节组成的，其中对象头又分为markword，指向类的指针和数组长度（数组对象才有）。</p>
-<p>那么为什么偏向锁和hashcode会产生联系呢？其实很简单，在计算hashcode后会将hash值放入对象的markword头中，而恰恰偏向锁的实现逻辑也是将thread id放入markword头，这就导致了冲突。<br>下面是这个问题的一篇相关博客<br><a href="https://blogs.oracle.com/dave/biased-locking-in-hotspot" target="_blank" rel="noopener">https://blogs.oracle.com/dave/biased-locking-in-hotspot</a><br>不方便打开的话我将关于这个问题的英文摘出来了，都是很基础的单词就不翻译了，顺便说一句，英文对于程序员来说真的很重要，要有一定的paper阅读能力<br>Finally, there’s not currently space in the mark word to support both an identity hashCode() value as well as the thread ID needed for the biased locking encoding. Given that, you can avoid biased locking on a per-object basis by calling System.identityHashCode(o). If the object is already biased, assigning an identity hashCode will result in revocation, otherwise, the assignment of a hashCode() will make the object ineligible for subsequent biased locking. This property is an artifact of our current implementation.</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tingle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
 
       
 
