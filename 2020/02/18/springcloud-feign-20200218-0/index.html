@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Stay Hungry">
 <meta property="og:description" content="Feign简介在前面我们已经搭建了Spring Cloud中的Ribbon和Hytrix，从而实现了微服务架构中客户端的负载均衡以及断路器机制保护服务，这两者的使用非常广泛并且经常一起出现，SpringCloud Feign其实就是一个整合工具，对两者进行了整合，除了原有的功能外，还提供了声明式的Web服务客户端定义方式。 快速搭建 新创建一个springboot项目feign-consumer，">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-02-20T15:02:19.785Z">
+<meta property="og:updated_time" content="2020-02-24T15:36:16.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringCloud学习笔记——声明式服务调用Feign">
 <meta name="twitter:description" content="Feign简介在前面我们已经搭建了Spring Cloud中的Ribbon和Hytrix，从而实现了微服务架构中客户端的负载均衡以及断路器机制保护服务，这两者的使用非常广泛并且经常一起出现，SpringCloud Feign其实就是一个整合工具，对两者进行了整合，除了原有的功能外，还提供了声明式的Web服务客户端定义方式。 快速搭建 新创建一个springboot项目feign-consumer，">
@@ -209,7 +209,11 @@
 </ul>
 <p>当然最后不要忘记在配置文件中添加注册中心的地址并且指定端口号，由于这是我们springcloud学习过程中搭建的第四个项目，所以我这里port指定为4444<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.application.name=feign-consumer</span><br><span class="line">server.port=4444</span><br><span class="line"></span><br><span class="line">eureka.client.service-url.defaultZone = http://localhost:1111/eureka/,http://localhost:1112/eureka/</span><br></pre></td></tr></table></figure></p>
 <p>我们已经简单的搭建了feign客户端，现在启动项目并且通过接口调用<a href="http://localhost:4444/feign-consumer" target="_blank" rel="noopener">http://localhost:4444/feign-consumer</a> ，你会发现和之前直接使用ribbon-consumer的调用结果是一样的，但是于ribbon不同的是，通过feign我们只需要定义服务接口，以声明式的方法优雅处理了服务调用</p>
-<h2 id="参数绑定"><a href="#参数绑定" class="headerlink" title="参数绑定"></a>参数绑定</h2>
+<h2 id="参数绑定"><a href="#参数绑定" class="headerlink" title="参数绑定"></a>参数绑定</h2><p>实际开发过程中这样的无参数接口几乎是很少见的，大部分情况下我们需要入参，接下来我们在hello-service中增加两个带入参的接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public String hello2(String name) &#123;</span><br><span class="line">        return &quot;Hello &quot; + name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String hello3(User user) &#123;</span><br><span class="line">        return &quot;Hello &quot; + user.getName() + &quot;, &quot; + user.getAge();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>在HelloController中增加对应的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value = &quot;/hello2&quot;, method = RequestMethod.GET)</span><br><span class="line">    public String hello2(@RequestParam String name) &#123;</span><br><span class="line">        return helloService.hello2(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">@RequestMapping(value = &quot;/hello3&quot;, method = RequestMethod.POST)</span><br><span class="line">public String hello3(@RequestBody User user) &#123;</span><br><span class="line">    return helloService.hello3(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后在feign-consumer中增加相应的实现，有一点需要注意的是，可能平时开发过程中习惯了在@RequestParam后面不会再指定入参的名字，因为在Spring MVC中将参数名作为默认值，但是在Feign中这个参数的value值是必须的，否则会报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.IllegalStateException: RequestParam.value() was empty on parameter 0</span><br></pre></td></tr></table></figure></p>
+<p>这里比较容易犯错误的点就在于如果使用feign发送GET请求的话，那么在所有参数前都必须加上@RequestParam(“xxx”)，而如果是发送POST请求的话，那么可以加@RequestBody也可以不加，因为如果没有注解的话默认是@RequestBody</p>
+<h2 id="继承特性"><a href="#继承特性" class="headerlink" title="继承特性"></a>继承特性</h2>
       
 
       
@@ -321,7 +325,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Feign简介"><span class="toc-number">1.</span> <span class="toc-text">Feign简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#快速搭建"><span class="toc-number">2.</span> <span class="toc-text">快速搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#参数绑定"><span class="toc-number">2.1.</span> <span class="toc-text">参数绑定</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Feign简介"><span class="toc-number">1.</span> <span class="toc-text">Feign简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#快速搭建"><span class="toc-number">2.</span> <span class="toc-text">快速搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#参数绑定"><span class="toc-number">2.1.</span> <span class="toc-text">参数绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#继承特性"><span class="toc-number">2.2.</span> <span class="toc-text">继承特性</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
