@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Stay Hungry">
 <meta property="og:description" content="Feign简介在前面我们已经搭建了Spring Cloud中的Ribbon和Hytrix，从而实现了微服务架构中客户端的负载均衡以及断路器机制保护服务，这两者的使用非常广泛并且经常一起出现，SpringCloud Feign其实就是一个整合工具，对两者进行了整合，除了原有的功能外，还提供了声明式的Web服务客户端定义方式。 快速搭建 新创建一个springboot项目feign-consumer，">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-03T15:30:23.856Z">
+<meta property="og:updated_time" content="2020-03-05T14:50:32.114Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringCloud学习笔记——声明式服务调用Feign">
 <meta name="twitter:description" content="Feign简介在前面我们已经搭建了Spring Cloud中的Ribbon和Hytrix，从而实现了微服务架构中客户端的负载均衡以及断路器机制保护服务，这两者的使用非常广泛并且经常一起出现，SpringCloud Feign其实就是一个整合工具，对两者进行了整合，除了原有的功能外，还提供了声明式的Web服务客户端定义方式。 快速搭建 新创建一个springboot项目feign-consumer，">
@@ -213,6 +213,7 @@
 <p>在HelloController中增加对应的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value = &quot;/hello2&quot;, method = RequestMethod.GET)</span><br><span class="line">    public String hello2(@RequestParam String name) &#123;</span><br><span class="line">        return helloService.hello2(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">@RequestMapping(value = &quot;/hello3&quot;, method = RequestMethod.POST)</span><br><span class="line">public String hello3(@RequestBody User user) &#123;</span><br><span class="line">    return helloService.hello3(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>最后在feign-consumer中增加相应的实现，有一点需要注意的是，可能平时开发过程中习惯了在@RequestParam后面不会再指定入参的名字，因为在Spring MVC中将参数名作为默认值，但是在Feign中这个参数的value值是必须的，否则会报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.IllegalStateException: RequestParam.value() was empty on parameter 0</span><br></pre></td></tr></table></figure></p>
 <p>这里比较容易犯错误的点就在于如果使用feign发送GET请求的话，那么在所有参数前都必须加上@RequestParam(“xxx”)，而如果是发送POST请求的话，那么可以加@RequestBody也可以不加，因为如果没有注解的话默认是@RequestBody</p>
+<a id="more"></a>
 <h2 id="Ribbon配置"><a href="#Ribbon配置" class="headerlink" title="Ribbon配置"></a>Ribbon配置</h2><h3 id="全局配置"><a href="#全局配置" class="headerlink" title="全局配置"></a>全局配置</h3><p>Feign客户端的负载均衡是通过Ribbon实现的，所以在项目中我们可以对Ribbon进行配置，比如设置全局变量的超时时间：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ribbon.ConnectTimeout=500</span><br><span class="line">ribbon.ReadTimeout=5000</span><br></pre></td></tr></table></figure></p>
 <h3 id="指定服务配置"><a href="#指定服务配置" class="headerlink" title="指定服务配置"></a>指定服务配置</h3><p>全局服务固然简单，但是像微服务这种项目显然各个服务的超时时间不可能统一，而是应该根据各自服务的特点进行调整，所以可以采用&lt;client&gt;.ribbon.key=value进行配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hello-service.ribbon.ReadTimeout=2000</span><br><span class="line">hello-service.ribbon.ConnectTimeout=500</span><br><span class="line">hello-service.ribbon.OkToRetryOnAllOperations=true</span><br><span class="line">hello-service.ribbon.MaxAutoRetriesNextServer=2</span><br><span class="line">hello-service.ribbon.MaxAutoRetries=1</span><br></pre></td></tr></table></figure></p>
 <h3 id="重试机制"><a href="#重试机制" class="headerlink" title="重试机制"></a>重试机制</h3><p>上面的配置中已经包含了关于重试的配置，我们可以修改hello-service进行一下验证：</p>
@@ -228,6 +229,27 @@
 </ul>
 <p>我们可以清楚的看到，前三次请求正常，因为超时时间设置了2000ms，如何第四次请求2443ms超过了设置，所以根据当前实例重试一次的配置，会再次请求port=2221的实例，这次随机了725ms，接口仍然正常返回。</p>
 <p><strong>这里有一点需要注意的是，ribbon的超时和hytrix超时完全是两个概念，一个属于接口允许的超时时间和重试次数，另一个则是为了保护系统而设置的最差结果，所以hytrix超时时间必须大于ribbon超时时间，否则接口直接熔断，配置的重试机制也就毫无意义了</strong></p>
+<h2 id="Hystrix配置"><a href="#Hystrix配置" class="headerlink" title="Hystrix配置"></a>Hystrix配置</h2><p>那么接下来我们就看看如何在feign中使用hystrix，在默认情况下，Spring Cloud Feign会将所有的Feign客户端方法都封装到Hystrix命令中进行服务保护</p>
+<h3 id="禁用Hystrix"><a href="#禁用Hystrix" class="headerlink" title="禁用Hystrix"></a>禁用Hystrix</h3><p>我们可以通过<strong>feign.hystrix.enabled=false</strong>来关闭hystrix功能，但是如果不想全局关闭Hystrix支持的话，可以通过配置Feign.builder实例完成功能</p>
+<ul>
+<li><p>创建一个配置类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class DisableHystrixConfiguration &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    @Scope(&quot;prototype&quot;)</span><br><span class="line">    public Feign.Builder feignBuilder() &#123;</span><br><span class="line">        return Feign.builder();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在HelloService的@FeignClient注解中加入上面的配置类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@FeignClient(name = &quot;hello-service&quot;, configuration = DisableHystrixConfiguration.class)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="服务降级配置"><a href="#服务降级配置" class="headerlink" title="服务降级配置"></a>服务降级配置</h3><p>在Feign中我们无法像前面是Hystrix那样在@HystrixCommand注解中加入fallback参数，但是Feign也提供了一种更为简单的方式：</p>
+<ul>
+<li><p>创建一个服务接口的服务降级实现类，例如HelloService的实现类HelloServiceFallback，重写所有方法并针对每个方法提供降级策略即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class HelloServiceFallback implements HelloService &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String hello() &#123;</span><br><span class="line">        return &quot;error&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String hello(@RequestParam String name) &#123;</span><br><span class="line">        return &quot;error&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String hello(@RequestBody User user) &#123;</span><br><span class="line">        return &quot;error&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在HelloService的@FeignClient中添加fallback属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@FeignClient(name = &quot;hello-service&quot;, fallback = HelloServiceFallback.class)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>1.要在配置文件中加入feign.hystrix.enabled=true才可以启动hystrix</strong><br><strong>2.记得把之前DisableHystrixConfiguration配置去掉</strong></p>
+<p>此时启动feign-consumer之后不启动hello-service类，这是调用接口会发现返回了error，也就是我们预先设置的服务降级处理。</p>
 
       
 
@@ -313,7 +335,7 @@
   
   
     <a href="/2020/02/12/springcloud-hytrix-20200212-0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SpringCloud学习笔记——服务容错保护Hytrix</div>
+      <div class="article-nav-title">SpringCloud学习笔记——服务容错保护Hystrix</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -340,7 +362,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Feign简介"><span class="toc-number">1.</span> <span class="toc-text">Feign简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#快速搭建"><span class="toc-number">2.</span> <span class="toc-text">快速搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#参数绑定"><span class="toc-number">2.1.</span> <span class="toc-text">参数绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ribbon配置"><span class="toc-number">2.2.</span> <span class="toc-text">Ribbon配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全局配置"><span class="toc-number">2.2.1.</span> <span class="toc-text">全局配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指定服务配置"><span class="toc-number">2.2.2.</span> <span class="toc-text">指定服务配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重试机制"><span class="toc-number">2.2.3.</span> <span class="toc-text">重试机制</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Feign简介"><span class="toc-number">1.</span> <span class="toc-text">Feign简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#快速搭建"><span class="toc-number">2.</span> <span class="toc-text">快速搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#参数绑定"><span class="toc-number">2.1.</span> <span class="toc-text">参数绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ribbon配置"><span class="toc-number">2.2.</span> <span class="toc-text">Ribbon配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全局配置"><span class="toc-number">2.2.1.</span> <span class="toc-text">全局配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指定服务配置"><span class="toc-number">2.2.2.</span> <span class="toc-text">指定服务配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重试机制"><span class="toc-number">2.2.3.</span> <span class="toc-text">重试机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hystrix配置"><span class="toc-number">2.3.</span> <span class="toc-text">Hystrix配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#禁用Hystrix"><span class="toc-number">2.3.1.</span> <span class="toc-text">禁用Hystrix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#服务降级配置"><span class="toc-number">2.3.2.</span> <span class="toc-text">服务降级配置</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>

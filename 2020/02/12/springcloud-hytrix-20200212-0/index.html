@@ -6,18 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>SpringCloud学习笔记——服务容错保护Hytrix | Stay Hungry</title>
+  <title>SpringCloud学习笔记——服务容错保护Hystrix | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="服务容错保护在前面的微服务架构学习中我们已经有了自己的注册中心集群，服务提供者集群，以及一个处理客户端请求的负载均衡，但是微服务的世界里首先有一条黄金法则：永远不要相信第三方服务。也就是说在微服务中系统被拆分成了很多个模块，随着模块的增多，系统发生故障的概率也是指数倍的增加，常见的异常如网络超时，代码bug等，严重的可能由于某个服务的瘫痪而导致多个系统响应超时，如果事先没有有效的防范措施的话，很有">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringCloud学习笔记——服务容错保护Hytrix">
+<meta property="og:title" content="SpringCloud学习笔记——服务容错保护Hystrix">
 <meta property="og:url" content="http://yoursite.com/2020/02/12/springcloud-hytrix-20200212-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
 <meta property="og:description" content="服务容错保护在前面的微服务架构学习中我们已经有了自己的注册中心集群，服务提供者集群，以及一个处理客户端请求的负载均衡，但是微服务的世界里首先有一条黄金法则：永远不要相信第三方服务。也就是说在微服务中系统被拆分成了很多个模块，随着模块的增多，系统发生故障的概率也是指数倍的增加，常见的异常如网络超时，代码bug等，严重的可能由于某个服务的瘫痪而导致多个系统响应超时，如果事先没有有效的防范措施的话，很有">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-02-18T15:17:32.670Z">
+<meta property="og:updated_time" content="2020-03-05T14:11:26.469Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringCloud学习笔记——服务容错保护Hytrix">
+<meta name="twitter:title" content="SpringCloud学习笔记——服务容错保护Hystrix">
 <meta name="twitter:description" content="服务容错保护在前面的微服务架构学习中我们已经有了自己的注册中心集群，服务提供者集群，以及一个处理客户端请求的负载均衡，但是微服务的世界里首先有一条黄金法则：永远不要相信第三方服务。也就是说在微服务中系统被拆分成了很多个模块，随着模块的增多，系统发生故障的概率也是指数倍的增加，常见的异常如网络超时，代码bug等，严重的可能由于某个服务的瘫痪而导致多个系统响应超时，如果事先没有有效的防范措施的话，很有">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
@@ -179,7 +179,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      SpringCloud学习笔记——服务容错保护Hytrix
+      SpringCloud学习笔记——服务容错保护Hystrix
     </h1>
   
 
@@ -202,7 +202,7 @@
 <p>对应修改controller类中的方法，重新注入HelloService进行调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class ConsumerController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    HelloService helloService;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/ribbon-consumer&quot;)</span><br><span class="line">    public String helloConsumer() &#123;</span><br><span class="line">        return helloService.hello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>此时再次运行ribbon consumer项目，保持端口号为2221的服务单元终止服务状态，这次我们再来看下通过postman调用结果就会变成我们预设的返回值system error!，当然了，在回调函数中可以自定义友好的错误提示信息或者进行额外的业务处理。此外，除了服务宕机导致的不可用之外，可能由于当前系统正在承受非常大的流量请求或其他异常导致接口响应时间过长，hytrix同样可以达到断路的效果，hytrix默认的响应时间为2000毫秒最长，也就是说如果接口响应时间超过了两千毫秒，hytrix也会认为当前服务不再可用，从而像前面模拟服务器宕机一样调用我们预设的回调函数，这里我们需要修改以下hello-service的代码，在/hello接口中我们加入随机睡眠时间来随机性触发响应时间过长的问题，并且在ribbon-consumer调用代码中增加接口响应时长的日志打印，便于我们观察，以下是代码修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int time = new Random().nextInt(5000);</span><br><span class="line">Thread.sleep(time);</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class HelloService &#123;</span><br><span class="line">    private static final Logger LOGGER = LoggerFactory.getLogger(HelloService.class);</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    RestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">    @HystrixCommand(fallbackMethod = &quot;helloFallback&quot;)</span><br><span class="line">    public String hello() &#123;</span><br><span class="line">        long start = System.currentTimeMillis();</span><br><span class="line">        String res = restTemplate.getForEntity(&quot;http://hello-service/hello&quot;, String.class).getBody();</span><br><span class="line">        LOGGER.info(&quot;hellor cost : &#123;&#125;ms&quot;, System.currentTimeMillis() - start);</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String helloFallback() &#123;</span><br><span class="line">        return &quot;system error!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>重新启动后继续通过postman调用，通过观察控制条输出日志和接口返回信息不难发现，凡是大于2000ms的请求全部调用了回调函数返回错误信息，其他请求则正常返回，那么在日常使用的过程中，合理的在请求中加入hytrix可以简单有效的防止服务宕机等因素带来的异常问题，同时要记得记录好日志以及回调之后的后续补偿操作。</p>
+<p>重新启动后继续通过postman调用，通过观察控制条输出日志和接口返回信息不难发现，凡是大于2000ms的请求全部调用了回调函数返回错误信息，其他请求则正常返回，那么在日常使用的过程中，合理的在请求中加入hystrix可以简单有效的防止服务宕机等因素带来的异常问题，同时要记得记录好日志以及回调之后的后续补偿操作。</p>
 
       
 
