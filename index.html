@@ -173,6 +173,81 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-springcloud-zuul-20200309-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/09/springcloud-zuul-20200309-0/">SpringCloud学习笔记——API网关服务Zuul</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/09/springcloud-zuul-20200309-0/" class="archive-article-date">
+  	<time datetime="2020-03-09T14:53:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在前面的学习中我们已经搭建了Eureka注册中心，服务提供者hello-service并且继承了Hystrix熔断器，Ribbon负载均衡消费者，并且学习了如何通过Feign进行整合，毫不夸张地说如果是面对一个小企业的项目，目前的框架再加上数据库，缓存和web页面之后可能已经可以上线使用了，但是如果项目规模逐渐发展，业务逐渐增多，就会暴露出当前架构一系列很致命的问题</p>
+<h1 id="当前问题"><a href="#当前问题" class="headerlink" title="当前问题"></a>当前问题</h1><ul>
+<li>从运维角度来说，当前项目架构并不复杂，服务器应该也不多，如果引入了Nginx，F5等设施进行路由和负载均衡的话，需要运维人员配置转发的服务实例。如果服务的IP地址变了，还需要手动修改，再规模不大的时候还好，但是随着系统的壮大，运维人员一定会痛不欲生，而且出错概率大大增加</li>
+<li>从开发角度来说，当我们的项目开始发展，可能业务越来越多样，一些对外的服务一定会涉及限流，鉴权，安全登录等问题，由于我们将应用拆分成了多个微服务，那么这些接口的校验要在每一份系统中都复制一份，虽然说复制粘贴是开发人员的常规操作，但是假如发现某个环节有bug，需要修复的就是所有项目，全部都需要重新上线，显然也是费时费力的重复劳动</li>
+</ul>
+<h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><p>其实不难想到，在计算机领域，没有什么事情是加一层中间件不能解决的，所以API网关的想法应运而生，这类似于设计模式中的Facade模式，网关相当于系统的门面，所有接入方都是与门面打交道，在网关服务中实现了请求路由，负载均衡，校验过滤等功能，上面我们说的散落在各个微服务中的逻辑，其实与各个服务并没有太大关系，完全可以放入API网关应用中，spring cloud中的gateway就是为此而生</p>
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-springcloud-feign-20200218-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -835,78 +910,6 @@
 
       
     </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20191118-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/18/mysql-note-20191118-0/">MySQL学习笔记（十）MySQL为什么有时候会选错索引？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/18/mysql-note-20191118-0/" class="archive-article-date">
-  	<time datetime="2019-11-18T14:55:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文摘要 索引，index</em></strong></p>
-        
-          <a class="article-more-a" href="/2019/11/18/mysql-note-20191118-0/#more">more >></a>
-        
-      
-
-      
-    </div>
     <div class="article-info article-info-index">
       
       

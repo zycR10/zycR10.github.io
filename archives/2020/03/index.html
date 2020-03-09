@@ -6,12 +6,12 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Stay Hungry</title>
+  <title>Archives: 2020/3 | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="What hurts more, the pain of hard work or the pain of regret?">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Stay Hungry">
-<meta property="og:url" content="http://yoursite.com/page/3/index.html">
+<meta property="og:url" content="http://yoursite.com/archives/2020/03/index.html">
 <meta property="og:site_name" content="Stay Hungry">
 <meta property="og:description" content="What hurts more, the pain of hard work or the pain of regret?">
 <meta property="og:locale" content="default">
@@ -173,669 +173,58 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-mysql-note-20190709-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  
     
-      <header class="article-header">
-        
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/03/09/springcloud-zuul-20200309-0/" class="archive-article-date">
+  	<time datetime="2020-03-09T14:53:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-09</time>
+</a>
+        </div>
+    	 
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/09/mysql-note-20190709-0/">MySQL学习笔记（五）事务隔离：为什么你改了我还看不见？</a>
+      <a class="archive-article-title" href="/2020/03/09/springcloud-zuul-20200309-0/">SpringCloud学习笔记——API网关服务Zuul</a>
     </h1>
   
 
-        
-        <a href="/2019/07/09/mysql-note-20190709-0/" class="archive-article-date">
-  	<time datetime="2019-07-09T15:20:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文要点：ACID，隔离级别，事务</em></strong><br>
-        
-          <a class="article-more-a" href="/2019/07/09/mysql-note-20190709-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
+        <div class="article-info info-on-right">
+          
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
-    <article id="post-biased-hashcode-20190704-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  
+    </div></section>
+  
+
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/04/biased-hashcode-20190704-0/">偏向锁竟然与hashcode有关</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/04/biased-hashcode-20190704-0/" class="archive-article-date">
-  	<time datetime="2019-07-04T15:24:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>偶然间得知的一个知识点，在没有重写hashcode的情况下，如果调用了hashCode()方法，那么会导致偏向锁无法使用，如果你不了解技术内幕的话一定会觉得匪夷所思，hashcode和偏向锁有什么关系吗？<br>1.hashcode不做过多介绍了，应该大部分人都很了解了，如果不知道的建议随便搜索引擎查一下，重点说一下hashCode()方法，如果你没有重写Object类的hashCode方法的话那么会默认调用System.identityHashCode获取；<br>2.偏向锁是java为了优化synchronized同步锁而做的技术优化，当一个对象总是被同一线程获取，也就是说没有任何线程冲突的情况下，那么java自动会加上偏向锁，即永远偏向当前线程，每次会通过cas方法判断是否是同一线程在获取锁；<br>3.一个java对象的对象结构是由对象头，实例数据和对齐填充字节组成的，其中对象头又分为markword，指向类的指针和数组长度（数组对象才有）。</p>
-<p>那么为什么偏向锁和hashcode会产生联系呢？其实很简单，在计算hashcode后会将hash值放入对象的markword头中，而恰恰偏向锁的实现逻辑也是将thread id放入markword头，这就导致了冲突。<br>下面是这个问题的一篇相关博客<br><a href="https://blogs.oracle.com/dave/biased-locking-in-hotspot" target="_blank" rel="noopener">https://blogs.oracle.com/dave/biased-locking-in-hotspot</a><br>不方便打开的话我将关于这个问题的英文摘出来了，都是很基础的单词就不翻译了，顺便说一句，英文对于程序员来说真的很重要，要有一定的paper阅读能力<br>Finally, there’s not currently space in the mark word to support both an identity hashCode() value as well as the thread ID needed for the biased locking encoding. Given that, you can avoid biased locking on a per-object basis by calling System.identityHashCode(o). If the object is already biased, assigning an identity hashCode will result in revocation, otherwise, the assignment of a hashCode() will make the object ineligible for subsequent biased locking. This property is an artifact of our current implementation.</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tingle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20190702-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/02/mysql-note-20190702-0/">MySQL学习笔记（四）深入浅出索引（下）</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/02/mysql-note-20190702-0/" class="archive-article-date">
-  	<time datetime="2019-07-02T15:10:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文要点：覆盖索引，最左前缀原则</em></strong><br>
-        
-          <a class="article-more-a" href="/2019/07/02/mysql-note-20190702-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Peter-Tingle-introduce" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/01/Peter-Tingle-introduce/">Peter-Tingle介绍</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/01/Peter-Tingle-introduce/" class="archive-article-date">
-  	<time datetime="2019-07-01T15:18:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本人是一名超级漫威粉，上个周末刚刚看完了漫威电影宇宙第三阶段的最后一部《蜘蛛侠：英雄远征》，个人认为非常精彩，剧情紧凑不俗套，动作场面惊人，人物性格刻画有深度，作为一部承上启下的电影，完美呈现了失去钢铁侠，美队等复联初代战将之后的艰难境况，并且也第一次让我意识到原来一个团队的leader是那么的重要，当初美队和托尼都在的时候，你会看他们争吵，看他们嘲讽，看他们并肩甚至看他们失败，但是总会有人挺身而出领导整个团队，而当这些人都离开的时候，复联的重任落到了彼得的肩膀上时，相信荧幕前的你和蜘蛛侠一样的感到迷茫与绝望，原来需要自己独自挑大梁是这么艰难，这也是为什么漫威十年I’m iron man以及I can do this all day如此经典迷人，这不仅是一句台词，也是漫威的文化输出，漫威的精神形象，希望后续蜘蛛侠能够撑起复联大旗，希望with great power comes great responsibility能够在未来的某一天由彼得坚定的说出。</p>
-<p>上面有点儿跑题了，之所以叫Peter-Tingle是因为电影里梅姨用这个“彼得一激灵”来形容他的蜘蛛感应，而彼得本人并不是非常喜欢这个形容，但是确实是一个很好笑的梗，本人也是非常的喜欢，所以希望借这个梗来形容那些我在日常工作学习中偶然学到的技能或者知识点，虽然不像蜘蛛感应一样来预知危险，但是希望以这种方式记录下来曾经看到的细枝末节，说不定未来的某一天能派上用场呢。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tingle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20190630-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/30/mysql-note-20190630-0/">MySQL学习笔记（三）深入浅出索引（上）</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/30/mysql-note-20190630-0/" class="archive-article-date">
-  	<time datetime="2019-06-30T06:59:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文要点：主键索引，非主键索引，n叉树，索引维护</em></strong><br>
-        
-          <a class="article-more-a" href="/2019/06/30/mysql-note-20190630-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20190620-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/20/mysql-note-20190620-0/">MySQL学习笔记（二）一条SQL更新语句是如何执行的？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/20/mysql-note-20190620-0/" class="archive-article-date">
-  	<time datetime="2019-06-20T15:16:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文要点：redo log、binlog、两阶段提交</em></strong></p>
-        
-          <a class="article-more-a" href="/2019/06/20/mysql-note-20190620-0/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-git-revert-commit-20190611-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/11/git-revert-commit-20190611-0/">git撤销本地commit文件</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/11/git-revert-commit-20190611-0/" class="archive-article-date">
-  	<time datetime="2019-06-11T15:34:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天在提交代码的时候出现了一个失误，折腾了一会儿才解决，也不知道是不是正确的解决方案，特此记录一下。<br>事件背景是这样的，今天下午的时候写完了代码打算提交，在本地操作了git add和git commit之后刚要push，突然发现当前分支是master，公司是有规定的一般情况下不能直接提交在master上，尤其是还未测试的代码，因为上线流程会从master上打tag进行打包，如果直接提交在master上可能造成未测试代码直接上线，所以一般都是自己打出来自己的branch，在branch上进行操作。写代码的时候估计是着急了没注意，一直在master上写的，在push之前才发现问题。<br>这时我的解决方案是打了新的branch然后把master代码合并到了我的新分支上，但是提交的时候由于当前分支没有commit内容，git status时发现为空，导致代码push失败，于是我的想法是撤销刚刚在master上commit的代码，重新在branch中操作（不知道这里的操作是否正确，其实总是隐约的觉得怪怪的，应该还有更好的办法），以下是当时折腾出来的操作，特此记录一下：</p>
-<p><strong>1.git log</strong><br>log命令会显示出历史记录，第一条log就是刚刚错误commit的记录，上面记录了author提交人，Date时间，提交时填写的-m信息，以及一个commit hash码也可以说是版本号</p>
-<p><strong>2.git reset –hard/soft/mixed commit-hash</strong><br>然后使用reset命令就可以了，但是这里有个知识点必须注意，如果使用–soft是仅仅移动了本地库的HEAD指针，也就是说暂存区和本地代码库并没有改变，相当于回退到了没有commit的阶段；–mixed表示移动了HEAD指针并且重置了暂存区，相当于回退到了还没有add的阶段；–hard就比较厉害了，移动HEAD指针，重置暂存区，重置工作区，说白了就是你的代码都被回退了，所以这个操作要谨慎。当然了其实如果你什么都不写，默认就是–mixed，也说明其实回退到未add状态应该是大多数人想做的操作。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/git//" class="article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20190608-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/08/mysql-note-20190608-0/">MySQL学习笔记（一）一条SQL查询语句是如何执行的</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/08/mysql-note-20190608-0/" class="archive-article-date">
-  	<time datetime="2019-06-08T14:23:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><em>数据库和MySQL可以说是现代程序员必会的一项技术，某种程度上来说，数据库知识的掌握程度甚至直接反映了一名程序员的实力水平，本系列学习笔记是基于极客时间《MySQL实战45讲》进行总结的，算是对学习过程的一个总结和提高。</em></p>
-        
-          <a class="article-more-a" href="/2019/06/08/mysql-note-20190608-0/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-redisson双引号问题踩坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/30/redisson双引号问题踩坑/">redisson双引号问题踩坑</a>
-    </h1>
-  
-
-        
-        <a href="/2019/03/30/redisson双引号问题踩坑/" class="archive-article-date">
-  	<time datetime="2019-03-30T14:13:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <pre><code>今天在使用redisson操作的时候踩了一个小坑，特此记录一下。
-具体业务场景不介绍了，现象就是提供给其他人的接口总是返回空，无法获取到数据，接口内的逻辑非常简单，就是基本的操作缓存和数据库，先查询redis，没有的话再到库中去查，频繁报错后也是心生疑惑，debug后才恍然大悟。
-项目中配置redisson并没有特殊指明codec用哪种类型，默认使用了jackson格式，在存储字符串的时候会多存入两个双引号，导致你后续查询key的时候根本获取不到对应数据，改为StringCodec问题就非常简单的解决啦。
-不过如果是改造旧接口的话一定要注意线上缓存会不会突然失效，再有就是这样一来redis中所有键值对取出来的时候都变成了String，假如原来代码中存在get()方法可能导致报出类型转换异常，我这里的处理方式是暂时写了一个工具类，在老代码get的时候调用对应类型的转换方法，但是如果项目中使用的地方非常多的话，那改起来会非常麻烦，所以建议在项目之初就不要挖这种坑给后人。
-</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
-  
 
 
           </div>
@@ -857,9 +246,9 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
+		isHome: false,
 		isPost: false,
-		isArchive: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
