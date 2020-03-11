@@ -173,19 +173,19 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-springcloud-zuul-20200309-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-springcloud-gateway-20200309-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/09/springcloud-zuul-20200309-0/">SpringCloud学习笔记——API网关服务gateway</a>
+      <a class="article-title" href="/2020/03/09/springcloud-gateway-20200309-0/">SpringCloud学习笔记——API网关服务gateway</a>
     </h1>
   
 
         
-        <a href="/2020/03/09/springcloud-zuul-20200309-0/" class="archive-article-date">
+        <a href="/2020/03/09/springcloud-gateway-20200309-0/" class="archive-article-date">
   	<time datetime="2020-03-09T14:53:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-09</time>
 </a>
         
@@ -206,6 +206,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spring.cloud.gateway.discovery.locator.enabled=true</span><br><span class="line">eureka.client.service-url.defaultZone = http://peer1:1111/eureka/,http://peer2:1112/eureka/</span><br></pre></td></tr></table></figure>
 <p><strong>这里要注意我们引入的eureka包和之前是不同的，这个包不会引入spring-boot-starter-web，该包会与gateway冲突，因为gateway使用的是webflux启动的</strong></p>
 <p>启动后我们试验一下配置结果，注册到注册中心之后网管可以代理注册中心中所有的服务了，访问规则是这样的：<br><code>http://gateway host:port/serviceId/url</code><br>也就是说如果现在我们再访问前面的feign-consumer接口，则可以直接访问<a href="http://localhost:5555/FEIGN-CONSUMER/feign-consumer" target="_blank" rel="noopener">http://localhost:5555/FEIGN-CONSUMER/feign-consumer</a>，这样就无需我们手动在项目中配置所有接口了</p>
+<h2 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h2><ul>
+<li>限流<br>在高并发场景中限流是比较常见的手段，springcloud gateway中提供了基于redis的限流策略，首先要添加redis依赖spring-boot-starter-data-redis-reactive，然后在配置文件中进行配置：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">      defaultZone: http://peer1:1111/eureka/,http://peer2:1112/eureka/</span><br><span class="line">server:</span><br><span class="line">  port: 5555</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: api-gateway</span><br><span class="line">  cloud:</span><br><span class="line">    gateway:</span><br><span class="line">      discovery:</span><br><span class="line">        locator:</span><br><span class="line">          enabled: true</span><br><span class="line">      routes:</span><br><span class="line">        - id: requestratelimiter_route</span><br><span class="line">          uri: http://localhost:4444/feign-consumer</span><br><span class="line">          filters:</span><br><span class="line">            - name: RequestRateLimiter</span><br><span class="line">              args:</span><br><span class="line">                redis-rate-limiter.replenishRate: 5</span><br><span class="line">                redis-rate-limiter.burstCapacity: 10</span><br><span class="line">                key-resolver: &quot;#&#123;@hostKeyResolver&#125;&quot;</span><br><span class="line">          predicates:</span><br><span class="line">            - Method=GET</span><br><span class="line">  redis:</span><br><span class="line">    host: localhost</span><br><span class="line">    password:</span><br><span class="line">    port: 6379</span><br></pre></td></tr></table></figure></li>
+</ul>
 
       
 
@@ -1058,11 +1061,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
+                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
+                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
               </li>
             
             <div class="clearfix"></div>

@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MySQL学习笔记 (十二) 数据库“抖动” | Stay Hungry</title>
+  <title>SpringCloud学习笔记——API网关服务gateway | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本文摘要 redo log，flush">
+  <meta name="description" content="在前面的学习中我们已经搭建了Eureka注册中心，服务提供者hello-service并且继承了Hystrix熔断器，Ribbon负载均衡消费者，并且学习了如何通过Feign进行整合，毫不夸张地说如果是面对一个小企业的项目，目前的框架再加上数据库，缓存和web页面之后可能已经可以上线使用了，但是如果项目规模逐渐发展，业务逐渐增多，就会暴露出当前架构一系列很致命的问题 当前问题 从运维角度来说，当前">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记 (十二) 数据库“抖动”">
-<meta property="og:url" content="http://yoursite.com/2019/11/28/mysql-note-201911280-0/index.html">
+<meta property="og:title" content="SpringCloud学习笔记——API网关服务gateway">
+<meta property="og:url" content="http://yoursite.com/2020/03/09/springcloud-gateway-20200309-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="本文摘要 redo log，flush">
+<meta property="og:description" content="在前面的学习中我们已经搭建了Eureka注册中心，服务提供者hello-service并且继承了Hystrix熔断器，Ribbon负载均衡消费者，并且学习了如何通过Feign进行整合，毫不夸张地说如果是面对一个小企业的项目，目前的框架再加上数据库，缓存和web页面之后可能已经可以上线使用了，但是如果项目规模逐渐发展，业务逐渐增多，就会暴露出当前架构一系列很致命的问题 当前问题 从运维角度来说，当前">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-02T15:35:40.872Z">
+<meta property="og:updated_time" content="2020-03-11T15:44:46.894Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记 (十二) 数据库“抖动”">
-<meta name="twitter:description" content="本文摘要 redo log，flush">
+<meta name="twitter:title" content="SpringCloud学习笔记——API网关服务gateway">
+<meta name="twitter:description" content="在前面的学习中我们已经搭建了Eureka注册中心，服务提供者hello-service并且继承了Hystrix熔断器，Ribbon负载均衡消费者，并且学习了如何通过Feign进行整合，毫不夸张地说如果是面对一个小企业的项目，目前的框架再加上数据库，缓存和web页面之后可能已经可以上线使用了，但是如果项目规模逐渐发展，业务逐渐增多，就会暴露出当前架构一系列很致命的问题 当前问题 从运维角度来说，当前">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
   
@@ -172,47 +172,43 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-mysql-note-201911280-0" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-springcloud-gateway-20200309-0" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL学习笔记 (十二) 数据库“抖动”
+      SpringCloud学习笔记——API网关服务gateway
     </h1>
   
 
         
-        <a href="/2019/11/28/mysql-note-201911280-0/" class="archive-article-date">
-  	<time datetime="2019-11-28T15:00:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-28</time>
+        <a href="/2020/03/09/springcloud-gateway-20200309-0/" class="archive-article-date">
+  	<time datetime="2020-03-09T14:53:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong><em>本文摘要 redo log，flush</em></strong><br><a id="more"></a></p>
-<h2 id="sql突然变慢"><a href="#sql突然变慢" class="headerlink" title="sql突然变慢"></a>sql突然变慢</h2><p>日常中在使用MySQL的过程中会存在这样的情况，原本明明跑起来特别快的sql突然变得特别慢，但是却无法复现，因为再执行可能又非常快了，其实在前面的<a href="https://zycr10.github.io/2019/06/20/mysql-note-20190620-0" target="_blank" rel="noopener">学习笔记二</a>中我们曾经提到过关于redo log的概念，在数据更新的时候其实会先更新进入内存中的redo log，后续再flush到磁盘上。当内存数据页和磁盘数据不一致时，我们称这个内存页为脏页，相反就叫做干净页。所以不难想象，如果MySQL正在执行flush这样的操作，那么必定会导致瞬间抖动，其实只是在刷脏页。</p>
-<h2 id="flush刷脏页的场景"><a href="#flush刷脏页的场景" class="headerlink" title="flush刷脏页的场景"></a>flush刷脏页的场景</h2><ul>
-<li>第一种场景，InnoDB的redo log由于存在大小限制，如果redo log满了，那么自然会进行flush操作，redo log中的checkpoint会前移使得redo log有新的空间继续写入</li>
-<li>第二种场景，系统内存已经不足了然而又需要新的内存页，那么此时只能淘汰掉一部分原来的内存页，如果淘汰掉的是脏页，那么自然会进行flush操作</li>
-<li>第三种场景，MySQL在系统空闲的时候会自主的进行flush操作</li>
-<li>第四种场景，在关闭之前需要对脏页进行flush</li>
+        <p>在前面的学习中我们已经搭建了Eureka注册中心，服务提供者hello-service并且继承了Hystrix熔断器，Ribbon负载均衡消费者，并且学习了如何通过Feign进行整合，毫不夸张地说如果是面对一个小企业的项目，目前的框架再加上数据库，缓存和web页面之后可能已经可以上线使用了，但是如果项目规模逐渐发展，业务逐渐增多，就会暴露出当前架构一系列很致命的问题</p>
+<h1 id="当前问题"><a href="#当前问题" class="headerlink" title="当前问题"></a>当前问题</h1><ul>
+<li>从运维角度来说，当前项目架构并不复杂，服务器应该也不多，如果引入了Nginx，F5等设施进行路由和负载均衡的话，需要运维人员配置转发的服务实例。如果服务的IP地址变了，还需要手动修改，再规模不大的时候还好，但是随着系统的壮大，运维人员一定会痛不欲生，而且出错概率大大增加</li>
+<li>从开发角度来说，当我们的项目开始发展，可能业务越来越多样，一些对外的服务一定会涉及限流，鉴权，安全登录等问题，由于我们将应用拆分成了多个微服务，那么这些接口的校验要在每一份系统中都复制一份，虽然说复制粘贴是开发人员的常规操作，但是假如发现某个环节有bug，需要修复的就是所有项目，全部都需要重新上线，显然也是费时费力的重复劳动</li>
 </ul>
-<p><strong>分析一下这四种场景对性能的影响</strong></p>
-<ol>
-<li>redo log的flush操作是尽量要避免的，因为此时系统暂时无法接受更新，更新数短时间内会跌倒0</li>
-<li>内存不够用的情况是一种常态，InnoDB是利用缓冲池管理内存，缓冲池中的内存页又分为三种情况，未使用、干净页和脏页，InnoDB的策略是尽量利用内存，当长期运行后，未使用的内存页应该很少，所以主要看看干净页和脏页，干净页的情况很简单，直接拿出来继续用就可以了，脏页的话肯定是要flush到磁盘变成干净页后继续使用，所以如果当前需要淘汰大量脏页的话肯定会对性能产生影响</li>
-<li>MySQL空闲时间操作的话基本数据库没有压力，也就不会影响性能</li>
-<li>关闭之前关注性能的可能性页不太高吧</li>
-</ol>
-<p>所以说影响了数据库性能的flush操作主要集中于：</p>
-<ol>
-<li>单次需要淘汰的脏页太多导致大量flush</li>
-<li>redo log日志写满，此时更新被堵住，写性能为0<br>因此InnoDB存在控制脏页比例的机制去避免上述情况</li>
-</ol>
-<h2 id="InnodDB的脏页控制策略"><a href="#InnodDB的脏页控制策略" class="headerlink" title="InnodDB的脏页控制策略"></a>InnodDB的脏页控制策略</h2>
+<h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><p>其实不难想到，在计算机领域，没有什么事情是加一层中间件不能解决的，所以API网关的想法应运而生，这类似于设计模式中的Facade模式，网关相当于系统的门面，所有接入方都是与门面打交道，在网关服务中实现了请求路由，负载均衡，校验过滤等功能，上面我们说的散落在各个微服务中的逻辑，其实与各个服务并没有太大关系，完全可以放入API网关应用中，spring cloud中的gateway就是为此而生</p>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><p>搭建一个gateway项目可以说非常简单，新建一个springboot项目，依赖中加入spring-cloud-gateway的相关配置即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-starter-gateway&apos;</span><br></pre></td></tr></table></figure></p>
+<p>网关最简单的功能其实就是集成后端接口并转发，有点类似于一个应用版的nginx，在项目中加入下面的代码即可实现转发功能：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">   @Bean</span><br><span class="line">public RouteLocator customRouteLocator(RouteLocatorBuilder builder) &#123;</span><br><span class="line">	return builder</span><br><span class="line">			.routes()</span><br><span class="line">			.route(&quot;path_route&quot;, r-&gt;r.path(&quot;/feign-consumer*&quot;)</span><br><span class="line">					.uri(&quot;http://localhost:4444&quot;)</span><br><span class="line">			)</span><br><span class="line">			.build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码很简单应该一看就明白，网关接受路径为/feign-consumer的接口，转发到<a href="http://localhost:4444" target="_blank" rel="noopener">http://localhost:4444</a>上，按照路径测试一下，我们访问<a href="http://localhost:5555/feign-consumer" target="_blank" rel="noopener">http://localhost:5555/feign-consumer</a>和<a href="http://localhost:5555/feign-consumer2" target="_blank" rel="noopener">http://localhost:5555/feign-consumer2</a>应该分别可以看到之前我们搭建的接口返回，网关最基本的功能可以说就完成了，当然具体有很多匹配规则或者过滤条件，例如根据header，cookies，接口入参等，就不一一列举了</p>
+<h2 id="注册中心"><a href="#注册中心" class="headerlink" title="注册中心"></a>注册中心</h2><p>上面的简单例子已经实现了网关功能，但是可能你也发现了，其实这样的网关在实际应用中没有任何意义，转发的接口信息还是自己维护的，跟我们文章开头说的运维痛点是一样的，甚至还需要多维护一个gateway应用，所以其实我们还是希望能够尽量做到自动化，在微服务中这种要求可以说很简单，为什么呢？因为我们所有服务都在注册中心啊！那把网关也放到注册中心让他去读取注册中心的服务不就可以了。<br>要实现这个功能很简单，首先我们要引入eureka的依赖，并且修改配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-starter-netflix-eureka-client&apos;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spring.cloud.gateway.discovery.locator.enabled=true</span><br><span class="line">eureka.client.service-url.defaultZone = http://peer1:1111/eureka/,http://peer2:1112/eureka/</span><br></pre></td></tr></table></figure>
+<p><strong>这里要注意我们引入的eureka包和之前是不同的，这个包不会引入spring-boot-starter-web，该包会与gateway冲突，因为gateway使用的是webflux启动的</strong></p>
+<p>启动后我们试验一下配置结果，注册到注册中心之后网管可以代理注册中心中所有的服务了，访问规则是这样的：<br><code>http://gateway host:port/serviceId/url</code><br>也就是说如果现在我们再访问前面的feign-consumer接口，则可以直接访问<a href="http://localhost:5555/FEIGN-CONSUMER/feign-consumer" target="_blank" rel="noopener">http://localhost:5555/FEIGN-CONSUMER/feign-consumer</a>，这样就无需我们手动在项目中配置所有接口了</p>
+<h2 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h2><ul>
+<li>限流<br>在高并发场景中限流是比较常见的手段，springcloud gateway中提供了基于redis的限流策略，首先要添加redis依赖spring-boot-starter-data-redis-reactive，然后在配置文件中进行配置：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">      defaultZone: http://peer1:1111/eureka/,http://peer2:1112/eureka/</span><br><span class="line">server:</span><br><span class="line">  port: 5555</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: api-gateway</span><br><span class="line">  cloud:</span><br><span class="line">    gateway:</span><br><span class="line">      discovery:</span><br><span class="line">        locator:</span><br><span class="line">          enabled: true</span><br><span class="line">      routes:</span><br><span class="line">        - id: requestratelimiter_route</span><br><span class="line">          uri: http://localhost:4444/feign-consumer</span><br><span class="line">          filters:</span><br><span class="line">            - name: RequestRateLimiter</span><br><span class="line">              args:</span><br><span class="line">                redis-rate-limiter.replenishRate: 5</span><br><span class="line">                redis-rate-limiter.burstCapacity: 10</span><br><span class="line">                key-resolver: &quot;#&#123;@hostKeyResolver&#125;&quot;</span><br><span class="line">          predicates:</span><br><span class="line">            - Method=GET</span><br><span class="line">  redis:</span><br><span class="line">    host: localhost</span><br><span class="line">    password:</span><br><span class="line">    port: 6379</span><br></pre></td></tr></table></figure></li>
+</ul>
+
       
 
       
@@ -226,7 +222,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
         		</li>
       		
 		</ul>
@@ -281,7 +277,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/11/28/mysql-note-201911280-0/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/03/09/springcloud-gateway-20200309-0/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -295,18 +291,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/12/02/springcloud-microbase-20191202-0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          SpringCloud学习笔记——微服务基础知识
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/11/24/mysql-note-20191124-0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MySQL学习笔记（十一）怎么给字符串字段加索引？</div>
+    <a href="/2020/02/18/springcloud-feign-20200218-0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SpringCloud学习笔记——声明式服务调用Feign</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -333,7 +320,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sql突然变慢"><span class="toc-number">1.</span> <span class="toc-text">sql突然变慢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flush刷脏页的场景"><span class="toc-number">2.</span> <span class="toc-text">flush刷脏页的场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#InnodDB的脏页控制策略"><span class="toc-number">3.</span> <span class="toc-text">InnodDB的脏页控制策略</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#当前问题"><span class="toc-number">1.</span> <span class="toc-text">当前问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#解决办法"><span class="toc-number">2.</span> <span class="toc-text">解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#快速入门"><span class="toc-number">2.1.</span> <span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注册中心"><span class="toc-number">2.2.</span> <span class="toc-text">注册中心</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高级功能"><span class="toc-number">2.3.</span> <span class="toc-text">高级功能</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
