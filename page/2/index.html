@@ -173,6 +173,78 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql-note-20191124-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/24/mysql-note-20191124-0/">MySQL学习笔记（十一）怎么给字符串字段加索引？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/11/24/mysql-note-20191124-0/" class="archive-article-date">
+  	<time datetime="2019-11-24T10:55:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong><em>本文摘要 前缀索引，覆盖索引</em></strong><br>
+        
+          <a class="article-more-a" href="/2019/11/24/mysql-note-20191124-0/#more">more >></a>
+        
+      
+
+      
+    </p></div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-mysql-note-20191118-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -823,81 +895,6 @@
 
 
   
-    <article id="post-cast-int-20190711-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/11/cast-int-20190711-0/">强转Integer的危险性以及工具类的理解</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/11/cast-int-20190711-0/" class="archive-article-date">
-  	<time datetime="2019-07-11T15:23:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天要记录的最近上线的一个bug，本身很简单，修复的也很快但是确实不应该发生。</p>
-<p>首先代码里是通过redisson从redis里取出一个关于用户的缓存，用户缓存信息使用map结构存储，因为value值相对变化比较多，有int型的userid或者string型的username等等，代码中为了适应不同类型的value，将map定义为map&lt;String, Object&gt;，通过Object userId = map.get(“userId”)获取用户id，但是在后续使用userId的时候却偷懒了，想当然的认为userId这种字段属于比较“正规”的字段，所以后续代码中调用其它方法需要传参userId的时候顺手就写了 (Integer)userId进行强转，结果上线之后立刻有业务方反应接口返回异常，查log后可以很清晰的看到都是String到Integer的CastException，至于为什么userId会是字符串，这种数据本身是否合理那就是内部业务和设计的问题了，这个不过多讨论，但是写代码的时候确实不应该想当然的直接强转，毕竟这个操作本身就有风险，尤其是要强转成类似于Integer这种有格式和范围要求的类型时，直接选择信任数据来源不做判断进行强转本身就是一种不负责任的代码。</p>
-<p>当时的解决方案是我们系统中有自己的工具类，实现了从String到Integer的转换，但是差点儿因为粗心再次出bug，好在组内有经验的同学提前告知了问题，先看一下我们工具类的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public static int getInt(Object get) &#123;</span><br><span class="line">    if (get == null) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        String s = get.toString();</span><br><span class="line">        return NumberHelper.isInt(s) ? Integer.parseInt(s) : 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到如果传入的字符串为空，那我们的工具类其实会返回0，但是在我的代码中null和0完全是两个不同的概念，所以当返回0之后还需要再次额外处理才可以，暂且不说工具类这样设计是否合理，看来以后在使用别人封装的代码之前也需要好好阅读代码，因为人和人的想法是不同的，尽量减少这种错误的bug数量。</p>
-<p>这两件事给我的经验总结就是：<strong><em>作为一名程序员，任何时候都不应该盲目相信别人提供给你的东西，不管是自称可靠的数据还是一个你刚好需要的封装方法，一定要记得自己多看看，多判断一下，这样才能掌控自己的代码</em></strong></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -995,11 +992,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
+                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
+                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
               </li>
             
             <div class="clearfix"></div>

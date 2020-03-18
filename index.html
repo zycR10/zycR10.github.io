@@ -173,6 +173,91 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-springcloud-config-20200317-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/17/springcloud-config-20200317-0/">SpringCloud学习笔记——分布式配置中心</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/17/springcloud-config-20200317-0/" class="archive-article-date">
+  	<time datetime="2020-03-17T14:05:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这一篇要学习的是SpringCloud中的新项目————配置中心，这一部分相对于前面来说属于相对比较独立的部分，在日常开发中配置文件几乎存在于各个应用之中，常见的是数据库的配置文件，项目框架的配置文件以及应用中使用的动态参数组成的配置文件，这种传统的配置文件有两个问题</p>
+<ul>
+<li>1.对于某些配置项来说，各个应用间相差无几甚至完全一样，尤其是在微服务的体系下，应用数量多，如果要更改其中一项配置会十分痛苦</li>
+<li>2.如果将配置写在了xxx.properties文件中，那么应用可能需要重启才会读取到配置项的变化，对于某些服务来说影响比较大</li>
+</ul>
+<p>今天要学习的配置中心就是为了解决这样的痛点，Spingcloud Config的服务端又称为分布式配置中心，它是基于git存储的微服务应用，用于连接配置仓库和客户端，为其他应用提供配置信息，并且该项目不仅仅局限于java语言，它可以适用于其他任何系统，并且由于基于git，所以天生具备版本管理等优势。</p>
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><h2 id="构建配置中心服务端"><a href="#构建配置中心服务端" class="headerlink" title="构建配置中心服务端"></a>构建配置中心服务端</h2><p>SpringCloud的组件入门可以说都是非常简单易操作，只不过这次的config-server需要加一些git操作。首先我们还是创建一个新的springboot工程config-server，并且添加config相关依赖：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-config-server&apos;</span><br></pre></td></tr></table></figure></p>
+<p>创建Spring Boot程序主类，并添加@EnableConfigServer注解<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@EnableConfigServer</span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class ConfigServerApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(ConfigServerApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下来在application.yml中需要额外配置git相关信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 6666</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: config-server</span><br><span class="line">  cloud:</span><br><span class="line">    config:</span><br><span class="line">      server:</span><br><span class="line">        git:</span><br><span class="line">          uri: https://github.com/zycR10/SpringCloud-Learning</span><br><span class="line">          search-paths: /config</span><br><span class="line">          username: username</span><br><span class="line">          password: password</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>uri代表了配置的Git仓库位置</li>
+<li>search-paths代表了路径下的相对搜索位置</li>
+<li>username、password是访问Git仓库的用户名和密码<br>配置完成后首先启动我们的服务，确保在6666端口上正常启动 </li>
+</ul>
+        
+          <a class="article-more-a" href="/2020/03/17/springcloud-config-20200317-0/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-springcloud-gateway-20200309-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -771,6 +856,7 @@
 <h3 id="去中心化治理"><a href="#去中心化治理" class="headerlink" title="去中心化治理"></a>去中心化治理</h3><p>当一个项目是集中化管理的话，那么很有可能存在一套统一的标准体系，但是毕竟所有事物都是在进步和改变的，当初设计的标准对于某些方面来说可能已经拖了后腿，但对于某些方面来说又是金科玉律，尤其是各种技术几乎都有自己擅长和不擅长的事情，完美的编程语言或者技术目前来说是不存在的，所以造成了业务和技术不匹配，但是如果采用了微服务治理可以有效地做到去中心化治理，各个服务自己扬长避短。</p>
 <h3 id="容错"><a href="#容错" class="headerlink" title="容错"></a>容错</h3><p>一个单体应用的话可能由于某个模块的崩溃导致整个系统同时也不可用，而微服务很可能存在某个服务出现了问题，但是其他服务用的好好的，这看似是个优点，但是如果某个业务由于崩溃，导致其接口全部超时，其他项目调用接口时会阻塞等待，那时间长了甚至有可能由此引起其他项目的崩溃，原因恰恰是使用了微服务导致服务下线没有第一时间被相关人员注意到。</p>
 <h2 id="Spring-Cloud"><a href="#Spring-Cloud" class="headerlink" title="Spring Cloud"></a>Spring Cloud</h2><p>Spring Cloud可以说是微服务领域的佼佼者，虽然不是最早的微服务框架，但是可以说是目前最完善并且最流行的。Spring Cloud是基于SpringBoot实现的微服务架构开发工具，整套微服务架构中包括了配置中心，注册中心，服务治理，网关，负载均衡，断流器，智能路由，全局锁，集群决策，分布式会话等等一系列的工作，对于中小型企业来说，可能没有足够的人力和能力去研发自己的微服务架构，那么Spring Cloud绝对是不二之选。</p>
+<h2 id="学习资料"><a href="#学习资料" class="headerlink" title="学习资料"></a>学习资料</h2><p>网上有很多优秀的视频和学习资料，我这次选择的是<strong>翟永超老师所写的《Spring Cloud 微服务实战》</strong>，除了个别章节和例子的细节外，基本沿用了翟老师的思路，这本书也确实是SpringCloud实战的一款佳作，既有详细的例子，也有深度的源码解析，我在这里也是借他人所写，总结归纳，待日后回看，希望能有更多收获</p>
 
       
 
@@ -843,78 +929,6 @@
         <p><strong><em>本文摘要 redo log，flush</em></strong><br>
         
           <a class="article-more-a" href="/2019/11/28/mysql-note-201911280-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-note-20191124-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/24/mysql-note-20191124-0/">MySQL学习笔记（十一）怎么给字符串字段加索引？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/24/mysql-note-20191124-0/" class="archive-article-date">
-  	<time datetime="2019-11-24T10:55:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文摘要 前缀索引，覆盖索引</em></strong><br>
-        
-          <a class="article-more-a" href="/2019/11/24/mysql-note-20191124-0/#more">more >></a>
         
       
 
@@ -1061,11 +1075,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
+                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tingle</a>
+                <a href="javascript:void(0)" class="js-tag color1">wrong</a>
               </li>
             
             <div class="clearfix"></div>
