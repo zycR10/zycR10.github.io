@@ -173,6 +173,82 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-springcloud-bus-20200331-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/31/springcloud-bus-20200331-0/">SpringCloud学习笔记——消息总线</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/31/springcloud-bus-20200331-0/" class="archive-article-date">
+  	<time datetime="2020-03-31T14:48:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在微服务的架构中，会使用轻量级的消息代理去构建一个消息主题，让微服务中所有的实例都连接上来，主题中生产出的所有消息会被所有实例监听并且消费，这就称之为消息总线，有点儿类似于计算机架构中的消息总线的概念。有了这样一条总线就可以很方便的广播一些需要所有实例知晓的消息，例如上一篇我们刚刚完成的配置变更。</p>
+<h1 id="消息代理"><a href="#消息代理" class="headerlink" title="消息代理"></a>消息代理</h1><p>消息代理（Message Broker）是一种架构模式，它再各个应用之间进行调度通知的作用，并且降低应用间的耦合性，消息代理是一个中间件产品，核心就是一个消息的路由程序，实现消息的接受和分发。目前市面上有很多开源的成熟产品供大家使用，比如ActiveMQ,Kafka,RabbitMQ,RocketMQ等，目前Spring Cloud Bus仅支持RabbitMQ和Kafka，下面我们介绍一下如何使用RabbitMQ来实现消息总线。</p>
+<h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1><p>RabbitMQ作为一款成熟的开源消息中间件，其基本概念和原理在搜索引擎中成千上万，我这里就不赘述了，有兴趣的同学可以大概了解一下RabbitMQ的各个定义，有利于后续的学习。</p>
+<p>这里推荐一篇文章，详细的描述了在windows下如何正确安装RabbitMQ并启动管理平台，我把链接贴出来供大家参考：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://blog.csdn.net/newbie_907486852/article/details/79788471</span><br></pre></td></tr></table></figure></p>
+<p>如果你访问<code>http://localhost:15672/</code>能够成功显示管理平台登录界面，则说明你的安装成功了，使用guest/guest登录即可。</p>
+        
+          <a class="article-more-a" href="/2020/03/31/springcloud-bus-20200331-0/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-springcloud-config-20200317-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -906,81 +982,9 @@
 
 
   
-    <article id="post-mysql-note-201911280-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/28/mysql-note-201911280-0/">MySQL学习笔记 (十二) 数据库“抖动”</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/28/mysql-note-201911280-0/" class="archive-article-date">
-  	<time datetime="2019-11-28T15:00:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><em>本文摘要 redo log，flush</em></strong><br>
-        
-          <a class="article-more-a" href="/2019/11/28/mysql-note-201911280-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 

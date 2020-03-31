@@ -173,6 +173,78 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql-note-20190717-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/17/mysql-note-20190717-0/">MySQL学习笔记（六）全局锁和表锁 ：给表加个字段怎么有这么多阻碍？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/17/mysql-note-20190717-0/" class="archive-article-date">
+  	<time datetime="2019-07-17T15:26:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong><em>本文要点：全局锁，表级锁</em></strong><br>
+        
+          <a class="article-more-a" href="/2019/07/17/mysql-note-20190717-0/#more">more >></a>
+        
+      
+
+      
+    </p></div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/MySQL//" class="article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-cast-int-20190711-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -833,82 +905,9 @@
 
 
   
-    <article id="post-redisson双引号问题踩坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/30/redisson双引号问题踩坑/">redisson双引号问题踩坑</a>
-    </h1>
-  
-
-        
-        <a href="/2019/03/30/redisson双引号问题踩坑/" class="archive-article-date">
-  	<time datetime="2019-03-30T14:13:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <pre><code>今天在使用redisson操作的时候踩了一个小坑，特此记录一下。
-具体业务场景不介绍了，现象就是提供给其他人的接口总是返回空，无法获取到数据，接口内的逻辑非常简单，就是基本的操作缓存和数据库，先查询redis，没有的话再到库中去查，频繁报错后也是心生疑惑，debug后才恍然大悟。
-项目中配置redisson并没有特殊指明codec用哪种类型，默认使用了jackson格式，在存储字符串的时候会多存入两个双引号，导致你后续查询key的时候根本获取不到对应数据，改为StringCodec问题就非常简单的解决啦。
-不过如果是改造旧接口的话一定要注意线上缓存会不会突然失效，再有就是这样一来redis中所有键值对取出来的时候都变成了String，假如原来代码中存在get()方法可能导致报出类型转换异常，我这里的处理方式是暂时写了一个工具类，在老代码get的时候调用对应类型的转换方法，但是如果项目中使用的地方非常多的话，那改起来会非常麻烦，所以建议在项目之初就不要挖这种坑给后人。
-</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 

@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020 | Stay Hungry</title>
+  <title>SpringCloud学习笔记——消息总线 | Stay Hungry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="What hurts more, the pain of hard work or the pain of regret?">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Stay Hungry">
-<meta property="og:url" content="http://yoursite.com/archives/2020/index.html">
+  <meta name="description" content="在微服务的架构中，会使用轻量级的消息代理去构建一个消息主题，让微服务中所有的实例都连接上来，主题中生产出的所有消息会被所有实例监听并且消费，这就称之为消息总线，有点儿类似于计算机架构中的消息总线的概念。有了这样一条总线就可以很方便的广播一些需要所有实例知晓的消息，例如上一篇我们刚刚完成的配置变更。 消息代理消息代理（Message Broker）是一种架构模式，它再各个应用之间进行调度通知的作用，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud学习笔记——消息总线">
+<meta property="og:url" content="http://yoursite.com/2020/03/31/springcloud-bus-20200331-0/index.html">
 <meta property="og:site_name" content="Stay Hungry">
-<meta property="og:description" content="What hurts more, the pain of hard work or the pain of regret?">
+<meta property="og:description" content="在微服务的架构中，会使用轻量级的消息代理去构建一个消息主题，让微服务中所有的实例都连接上来，主题中生产出的所有消息会被所有实例监听并且消费，这就称之为消息总线，有点儿类似于计算机架构中的消息总线的概念。有了这样一条总线就可以很方便的广播一些需要所有实例知晓的消息，例如上一篇我们刚刚完成的配置变更。 消息代理消息代理（Message Broker）是一种架构模式，它再各个应用之间进行调度通知的作用，">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-03-31T15:01:36.486Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Stay Hungry">
-<meta name="twitter:description" content="What hurts more, the pain of hard work or the pain of regret?">
+<meta name="twitter:title" content="SpringCloud学习笔记——消息总线">
+<meta name="twitter:description" content="在微服务的架构中，会使用轻量级的消息代理去构建一个消息主题，让微服务中所有的实例都连接上来，主题中生产出的所有消息会被所有实例监听并且消费，这就称之为消息总线，有点儿类似于计算机架构中的消息总线的概念。有了这样一条总线就可以很方便的广播一些需要所有实例知晓的消息，例如上一篇我们刚刚完成的配置变更。 消息代理消息代理（Message Broker）是一种架构模式，它再各个应用之间进行调度通知的作用，">
   
     <link rel="alternative" href="/atom.xml" title="Stay Hungry" type="application/atom+xml">
   
@@ -171,37 +172,41 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-springcloud-bus-20200331-0" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      SpringCloud学习笔记——消息总线
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/31/springcloud-bus-20200331-0/" class="archive-article-date">
+
+        
+        <a href="/2020/03/31/springcloud-bus-20200331-0/" class="archive-article-date">
   	<time datetime="2020-03-31T14:48:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-31</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/31/springcloud-bus-20200331-0/">SpringCloud学习笔记——消息总线</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在微服务的架构中，会使用轻量级的消息代理去构建一个消息主题，让微服务中所有的实例都连接上来，主题中生产出的所有消息会被所有实例监听并且消费，这就称之为消息总线，有点儿类似于计算机架构中的消息总线的概念。有了这样一条总线就可以很方便的广播一些需要所有实例知晓的消息，例如上一篇我们刚刚完成的配置变更。</p>
+<h1 id="消息代理"><a href="#消息代理" class="headerlink" title="消息代理"></a>消息代理</h1><p>消息代理（Message Broker）是一种架构模式，它再各个应用之间进行调度通知的作用，并且降低应用间的耦合性，消息代理是一个中间件产品，核心就是一个消息的路由程序，实现消息的接受和分发。目前市面上有很多开源的成熟产品供大家使用，比如ActiveMQ,Kafka,RabbitMQ,RocketMQ等，目前Spring Cloud Bus仅支持RabbitMQ和Kafka，下面我们介绍一下如何使用RabbitMQ来实现消息总线。</p>
+<h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1><p>RabbitMQ作为一款成熟的开源消息中间件，其基本概念和原理在搜索引擎中成千上万，我这里就不赘述了，有兴趣的同学可以大概了解一下RabbitMQ的各个定义，有利于后续的学习。</p>
+<p>这里推荐一篇文章，详细的描述了在windows下如何正确安装RabbitMQ并启动管理平台，我把链接贴出来供大家参考：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://blog.csdn.net/newbie_907486852/article/details/79788471</span><br></pre></td></tr></table></figure></p>
+<p>如果你访问<code>http://localhost:15672/</code>能够成功显示管理平台登录界面，则说明你的安装成功了，使用guest/guest登录即可。</p>
+<a id="more"></a>
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1>
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -214,169 +219,117 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/03/31/springcloud-bus-20200331-0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/17/springcloud-config-20200317-0/" class="archive-article-date">
-  	<time datetime="2020-03-17T14:05:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-17</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/17/springcloud-config-20200317-0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SpringCloud学习笔记——分布式配置中心</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/17/springcloud-config-20200317-0/">SpringCloud学习笔记——分布式配置中心</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#消息代理"><span class="toc-number">1.</span> <span class="toc-text">消息代理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RabbitMQ"><span class="toc-number">2.</span> <span class="toc-text">RabbitMQ</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#快速入门"><span class="toc-number">3.</span> <span class="toc-text">快速入门</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/09/springcloud-gateway-20200309-0/" class="archive-article-date">
-  	<time datetime="2020-03-09T14:53:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/09/springcloud-gateway-20200309-0/">SpringCloud学习笔记——API网关服务gateway</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/02/18/springcloud-feign-20200218-0/" class="archive-article-date">
-  	<time datetime="2020-02-18T15:12:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-18</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/02/18/springcloud-feign-20200218-0/">SpringCloud学习笔记——声明式服务调用Feign</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/02/12/springcloud-hytrix-20200212-0/" class="archive-article-date">
-  	<time datetime="2020-02-12T14:54:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-12</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/02/12/springcloud-hytrix-20200212-0/">SpringCloud学习笔记——服务容错保护Hystrix</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -399,8 +352,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
