@@ -173,6 +173,88 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-springcloud-microbase-20191202-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/02/springcloud-microbase-20191202-0/">SpringCloud学习笔记——微服务基础知识</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/02/springcloud-microbase-20191202-0/" class="archive-article-date">
+  	<time datetime="2019-12-02T15:37:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h2><p>简单来说微服务架构就是把一个原本整合在一起的系统拆分成多个系统。微，代表了每个系统拆分的体积都不是很大，便于后期的维护和管理。服务，代表了系统拆分后的职责是对外提供服务，无论是业务功能或者是数据支持等等，是一种对外，面向其他系统的设计。由于拆分成了不同的项目，每个项目都可以存在自己的架构、体系、数据存储、自动化测试等等，各个服务之间没有耦合使得每个单体的自由度非常高，甚至可以使用不同的语言来编写。</p>
+<h2 id="为什么要做微服务"><a href="#为什么要做微服务" class="headerlink" title="为什么要做微服务"></a>为什么要做微服务</h2><p>其实就算你的公司里没有使用Spring Cloud之类的微服务框架，但是只要存在系统拆分之后相互调用的关系，其实也就可以说是一种微服务架构，为什么要使用微服务架构其实答案很简单，现在的互联网行业发展迅速竞争激烈，基本上各种app，活动都是几天一变，反映到我们开发人员的身上基本就是各种需求变更，快速迭代。如果你们的系统是一整个完整的单体系统的话，那么显然随着业务发展和公司壮大，这个系统将会越来越大，越来越复杂，维护成本越来越高甚至于到最后没有人敢维护，而且这么大的项目，编译打包一次都需要很长时间吧？而拆分了微服务之后每个团队各司其职，需求来了之后各自开发再对接接口即可，出了问题可以快速定位到是哪个服务哪个接口甚至哪个人身上，省时省力而且系统架构更加清晰。而且各个服务之间的侧重点不同，甚至可以结合自己系统的特点选择做适当的技术选型，灵活又方便。</p>
+<h2 id="微服务带来的挑战"><a href="#微服务带来的挑战" class="headerlink" title="微服务带来的挑战"></a>微服务带来的挑战</h2><ul>
+<li>运维成本增加<br>既然拆分了服务，那么对应的部署的服务肯定会大量增加，对于运维人员来说工作量和工作难度应该都会有所增加。</li>
+<li>接口的质量<br>虽然拆分了服务，但是毕竟服务永远是服务于业务的，那么各个系统之间肯定还会存在业务依赖，只不过不再是单体服务中代码互相调用，而是系统间通信调用，所以接口的质量和管理就显得更加重要了</li>
+<li>分布式的复杂性<br>一提起分布式显然大家都明白，很多情况会变得复杂起来，包括写代码的过程中可能要引入分布式事务，异步消息等等，而分布式之间可能还存在网络、环境等各种问题，对于开发和运维人员排查问题都是挑战。</li>
+</ul>
+<h2 id="微服务的实施要点"><a href="#微服务的实施要点" class="headerlink" title="微服务的实施要点"></a>微服务的实施要点</h2><h3 id="组件化"><a href="#组件化" class="headerlink" title="组件化"></a>组件化</h3><p>每个服务都应该被拆分后看作是整个公司系统运转的组件，大家各司其职又团结合作，相互之间既有依赖也有独立，每个组件独立部署、维护、升级，不影响其他组件</p>
+<h3 id="按业务区分"><a href="#按业务区分" class="headerlink" title="按业务区分"></a>按业务区分</h3><p>一般来讲微服务会以业务区分，过往的体系中也许我们只需要从技术角度区分人员团队，例如DBA团队，运维团队，后端团队，前端团队，但是微服务中，我们大可以打破这种界限，直接根据业务去进行划分，而业务中可以是全栈式的，从前端到DBA甚至到产品，应有尽有。</p>
+<h3 id="去中心化治理"><a href="#去中心化治理" class="headerlink" title="去中心化治理"></a>去中心化治理</h3><p>当一个项目是集中化管理的话，那么很有可能存在一套统一的标准体系，但是毕竟所有事物都是在进步和改变的，当初设计的标准对于某些方面来说可能已经拖了后腿，但对于某些方面来说又是金科玉律，尤其是各种技术几乎都有自己擅长和不擅长的事情，完美的编程语言或者技术目前来说是不存在的，所以造成了业务和技术不匹配，但是如果采用了微服务治理可以有效地做到去中心化治理，各个服务自己扬长避短。</p>
+<h3 id="容错"><a href="#容错" class="headerlink" title="容错"></a>容错</h3><p>一个单体应用的话可能由于某个模块的崩溃导致整个系统同时也不可用，而微服务很可能存在某个服务出现了问题，但是其他服务用的好好的，这看似是个优点，但是如果某个业务由于崩溃，导致其接口全部超时，其他项目调用接口时会阻塞等待，那时间长了甚至有可能由此引起其他项目的崩溃，原因恰恰是使用了微服务导致服务下线没有第一时间被相关人员注意到。</p>
+<h2 id="Spring-Cloud"><a href="#Spring-Cloud" class="headerlink" title="Spring Cloud"></a>Spring Cloud</h2><p>Spring Cloud可以说是微服务领域的佼佼者，虽然不是最早的微服务框架，但是可以说是目前最完善并且最流行的。Spring Cloud是基于SpringBoot实现的微服务架构开发工具，整套微服务架构中包括了配置中心，注册中心，服务治理，网关，负载均衡，断流器，智能路由，全局锁，集群决策，分布式会话等等一系列的工作，对于中小型企业来说，可能没有足够的人力和能力去研发自己的微服务架构，那么Spring Cloud绝对是不二之选。</p>
+<h2 id="学习资料"><a href="#学习资料" class="headerlink" title="学习资料"></a>学习资料</h2><p>网上有很多优秀的视频和学习资料，我这次选择的是<strong>翟永超老师所写的《Spring Cloud 微服务实战》</strong>，除了个别章节和例子的细节外，基本沿用了翟老师的思路，这本书也确实是SpringCloud实战的一款佳作，既有详细的例子，也有深度的源码解析，我在这里也是借他人所写，总结归纳，待日后回看，希望能有更多收获</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/SpringCloud//" class="article-tag-list-link color2">SpringCloud</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-mysql-note-201911280-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -793,79 +875,6 @@
 		</ul>
 	</div>
 
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-exhaust-id-omg-20190724-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/24/exhaust-id-omg-20190724-0/">数据库自增id竟然被我用完了！！！</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/24/exhaust-id-omg-20190724-0/" class="archive-article-date">
-  	<time datetime="2019-07-24T15:26:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="业务背景"><a href="#业务背景" class="headerlink" title="业务背景"></a>业务背景</h2><p>事情的起因是这样的…几个月前做过一个统计类型的job，上线之后小修小补了几次一直运行的很平稳，就是有一个缺点：慢。起初我一直以为是因为数据量过大导致的，每天早上六点准时开跑，一般要到下午一两点才能跑完，其实现在想想这么长时间的运行肯定是不合理的，而且本身业务的数据量也没有大到那个地步，但是由于一直工作太忙了（懒），再加上本身不算特别重要的模块就没有过多在意，但是由于我们的job只有一个节点，所以如果存在这种长时间运行的job就会导致我们项目的发版时间非常受限制，基本每天只有下午三点到六点左右可以发版，终于我在忍无可忍之后决定重构代码，彻底优化。</p>
-<p>优化的结果还是十分理想的，现在只需要到七点半就可以跑完了，但是我却发现了一个严重的问题，快是快了…可是跑完了表里没数据啊…<br>
-        
-          <a class="article-more-a" href="/2019/07/24/exhaust-id-omg-20190724-0/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">wrong</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
 
       
 
