@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Stay Hungry">
 <meta property="og:description" content="在微服务的架构中，会使用轻量级的消息代理去构建一个消息主题，让微服务中所有的实例都连接上来，主题中生产出的所有消息会被所有实例监听并且消费，这就称之为消息总线，有点儿类似于计算机架构中的消息总线的概念。有了这样一条总线就可以很方便的广播一些需要所有实例知晓的消息，例如上一篇我们刚刚完成的配置变更。 消息代理消息代理（Message Broker）是一种架构模式，它再各个应用之间进行调度通知的作用，">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-06T11:09:24.088Z">
+<meta property="og:updated_time" content="2020-04-07T15:10:05.022Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringCloud学习笔记——消息总线">
 <meta name="twitter:description" content="在微服务的架构中，会使用轻量级的消息代理去构建一个消息主题，让微服务中所有的实例都连接上来，主题中生产出的所有消息会被所有实例监听并且消费，这就称之为消息总线，有点儿类似于计算机架构中的消息总线的概念。有了这样一条总线就可以很方便的广播一些需要所有实例知晓的消息，例如上一篇我们刚刚完成的配置变更。 消息代理消息代理（Message Broker）是一种架构模式，它再各个应用之间进行调度通知的作用，">
@@ -198,7 +198,11 @@
 <p>这里推荐一篇文章，详细的描述了在windows下如何正确安装RabbitMQ并启动管理平台，我把链接贴出来供大家参考：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://blog.csdn.net/newbie_907486852/article/details/79788471</span><br></pre></td></tr></table></figure></p>
 <p>如果你访问<code>http://localhost:15672/#/users</code>能够成功显示管理平台登录界面，则说明你的安装成功了，使用guest/guest登录即可。</p>
 <a id="more"></a>
-<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1>
+<h1 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h1><p>在上一篇中我们实现了配置中心的服务化以及动态更新，但是动态更新其实仍然属于一种伪动态，因为实际上需要我们手动刷新/refresh接口才可以，接下来我们通过rabbitmq和Spring Cloud Bus来实现真正的动态更新。</p>
+<p>我们继续使用前面的config-client项目，在项目中添加依赖spring-cloud-starter-bus-amqp：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;org.springframework.cloud:spring-cloud-starter-bus-amqp&apos;</span><br></pre></td></tr></table></figure></p>
+<p>在bootstrap.yml配置文件中添加有关rabbitmq的连接配置，这里我使用了我自建的springcloud用户，如果你没有自建的话可以使用默认的guest用户：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    host: localhost</span><br><span class="line">    port: 5672</span><br><span class="line">    username: springcloud</span><br><span class="line">    password: 123456</span><br></pre></td></tr></table></figure></p>
+<p>然后我们启动两个config-client，端口号分别为7777和7778，此时按照之前的测试方法，当在git中修改from值后，再次调用<code>http://localhost:7777/getFrom</code>接口发现并没有返回最新值，此时POST调用<code>http://localhost:7778/actuator/bus-refresh</code>之后，再次请求<code>http://localhost:7777/getFrom</code>接口，会发现返回值已改变，说明我们的Spring Cloud Bus已经通过mq通知了所有应用刷新from值</p>
+
       
 
       
